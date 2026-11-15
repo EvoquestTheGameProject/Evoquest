@@ -568,7 +568,7 @@
         "application/json",
       );
       msg(
-        "Saves exported. Use Import Saves in any version, or Save Code if downloads are blocked.",
+        "Export started. If no file appears (some viewers block downloads), use Save Code instead.",
       );
     };
   if (im && fi) {
@@ -664,7 +664,9 @@
           (m, a, c) => a + json + c,
         );
         download("EvoQuest_with_progress_" + stamp() + ".html", out, "text/html");
-        msg("Downloaded. Open that file in any viewer and your progress loads automatically.");
+        msg(
+          "Download started. If no file appears (some viewers block downloads), use Save Code instead.",
+        );
       } catch (e) {
         msg("Could not build the file. Use Save Code instead.");
       }
