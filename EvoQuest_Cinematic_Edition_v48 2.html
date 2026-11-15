@@ -11,15 +11,30 @@ function valid(k,v){
  if(k==="evoquest_looks")return Array.isArray(j)&&j.length<=3&&j.every(x=>x===null||x&&typeof x==="object"&&!Array.isArray(x));
  return !!j&&typeof j==="object"&&j.v>=1;
 }
+
+/* integrity checksum (cyrb53) over key-sorted data */
+function sumOf(d){const o={};Object.keys(d).sort().forEach(k=>o[k]=d[k]);const str=JSON.stringify(o);let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<str.length;i++){const c=str.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^h1>>>16,2246822507)^Math.imul(h2^h2>>>13,3266489909);h2=Math.imul(h2^h2>>>16,2246822507)^Math.imul(h1^h1>>>13,3266489909);return(4294967296*(2097151&h2)+(h1>>>0)).toString(36)}
+/* migrate/repair one stored value to the shape the game expects; null = unrecoverable */
+const strs=a=>Array.isArray(a)?a.filter(x=>typeof x==="string").slice(0,200):[];
+const obj=o=>o&&typeof o==="object"&&!Array.isArray(o)?o:{};
+function normalize(k,v){
+ if(typeof v!=="string")return null;const j=parse(v);if(j===undefined)return null;
+ if(k==="evoquest_players"){if(!Array.isArray(j))return null;const o=j.slice(0,3).map(x=>typeof x==="string"&&x.trim()?x.trim().slice(0,14):null);while(o.length<3)o.push(null);return JSON.stringify(o)}
+ if(k==="evoquest_looks"){if(!Array.isArray(j))return null;const o=j.slice(0,3).map(x=>{if(!x||typeof x!=="object"||Array.isArray(x))return null;const r={};for(const f in x)if(Number.isInteger(x[f])&&x[f]>=0)r[f]=x[f];return r});while(o.length<3)o.push(null);return JSON.stringify(o)}
+ if(!j||typeof j!=="object"||Array.isArray(j)||!(j.v>=1))return null;
+ const c=Object.assign({},j,{v:j.v,inv:strs(j.inv),got:strs(j.got),taken:obj(j.taken),broken:obj(j.broken),worn:!!j.worn,gloved:!!j.gloved,hasGoggles:!!j.hasGoggles});
+ return JSON.stringify(c);
+}
 const s0=LS();
 /* Legacy keys (other casing/separators) -> canonical names, never overwriting existing data */
 try{if(s0){const mv=[];for(let i=0;i<s0.length;i++){const k=s0.key(i);if(k&&!ok(k)&&/^evoquest[-_. ]/i.test(k)){const r=k.slice(9);const nk=/^(players|looks)$/i.test(r)?"evoquest_"+r.toLowerCase():/^cp[-_. ]/i.test(r)?"evoquest_cp_"+r.slice(3):null;if(nk&&s0.getItem(nk)===null)mv.push([k,nk])}}mv.forEach(([k,nk])=>{const v=s0.getItem(k);if(valid(nk,v))s0.setItem(nk,v)})}}catch(e){}
 function collect(){const s=LS(),d={};if(!s)return d;for(let i=0;i<s.length;i++){const k=s.key(i);if(k&&ok(k)){const v=s.getItem(k);if(v!==null)d[k]=v}}return d}
-const bundle=()=>({app:APP,schema:SCHEMA,savedAt:new Date().toISOString(),data:collect()});
+const bundle=()=>{const data=collect();return{app:APP,schema:SCHEMA,savedAt:new Date().toISOString(),sum:sumOf(data),data}};
+const intact=b=>!!b&&b.app===APP&&b.data&&typeof b.data==="object"&&!Array.isArray(b.data)&&(b.sum===undefined||b.sum===sumOf(b.data));
 /* ---- automatic IndexedDB mirror (survives localStorage being cleared/corrupted) ---- */
 const idb=(mode,fn)=>new Promise(res=>{try{const r=indexedDB.open("evoquest_backup",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onerror=()=>res(null);r.onsuccess=()=>{try{const db=r.result,tx=db.transaction("kv",mode),out=fn(tx.objectStore("kv"));tx.oncomplete=()=>{db.close();res(out&&"result"in out?out.result:true)};tx.onerror=tx.onabort=()=>{db.close();res(null)}}catch(e){res(null)}}}catch(e){res(null)}});
 let tm=0;
-const flush=()=>{clearTimeout(tm);tm=0;const b=bundle();idb("readwrite",st=>st.put(b,"bundle"))};
+const flush=()=>{clearTimeout(tm);tm=0;const b=bundle();idb("readwrite",st=>{const g=st.get("bundle");g.onsuccess=()=>{const o=g.result;if(o&&o.sum!==b.sum&&Object.keys(o.data||{}).length)st.put(o,"prev");st.put(b,"bundle")};return g})};
 const sched=()=>{if(!tm)tm=setTimeout(flush,400)};
 try{const S=Storage.prototype,si=S.setItem,ri=S.removeItem;
  S.setItem=function(k,v){const r=si.apply(this,arguments);try{if(this===LS()&&ok(String(k)))sched()}catch(e){}return r};
@@ -27,14 +42,48 @@ try{const S=Storage.prototype,si=S.setItem,ri=S.removeItem;
 addEventListener("pagehide",()=>{if(tm)flush()});
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&tm)flush()});
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
-/* ---- restore from mirror when local saves are gone (once per tab) ---- */
+/* ---- startup: snapshot, repair corrupt values, restore from backups ---- */
 const empty=()=>Object.keys(collect()).length===0;
 let guard=false;try{guard=sessionStorage.getItem("evoquest_restored")==="1"}catch(e){}
-if(s0&&empty()&&!guard){idb("readonly",st=>st.get("bundle")).then(b=>{
- if(!b||b.app!==APP||!b.data||!empty())return;
- let n=0;for(const k in b.data)if(ok(k)&&valid(k,b.data[k])){try{s0.setItem(k,b.data[k]);n++}catch(e){}}
- if(n){try{sessionStorage.setItem("evoquest_restored","1")}catch(e){}location.reload()}
-})}
+const setG=()=>{try{sessionStorage.setItem("evoquest_restored","1")}catch(e){}};
+let bad=[];
+if(s0&&!empty()){
+ flush();/* snapshot untouched data before any repair */
+ const d=collect();
+ for(const k in d){const nv=normalize(k,d[k]);if(nv===null)bad.push(k);else if(nv!==d[k]){try{s0.setItem(k,nv)}catch(e){}}}
+}
+if(s0&&!guard&&(empty()||bad.length)){
+ Promise.all([idb("readonly",st=>st.get("bundle")),idb("readonly",st=>st.get("prev"))]).then(([a,b])=>{
+  const srcs=[a,b].filter(intact);let n=0;
+  const want=empty()?null:bad;
+  const tryKey=k=>{for(const sx of srcs){const v=sx.data[k];if(v===undefined)continue;const nv=normalize(k,v);if(nv!==null){try{s0.setItem(k,nv);n++;return}catch(e){}}}};
+  if(want)want.forEach(tryKey);else{const ks=new Set();srcs.forEach(sx=>Object.keys(sx.data).forEach(k=>ok(k)&&ks.add(k)));ks.forEach(tryKey)}
+  if(n){setG();location.reload()}
+ })
+}
+/* ---- automatic pull from an older address (saves follow the player across hosts/updates) ---- */
+(function(){
+ if(window.parent!==window){/* responder: only when embedded by another page */
+  addEventListener("message",e=>{if(!e.data||e.data.type!=="evoquest-sync-request"||!e.source)return;
+   try{e.source.postMessage({type:"evoquest-sync-response",bundle:bundle()},e.origin&&e.origin!=="null"?e.origin:"*")}catch(x){}});
+  return}
+ const LEGACY=[];/* add old game URLs here, e.g. "https://old.example.com/evoquest/" */
+ const urls=LEGACY.slice();
+ try{const q=new URLSearchParams(location.search).get("from");if(q)urls.push(q)}catch(e){}
+ let done=false;try{done=sessionStorage.getItem("evoquest_synced")==="1"}catch(e){}
+ if(done||!urls.length||!s0||!empty())return;
+ let pending=0,got=false;
+ urls.forEach(u=>{let o;try{const x=new URL(u,location.href);if(!/^https?:$/.test(x.protocol))return;o=x.origin}catch(e){return}
+  pending++;const f=document.createElement("iframe");f.hidden=true;f.style.display="none";f.src=u;
+  const end=()=>{window.removeEventListener("message",h);clearTimeout(t);f.remove()};
+  const h=e=>{if(e.source!==f.contentWindow||e.origin!==o||!e.data||e.data.type!=="evoquest-sync-response")return;
+   const b=e.data.bundle;if(!intact(b)||got)return;
+   try{const r=importData(b.data);if(r.players||r.cps){got=true;try{sessionStorage.setItem("evoquest_synced","1")}catch(x){}end();location.reload()}}catch(x){}};
+  const t=setTimeout(end,8000);
+  window.addEventListener("message",h);
+  f.onload=()=>{try{f.contentWindow.postMessage({type:"evoquest-sync-request"},o)}catch(x){}};
+  document.body.appendChild(f)});
+})();
 /* ---- merge an imported bundle into the current saves ---- */
 const arr=(k,d)=>{const a=parse(d[k]!==undefined?d[k]:(LS()||{getItem(){return null}}).getItem(k));const o=Array.isArray(a)?a.slice(0,3):[];while(o.length<3)o.push(null);return o};
 function importData(data){
@@ -45,7 +94,7 @@ function importData(data){
  const inP=clean.evoquest_players?arr("evoquest_players",clean):[],inL=clean.evoquest_looks?arr("evoquest_looks",clean):[];
  let players=0,cps=0,skipped=0;const used=new Set();
  inP.forEach((name,i)=>{if(!name)return;
-  let slot=cur.indexOf(name);if(slot<0)slot=cur.indexOf(null);
+  let slot=cur.indexOf(name);if(slot<0&&cur[i]===null)slot=i;if(slot<0)slot=cur.indexOf(null);
   if(slot<0){skipped++;return}
   cur[slot]=name;if(inL[i])lk[slot]=inL[i];players++;
   const ck="evoquest_cp_"+name;used.add(ck);if(clean[ck]){s.setItem(ck,clean[ck]);cps++}});
@@ -73,6 +122,7 @@ if(im&&fi){im.onclick=()=>{fi.value="";fi.click()};
    const j=parse(String(r.result));
    if(!j||j.app!==APP||!j.data||typeof j.data!=="object"||Array.isArray(j.data))throw new Error("Not an EvoQuest save file");
    if(!(j.schema>=1)||j.schema>SCHEMA)throw new Error("Save file is from a newer game version");
+   if(!intact(j))throw new Error("Save file is damaged (checksum mismatch)");
    const o=importData(j.data);
    msg("Imported "+o.players+" player(s), "+o.cps+" checkpoint(s)"+(o.skipped?", "+o.skipped+" skipped (no free slot)":"")+". Reloading…");
    setTimeout(()=>location.reload(),900);
