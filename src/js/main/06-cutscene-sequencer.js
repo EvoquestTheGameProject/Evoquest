@@ -32,9 +32,9 @@ async function ra(t, a) {
     nt.classList.add("speaker-in"),
     (st.textContent = ""));
   let e = 0;
-  for (Qt = 1; e < a.length && Qt;)
+  for (Qt = 1; e < a.length && Qt; )
     ((st.textContent = a.slice(0, ++e)),
-      e % 2 || " " === a[e - 1] || $sx("blip", Zt),
+      e % 3 || !/[a-z0-9]/i.test(a[e - 1]) || $sx("blip", Zt, a[e - 1]),
       await _t(22));
   ((st.textContent = a), (Qt = 0), await ta(1350 + Math.min(2600, 34 * a.length)));
 }
@@ -249,3 +249,4 @@ function ya(t, a, e, o, r, n, l) {
     s
   );
 }
+window.__evoGender = () => (qt && qt.gd ? 1 : 0);

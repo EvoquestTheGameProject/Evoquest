@@ -301,7 +301,8 @@ function $dT(a) {
     d.cp += 0.85;
     const c = Math.floor(d.cp);
     c !== d.lc &&
-      ((d.lc = c), d.txt[c - 1] && " " !== d.txt[c - 1] && c % 2 == 0 && $sx("blip", d.who));
+      ((d.lc = c),
+      /[a-z0-9]/i.test(d.txt[c - 1] || "") && c % 3 == 0 && $sx("blip", d.who, d.txt[c - 1]));
   }
 }
 

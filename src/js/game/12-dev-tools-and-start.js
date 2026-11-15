@@ -464,3 +464,5 @@ function or() {
       cancelAnimationFrame(Ot),
       (Ot = requestAnimationFrame(Ao)));
   }));
+window.__evoRoom = () => W;
+window.__evoBoss = () => (M ? M.st : "");
