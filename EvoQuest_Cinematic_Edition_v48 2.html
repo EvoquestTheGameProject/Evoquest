@@ -2292,7 +2292,8 @@ body.ingame #dnab {
     cur = null,
     sceneWanted = "",
     sceneNow = "",
-    stepSide = 1;
+    stepSide = 1,
+    MUL = 1;
   const last = {},
     LOG = [];
   const ctxOf = () => A && A.ctx && A.ctx();
@@ -2337,9 +2338,9 @@ body.ingame #dnab {
     lp.frequency.value = 10500;
     lp.Q.value = 0.5;
     bus = c.createGain();
-    bus.gain.value = 0.62;
+    bus.gain.value = 0.5;
     amb = c.createGain();
-    amb.gain.value = 0.55;
+    amb.gain.value = 2.2;
     rvIn = c.createGain();
     const cv = c.createConvolver(),
       rvOut = c.createGain();
@@ -2428,7 +2429,7 @@ body.ingame #dnab {
       g.connect(f);
       head = f;
     }
-    env(g, t, o.v || 0.1, o.a || 0.008, d);
+    env(g, t, (o.v || 0.1) * (o.dest ? 1 : MUL), o.a || 0.008, d);
     route(c, head, o);
     done(first, g, head);
   }
@@ -2445,7 +2446,7 @@ body.ingame #dnab {
     f.frequency.setValueAtTime(o.f || 1000, t);
     if (o.f2) f.frequency.exponentialRampToValueAtTime(Math.max(20, o.f2), t + d);
     f.Q.value = o.q || 0.8;
-    env(g, t, o.v || 0.1, o.a || 0.006, d);
+    env(g, t, (o.v || 0.1) * (o.dest ? 1 : MUL), o.a || 0.006, d);
     s.connect(f);
     f.connect(g);
     route(c, g, o);
@@ -2475,55 +2476,58 @@ body.ingame #dnab {
       code = ch.charCodeAt(0) || 97,
       vw = VOW[ch] || VOW["aeiou"[code % 5]],
       t = c.currentTime,
-      narr = kind === "";
-    const base = kind === "p" ? (gender === 1 ? 232 : 124) : kind === "a" ? 168 : 92;
-    const f0 = base * J(0.06) * (1 + ((code % 7) - 3) * 0.014);
-    const d = narr ? 0.13 : 0.082;
-    const sum = c.createGain(),
-      src = narr ? c.createBufferSource() : c.createOscillator();
+      narr = kind === "",
+      fem = kind === "p" && gender === 1;
+    const base = kind === "p" ? (fem ? 232 : 124) : kind === "a" ? 168 : 92;
+    const f0 = base * J(0.07) * (1 + ((code % 7) - 3) * 0.016);
+    const d = narr ? 0.14 : 0.09;
+    const src = narr ? c.createBufferSource() : c.createOscillator();
     if (narr) {
       src.buffer = nb;
       src.loop = true;
     } else {
       src.type = "sawtooth";
-      src.frequency.setValueAtTime(f0, t);
-      src.frequency.exponentialRampToValueAtTime(f0 * 0.955, t + d);
+      src.frequency.setValueAtTime(f0 * 1.03, t);
+      src.frequency.exponentialRampToValueAtTime(f0 * 0.95, t + d);
     }
-    const peak = narr ? 0.26 : 0.34;
+    /* sawtooth -> gentle low-pass (mouth) -> three resonant boosts at the vowel's formants */
+    const lp = c.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = fem ? 4200 : 3400;
+    lp.Q.value = 0.5;
+    src.connect(lp);
+    let node = lp;
     [
-      [vw[0], 7, 1],
-      [vw[1], 10, 0.62],
-      [vw[2], 12, 0.3],
-    ].forEach(([f, q, g]) => {
-      const bp = c.createBiquadFilter(),
-        gg = c.createGain();
-      bp.type = "bandpass";
-      bp.frequency.value =
-        f * (kind === "a" ? 0.96 : 1) * (gender === 1 && kind === "p" ? 1.12 : 1);
-      bp.Q.value = q;
-      gg.gain.value = g;
-      src.connect(bp);
-      bp.connect(gg);
-      gg.connect(sum);
+      [vw[0], 4.5, 15],
+      [vw[1], 6, 11],
+      [vw[2], 8, 6],
+    ].forEach(([f, q, gain]) => {
+      const pk = c.createBiquadFilter();
+      pk.type = "peaking";
+      pk.frequency.value = f * (kind === "a" ? 0.96 : 1) * (fem ? 1.12 : 1);
+      pk.Q.value = q;
+      pk.gain.value = gain;
+      node.connect(pk);
+      node = pk;
     });
     const out = c.createGain();
-    env(out, t, peak * 0.2, 0.012, d); /* soft attack: no clicks */
-    sum.connect(out);
+    env(out, t, (narr ? 0.2 : 0.3) * MUL, 0.014, d);
+    node.connect(out);
     let head = out;
     if (kind === "a" && sceneNow === "call") {
-      /* the agent is on a phone: narrow the band and add a little line grit */
+      /* the agent is on a phone: narrow the band */
       const bp = c.createBiquadFilter();
       bp.type = "bandpass";
       bp.frequency.value = 1500;
-      bp.Q.value = 0.6;
+      bp.Q.value = 0.55;
       out.connect(bp);
       head = bp;
     }
-    route(c, head, { rv: narr ? 0.3 : 0.12, pan: (code % 5) * 0.02 - 0.04 });
+    route(c, head, { rv: narr ? 0.3 : 0.1, pan: (code % 5) * 0.02 - 0.04 });
     src.start(t, narr ? Math.random() : undefined);
     src.stop(t + d + 0.05);
-    done(src, sum, out);
-    if (/[sfhtkpcxzj]/.test(ch)) noise(c, { d: 0.03, v: 0.012, f: 4200, type: "bandpass", q: 1.2 });
+    done(src, lp, out);
+    if (/[sfhtkpcxzj]/.test(ch)) noise(c, { d: 0.035, v: 0.03, f: 4200, type: "bandpass", q: 1.2 });
   }
 
   /* ---------- one-shot effects ---------- */
@@ -3250,6 +3254,54 @@ body.ingame #dnab {
     },
   };
 
+  /* loudness per effect: measured output peak, scaled towards a target so nothing is lost under the music-level mix */
+  const LV = {
+    click: 7.5,
+    toggle: 8,
+    jump: 7,
+    land: 6.7,
+    step: 16,
+    swing: 20,
+    hit: 6,
+    hitbig: 5,
+    shoot: 5.5,
+    empty: 8,
+    hurt: 4,
+    die: 5,
+    pickup: 6,
+    door: 9,
+    crate: 5,
+    clank: 5.7,
+    locked: 7,
+    pour: 15,
+    success: 6.7,
+    win: 5.5,
+    poof: 10,
+    spawn: 10,
+    bstep: 4,
+    windup: 15,
+    slam: 4,
+    spit: 10,
+    roar: 6.4,
+    crash: 5,
+    bosshit: 7,
+    bossdie: 8,
+    blip: 1.5,
+    card: 3.6,
+    fadeout: 3,
+    fadein: 30,
+    scratch: 8.7,
+    sizzle: 10,
+    creak: 7.5,
+    doorhit: 3.5,
+    debris: 30,
+    heart: 5,
+    rumble: 6,
+    stinger: 10,
+    siren: 10,
+    slither: 8,
+    title: 10,
+  };
   const MI = {
     heart: 200,
     rumble: 600,
@@ -3298,7 +3350,12 @@ body.ingame #dnab {
       const c = ready();
       if (!c) return;
       const f = S[name];
-      f && f(c, a1, a2);
+      MUL = LV[name] || 1;
+      try {
+        f && f(c, a1, a2);
+      } finally {
+        MUL = 1;
+      }
     } catch (e) {}
   }
 
@@ -3312,7 +3369,7 @@ body.ingame #dnab {
       }
       const gm = $("gm"),
         cut = $("cut"),
-        inGame = !!(gm && !gm.hidden && cut && cut.hidden && window.GM && window.GM.on),
+        inGame = !!(gm && !gm.hidden && cut && cut.hidden && typeof GM !== "undefined" && GM.on),
         inCut = !!(cut && !cut.hidden);
       if (inGame) {
         const room = window.__evoRoom && window.__evoRoom();
