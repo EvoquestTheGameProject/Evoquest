@@ -6,8 +6,9 @@ function render() {
     ctx.fillRect(0, 0, 384, 216),
     ctx.save(),
     ctx.scale(2, 2),
-    shake > 0 && ctx.translate(2 * (Math.random() - 0.5), 2 * (Math.random() - 0.5)));
-  (document.body.classList.toggle("cine", !!cine), cine && cine.d && $dCam());
+    shake > 0 && ctx.translate(2 * (Math.random() - 0.5), 2 * (Math.random() - 0.5)),
+    c2CutCam());
+  (document.body.classList.toggle("cine", !!(cine || c2cut)), cine && cine.d && $dCam());
   const t = performance.now();
   backdrops[room] || backdrop(room);
   const e = rooms[room];
@@ -21,6 +22,7 @@ function render() {
         ? Math.max(0, Math.min(e.W - 192, cine.d.cx))
         : Math.max(0, Math.min(e.W - 192, player.x - (ch2 && ch2.sp ? 56 : 96)));
     ((camX += 0.12 * (t - camX)), Math.abs(t - camX) < 0.05 && (camX = t));
+    c2cut && null != c2cut.cx && (camX = Math.max(0, Math.min(e.W - 192, c2cut.cx)));
   } else camX = 0;
   if (
     (ctx.save(),
@@ -632,6 +634,7 @@ function render() {
                   : a
                     ? Aa("walk", (2.5 * player.fr) & 7)
                     : Aa("idle", (tick / 45) & 1);
+          else if (player.climb) t = Aa("grab", (player.y / 5) & 1);
           else {
             const a = player.vy;
             t = Aa(a < -1.6 ? "up" : a > 1.2 ? "down" : "top");
@@ -1250,11 +1253,13 @@ function render() {
     }
   })(t),
     ctx.drawImage(zt(), 0, 0, dt, bt),
+    C2[room] && c2Tint(),
     cine ? $dOv() : $dTitle(),
     hurtFlash > 0 &&
       ((ctx.fillStyle = "rgba(255,30,50," + (hurtFlash / 14) * 0.28 + ")"),
       ctx.fillRect(0, 0, dt, bt)),
     ctx.restore(),
+    c2CutHud(),
     fadeNow > 0 &&
       ((ctx.fillStyle = "rgba(0,0,0," + Math.min(1, fadeNow) + ")"), ctx.fillRect(0, 0, 384, 216)),
     (function () {

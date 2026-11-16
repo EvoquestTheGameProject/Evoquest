@@ -24,6 +24,7 @@ const c2NewCar = (x, k, i) => ({
   c: C2_COLS[i % C2_COLS.length],
   f: i % 2 ? 1 : -1,
   s: i,
+  burn: i % 4 === 1,
 });
 function c2HighwayCars() {
   const seq = [
@@ -91,14 +92,14 @@ for (const k in C2) {
   };
 }
 Object.assign(Ne, {
-  street: ["255,246,206", 1, 0],
-  road: ["255,246,206", 1, 0],
-  highway: ["255,240,210", 0, 0],
+  street: ["255,170,110", 0, 0],
+  road: ["255,170,110", 0, 0],
+  highway: ["255,160,100", 0, 0],
 });
 Object.assign(De, {
-  street: { c: "120,160,160", l: "255,246,206", a: 0.1, dk: 0.2 },
-  road: { c: "120,160,150", l: "255,240,200", a: 0.1, dk: 0.2 },
-  highway: { c: "130,150,150", l: "255,236,200", a: 0.12, dk: 0.24 },
+  street: { c: "160,100,70", l: "255,176,110", a: 0.14, dk: 0.3 },
+  road: { c: "150,100,70", l: "255,170,104", a: 0.15, dk: 0.32 },
+  highway: { c: "150,96,66", l: "255,164,100", a: 0.17, dk: 0.36 },
 });
 
 /* chase state: null outside the highway */
@@ -107,7 +108,6 @@ let ch2 = null;
 /* ---------- backdrops: the overgrown city painter, stitched into wide rooms ---------- */
 function c2Backdrop(id) {
   const d = C2[id],
-    n = d.W / 192,
     cv = document.createElement("canvas");
   cv.width = 2 * d.W;
   cv.height = 216;
@@ -123,13 +123,46 @@ function c2Backdrop(id) {
           puddles: id === "highway" ? [] : [[90 + 40 * i, 204, 30, 4]],
           cars: [],
         });
-        id === "highway" ? c2Deck(t, i) : t.fog(0, 150, 384, 216, "#d8f0c0", 0.4, seed, 34, 8, 0.2);
+        c2Apoc(t, i);
+        id === "highway"
+          ? (c2Deck(t, i), c2Ground(t, i))
+          : (t.fog(0, 150, 384, 216, "#d8f0c0", 0.3, seed, 34, 8, 0.2), c2Ground(t, i));
       }),
     );
-  for (let i = 0; i < n; i++) g.drawImage(tiles[i % tiles.length], 384 * i, 0);
+  /* tiles overlap by 48 px and cross-fade, so the sky and skyline have no seams */
+  const OV = 48,
+    mask = document.createElement("canvas");
+  mask.width = 384;
+  mask.height = 216;
+  for (let i = 0; i * (384 - OV) < 2 * d.W; i++) {
+    const m = mask.getContext("2d");
+    m.globalCompositeOperation = "source-over";
+    m.clearRect(0, 0, 384, 216);
+    m.drawImage(tiles[i % tiles.length], 0, 0);
+    if (i) {
+      const gr = m.createLinearGradient(0, 0, 384, 0);
+      gr.addColorStop(0, "rgba(0,0,0,0)");
+      gr.addColorStop(OV / 384, "rgba(0,0,0,1)");
+      gr.addColorStop(1, "rgba(0,0,0,1)");
+      m.globalCompositeOperation = "destination-in";
+      m.fillStyle = gr;
+      m.fillRect(0, 0, 384, 216);
+    }
+    g.drawImage(mask, i * (384 - OV), 0);
+  }
   if (id === "highway") {
-    const portal = Ae((t) => c2Tunnel(t));
-    g.drawImage(portal, 0, 0);
+    g.drawImage(Ae(c2Tower), 0, 0);
+    g.drawImage(
+      Ae((t) => c2Tunnel(t)),
+      0,
+      0,
+    );
+    g.font = '10px "Press Start 2P",monospace';
+    g.textBaseline = "top";
+    g.fillStyle = "#d8e8d8";
+    g.fillText("TUNNEL", 30, 48);
+    g.fillStyle = "#c83a2a";
+    g.fillText("STILL HERE", 128, 170);
   }
   return cv;
 }
@@ -204,6 +237,15 @@ const c2Mix = (a, b, k) => {
   return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * k)).join(",") + ")";
 };
 function c2Car(c) {
+  if (c.x < camX - 90 || c.x > camX + 270) return;
+  const j =
+    c2cut && c2cut.rumble ? Math.round(Math.sin(tick * 1.9 + c.s * 2.1) * 1.4 * c2cut.rumble) : 0;
+  j && (ctx.save(), ctx.translate(0, j));
+  c2CarBody(c);
+  c.burn && c2Fire(c);
+  j && ctx.restore();
+}
+function c2CarBody(c) {
   const g = C2_FLOOR,
     x = c.x,
     w = c.w,
@@ -272,7 +314,7 @@ function c2Car(c) {
 }
 function c2Spider(sp) {
   ctx.save();
-  ctx.translate(Math.round(2 * sp.x) / 2, C2_FLOOR + 1);
+  ctx.translate(Math.round(2 * sp.x) / 2, C2_FLOOR + 1 - (sp.oy || 0));
   ctx.scale(-1, 1);
   window.Ea(0, 0, C2_SP_S, sp.t * 36, 2);
   ctx.restore();
@@ -285,8 +327,9 @@ const c2At = (w, k) => [
 function c2Draw() {
   const d = C2[room];
   if (!d) return;
-  for (let s = 1; s < d.W / 192; s++) c2Tree(192 * s, s);
+  c2Scenery(d);
   d.cars.forEach(c2Car);
+  c2CutWorld();
   if (!ch2) return;
   ch2.patches.forEach((p) => {
     const a = Math.min(1, p.life / 60) * (p.used ? 0.45 : 1);
@@ -360,28 +403,8 @@ function c2Draw() {
     }
   }
 }
-function c2Tree(x, s) {
-  const g = C2_FLOOR;
-  Ft(x, g + 1, 14, 0.4);
-  fill("#2a1e14", x - 2, g - 46, 4, 46);
-  fill("#3e2c1c", x - 2, g - 46, 1, 46);
-  for (let k = 0; k < 9; k++) {
-    const a = (k / 9) * 6.283,
-      cx = x + Math.cos(a) * 9 + 2 * Math.sin(tick / 90 + k),
-      cy = g - 50 + Math.sin(a) * 6;
-    ctx.fillStyle = k % 2 ? "#2a6a30" : "#3a8a3a";
-    ctx.beginPath();
-    ctx.arc(cx, cy, 7, 0, 7);
-    ctx.fill();
-  }
-  ctx.fillStyle = "#5aaa4a";
-  ctx.beginPath();
-  ctx.arc(x - 3, g - 55, 5, 0, 7);
-  ctx.fill();
-  r(s, 3) < 0.6 && fill("#ff86d0", x + 4, g - 52, 1, 1);
-}
 function c2Arrow() {
-  modal || won || dead || (ch2 && ch2.sp) || vo(camX + 18, 56, -1);
+  modal || won || dead || c2cut || (ch2 && ch2.sp) || vo(camX + 18, 56, -1);
 }
 
 /* ---------- guide / quest ---------- */
@@ -392,7 +415,7 @@ function c2Guide() {
     room === "street"
       ? q + "No car, no bus: you go on foot. Head LEFT."
       : room === "road"
-        ? q + "Follow the road LEFT to the highway. Jump onto wrecks to climb over them."
+        ? q + "Follow the road LEFT to the highway. Jump onto wrecks, or climb vines (hold UP)."
         : ch2 && ch2.sp
           ? "<b>RUN!</b><br>Jump on the cars. A red arc and mark show where the web lands: be somewhere else."
           : ch2 && ch2.heard
@@ -420,6 +443,8 @@ function c2Save(at) {
   } catch (t) {}
 }
 function c2Start(at) {
+  c2seen = false;
+  c2cut = null;
   const keep = {
     inv: inv.filter((t) => t !== "potion"),
     got: [...got],
@@ -452,11 +477,16 @@ function c2Resume(cp) {
 }
 function c2Enter(id) {
   document.body.classList.toggle("ch2", !!C2[id]);
+  player.climb = null;
+  c2air = 0;
   ch2 =
     id === "highway"
       ? { t: 0, heard: 0, sp: null, webs: [], patches: [], stuck: 0, n: 0, end: 0 }
       : null;
-  id === "highway" && (c2Save("highway"), toast("<b>THE HIGHWAY</b><br>Keep heading left.", 2200));
+  id === "highway" && c2Save("highway");
+  id === "highway" && !c2seen
+    ? c2CutStart()
+    : id === "highway" && toast("<b>THE HIGHWAY</b><br>Keep heading left.", 2200);
   id === "road" && setTimeout(() => backdrops.highway || backdrop("highway"), 600);
 }
 
@@ -477,6 +507,7 @@ function c2Die(h, p) {
 const C2_TIP =
   "Keep running LEFT. Jump onto the cars instead of stopping at them, never stand on a red mark when the web lands, and stay out of old webs: getting stuck lets it catch up.";
 function c2Hurt() {
+  player.climb = null;
   hurtPlayer(1);
   player.kbv = -1.6;
   dead &&
@@ -484,8 +515,11 @@ function c2Hurt() {
     (qs("#gd").querySelector("p").textContent = C2_TIP));
 }
 function c2Update() {
+  if (!C2[room]) return;
+  c2WorldUpdate();
   const c = ch2;
   if (!c || room !== "highway") return;
+  if (c2cut) return void c2CutUpdate();
   c.t++;
   c.stuck > 0 && c.stuck--;
   /* the noise, then the spider */
@@ -506,7 +540,7 @@ function c2Update() {
     const head = sp.x - C2_SP_HEAD,
       gap = head - player.x;
     if (sp.st === "chase") {
-      sp.x -= gap > 90 ? 1.75 : gap > 45 ? 1.26 : 1.12;
+      sp.pause > 0 ? sp.pause-- : (sp.x -= gap > 90 ? 1.75 : gap > 45 ? 1.26 : 1.12);
       sp.t % 13 === 0 && $sx("skitter");
       sp.t % 26 === 0 && (shake = Math.max(shake, 2));
       if (sp.x - C2_SP_HEAD < C2_TUNNEL + 10) {
@@ -520,8 +554,18 @@ function c2Update() {
       if (--sp.cd <= 0 && player.x > 110) {
         const lead = 0.7 * player.vx * 72,
           aim = (dx) => {
-            const tx = Math.max(C2_TUNNEL + 30, Math.min(head - 30, player.x + lead + dx));
-            c.webs.push({ tx, ty: c2Surface(tx), t: 0, tele: 40, T: 32, sx: 0, sy: 0 });
+            const tx = Math.max(C2_TUNNEL + 30, Math.min(head - 30, player.x + lead + dx)),
+              el = player.y < C2_FLOOR - 24 || player.climb;
+            c.webs.push({
+              tx,
+              ty: el ? player.y - 8 : c2Surface(tx),
+              el,
+              t: 0,
+              tele: 40,
+              T: 32,
+              sx: 0,
+              sy: 0,
+            });
           };
         (aim(6 * (Math.random() - 0.5)), c.n++ >= 4 && Math.random() < 0.45 && aim(-34));
         sp.cd = Math.max(80, 140 - c.n * 6);
@@ -546,7 +590,7 @@ function c2Update() {
       return !1;
     }
     if (k >= 1) {
-      c.patches.push({ x: w.tx, y: w.ty, w: 20, life: 480, used: 0 });
+      w.el || c.patches.push({ x: w.tx, y: w.ty, w: 20, life: 480, used: 0 });
       ($sx("websplat"), sparks(w.tx, w.ty - 1, 10, ["#eef4f0", "#c8d0cc"], 1.3, 0.12, 18));
       return !1;
     }
@@ -579,6 +623,17 @@ function c2Update() {
 /* physics hooks: webs slow you to a crawl, wrecks are solid from the sides */
 function c2Pre() {
   ch2 && ch2.stuck > 0 && ((player.vx *= 0.15), player.vy < 0 && (player.vy = 0));
+  const v = player.climb;
+  if (!v) return;
+  if (player.vx) {
+    player.climb = null;
+    player.vy = -1.6;
+    player.kb = 6;
+    player.kbv = 1.2 * Math.sign(player.vx);
+  } else {
+    player.x = v.x;
+    player.vy = keys.u ? -0.85 : useBuf > 0 ? 1.5 : 0;
+  }
 }
 function c2Walls(x0) {
   const d = C2[room];
@@ -591,6 +646,7 @@ function c2Walls(x0) {
   }
 }
 function c2Retry() {
+  c2seen = true;
   ((qs("#gd").hidden = !0), (dead = !1), (hp = 5), (invuln = 60), (player.kb = 0), (shots = []));
   ((fadeNow = 1), (fadeTo = 0));
   (enterRoom("highway", "R"), updateHud(), updateGuide());
@@ -615,6 +671,8 @@ GM.c2 = {
     return (delete backdrops[id], backdrop(id), performance.now() - t);
   },
   start: c2Start,
+  flora: (id) => C2_F[id],
+  dbg: () => ({ sup: c2sup, tree: c2tree, air: c2air }),
   cars: (id) => C2[id].cars,
   surface: (x) => c2Surface(x),
 };

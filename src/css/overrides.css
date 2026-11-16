@@ -1085,3 +1085,11 @@ body.ch2 #gt {
   bottom: auto;
   top: 24%;
 }
+body.ch2.cine #cskip {
+  top: 6px;
+  bottom: auto;
+}
+body.ch2.cine #gq2 {
+  opacity: 0;
+  pointer-events: none;
+}

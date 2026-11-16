@@ -158,13 +158,14 @@ const $a = { ArrowLeft: "l", a: "l", A: "l", ArrowRight: "r", d: "r", D: "r" };
   function (a) {
     if (!GM.on) return;
     const e = a.key;
+    if (c2cut) return (("Escape" !== e && "Enter" !== e) || c2CutEnd(), void a.preventDefault());
     if (cine) return (("Escape" !== e && "Enter" !== e) || skipCine(), void a.preventDefault());
     modal
       ? "Escape" === e && (2 === modal ? Na() : qs("#gkOk").click())
       : $a[e]
         ? ((keys[$a[e]] = 1), a.preventDefault(), a.stopPropagation())
         : "ArrowUp" === e || "w" === e || "W" === e || " " === e
-          ? ((jumpBuf = 8), a.preventDefault(), a.stopPropagation())
+          ? ((jumpBuf = 8), (keys.u = 1), a.preventDefault(), a.stopPropagation())
           : "j" === e || "J" === e || "x" === e || "X" === e || "z" === e || "Z" === e
             ? ((punchBuf = 8), a.preventDefault(), a.stopPropagation())
             : "f" === e || "F" === e || "k" === e || "K" === e
@@ -183,7 +184,7 @@ const $a = { ArrowLeft: "l", a: "l", A: "l", ArrowRight: "r", d: "r", D: "r" };
     "keyup",
     function (t) {
       const a = $a[t.key];
-      a && GM.on && (keys[a] = 0);
+      (a && GM.on && (keys[a] = 0), /^(ArrowUp|w|W| )$/.test(t.key) && (keys.u = 0));
     },
     !0,
   ));
@@ -227,7 +228,11 @@ function te(a, e, o) {
     () => (keys.r = 1),
     () => (keys.r = 0),
   ),
-  te("#bJ", () => (jumpBuf = 8)),
+  te(
+    "#bJ",
+    () => ((jumpBuf = 8), (keys.u = 1)),
+    () => (keys.u = 0),
+  ),
   te("#bP", () => (punchBuf = 8)),
   te("#bU", () => (useBuf = 8)),
   te(

@@ -1141,6 +1141,9 @@
 
   /* loudness per effect: measured output peak, scaled towards a target so nothing is lost under the music-level mix */
   const LV = {
+    snap: 7,
+    alarm: 5,
+    whoosh: 6,
     spiderscreech: 7,
     skitter: 5,
     web: 6,
@@ -1195,6 +1198,18 @@
     title: 10,
   };
   Object.assign(S, {
+    /* chapter 2: snapping wood, car alarm, the leap */
+    snap: (c) => {
+      noise(c, { d: 0.12, v: 0.12, f: 3200, type: "bandpass", q: 1.5 });
+      noise(c, { d: 0.3, v: 0.07, f: 600, f2: 200, type: "lowpass", w: 0.04 });
+      tone(c, { f: 220, f2: 70, d: 0.22, v: 0.06, type: "sawtooth", lp: 900 });
+    },
+    alarm: (c) => {
+      tone(c, { f: 1180, d: 0.09, v: 0.04, type: "square", lp: 2400, rv: 0.35 });
+      tone(c, { f: 880, d: 0.09, v: 0.04, type: "square", lp: 2400, w: 0.1, rv: 0.35 });
+    },
+    whoosh: (c) =>
+      noise(c, { d: 1.2, v: 0.09, f: 200, f2: 1800, type: "bandpass", q: 1.2, a: 0.5, rv: 0.4 }),
     /* chapter 2: the giant spider */
     spiderscreech: (c) => {
       tone(c, {
@@ -1429,6 +1444,9 @@
     };
   }
   const MI = {
+    snap: 120,
+    alarm: 100,
+    whoosh: 400,
     spiderscreech: 400,
     skitter: 90,
     web: 60,

@@ -452,7 +452,7 @@ function or() {
     (qs("#gp").classList.toggle("on", r || "#touch" === location.hash),
       document.activeElement && document.activeElement.blur && document.activeElement.blur());
     for (const t in _a) _a[t].rel();
-    ((keys.l = keys.r = keys.s = 0),
+    ((keys.l = keys.r = keys.s = keys.u = 0),
       (jumpBuf = punchBuf = useBuf = 0),
       resetGame(),
       (function () {

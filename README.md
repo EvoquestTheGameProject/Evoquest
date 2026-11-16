@@ -44,7 +44,9 @@ tools/check.js                sanity checks
 | Rooms, items, crafting bench, input, update loop | `js/game/01-…` to `06-…` |
 | Boss-room opening cinematic ("director") | `js/game/08-boss-opening-director.js` |
 | Combat, snake boss, game render, dev tools | `js/game/09-…` to `12-…` |
-| Chapter 2 (street, road, highway spider chase, tunnel escape) | `js/game/13-chapter2.js` |
+| Chapter 2: rooms, cars, spider chase, webs, tunnel escape | `js/game/13-chapter2.js` |
+| Chapter 2 world: burned-out scenery, trees, climbable vines/branches that snap, fall damage | `js/game/14-chapter2-world.js` |
+| Chapter 2 intro cutscene (letterbox, camera, dialogue, spider leap) | `js/game/15-chapter2-cutscene.js` |
 
 ## Shipped file is compacted
 

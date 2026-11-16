@@ -165,7 +165,7 @@ function platforms() {
   const t = rooms[room],
     a = [];
   return (
-    t.plats.forEach((t) => a.push(t)),
+    t.plats.forEach((t) => t.gone || a.push(t)),
     t.crates.forEach((t, e) => {
       broken[room + e] || a.push({ x: t.x, y: 80 - (t.y2 ? 12 : 0), w: t.w, crate: e });
     }),

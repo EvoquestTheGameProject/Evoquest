@@ -287,7 +287,8 @@ function update() {
     modal || dead || pourT > 0 || (erode > 0 && !exitOpen) || fadeNow !== fadeTo || won || doorCut)
   )
     return ((player.vx *= 0.6), void physics());
-  const e = cine ? cine.ax : (keys.r ? 1 : 0) - (keys.l ? 1 : 0);
+  c2cut && (jumpBuf = punchBuf = useBuf = shootBuf = keys.s = keys.u = 0);
+  const e = cine ? cine.ax : c2cut ? c2cut.ax : (keys.r ? 1 : 0) - (keys.l ? 1 : 0);
   if (
     ((player.vx = 1.25 * e * (Eo.speed ? 2.2 : 1)),
     player.kb > 0 && (player.kb--, (player.vx = player.kbv)),
@@ -1007,7 +1008,7 @@ function physics(t) {
       : 141;
   ((player.x = Math.max(8, Math.min(a, player.x))),
     c2Walls(x0),
-    (player.vy = Math.min(5, player.vy + 0.24)));
+    (player.vy = player.climb ? player.vy : Math.min(5, player.vy + 0.24)));
   const e = player.y;
   ((player.y += player.vy), (player.on = !1));
   const o = floorY();
