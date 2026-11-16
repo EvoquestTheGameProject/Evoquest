@@ -21,7 +21,8 @@ src/
   index.html                  page markup + the order of everything ({{css:..}}, {{js:..}}, {{main}} includes)
   css/base.css, overrides.css the two <style> blocks
   assets/                     binary files, inlined at build time as base64 (menu-music.mp3, boss PNGs,
-                              press-start-2p.woff2 pixel font + its OFL license)
+                              press-start-2p.woff2 pixel font + its OFL license, chase-music.mp3 = the
+                              Chapter 2 chase track: 16 kbps mono, crushed to 8-bit/11 kHz when it loads)
   js/
     audio/music.js            menu music: seamless loop, fades, mute button, iOS audio unlock/fallbacks
     audio/sfx.js              procedural sound-effect engine (no audio files) + `SFX.p(name)`

@@ -656,6 +656,7 @@ function c2Retry() {
 qs("#wNext").onclick = () => c2Start("street");
 qs("#c2Again").onclick = () => ((qs("#c2w").hidden = !0), (won = 0), c2Retry());
 qs("#c2Menu").onclick = () => ((qs("#c2w").hidden = !0), ee());
+window.__evoChase = () => !!(ch2 && ch2.sp && !ch2.end && !dead && !won);
 GM.ch2 = () =>
   ch2 && {
     heard: ch2.heard,

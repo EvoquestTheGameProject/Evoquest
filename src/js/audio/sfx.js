@@ -1474,11 +1474,94 @@
     toggle: 80,
   };
 
+  /* ---------- chase music (Chapter 2): played while the spider hunts you ----------
+     The track is stored clean (16 kbps mono, 11 kHz) and "pixelated" once when it loads: an 11 kHz
+     sample-and-hold and 8-bit steps, the same retro treatment as the menu music. It fades in when the
+     chase starts and fades out when you escape, die, mute or leave. */
+  const CH = { b64: "@@B64:chase-music.mp3@@", buf: null, busy: 0, src: null, g: null },
+    CH_VOL = 0.36;
+  function chaseCrush(b) {
+    const hold = Math.max(1, Math.round(b.sampleRate / 11025));
+    for (let ch = 0; ch < b.numberOfChannels; ch++) {
+      const d = b.getChannelData(ch);
+      for (let i = 0; i < d.length; i += hold) {
+        const v = Math.round(d[i] * 127) / 127;
+        for (let j = i; j < i + hold && j < d.length; j++) d[j] = v;
+      }
+    }
+  }
+  function chaseLoad(c) {
+    if (CH.buf || CH.busy) return;
+    CH.busy = 1;
+    try {
+      const bin = atob(CH.b64),
+        u = new Uint8Array(bin.length),
+        fail = () => (CH.busy = 0);
+      for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+      const p = c.decodeAudioData(
+        u.buffer,
+        (b) => {
+          try {
+            chaseCrush(b);
+            CH.buf = b;
+          } catch (e) {}
+          CH.busy = 0;
+        },
+        fail,
+      );
+      p && p.catch && p.catch(fail);
+    } catch (e) {
+      CH.busy = 0;
+    }
+  }
+  function chaseSet(want) {
+    const c = want ? ready() : null;
+    if (c) {
+      chaseLoad(c);
+      if (CH.buf && !CH.src) {
+        const s = c.createBufferSource(),
+          g = c.createGain();
+        s.buffer = CH.buf;
+        s.loop = true;
+        g.gain.value = 0;
+        s.connect(g);
+        g.connect(c.destination);
+        s.start();
+        g.gain.setTargetAtTime(CH_VOL, c.currentTime, 0.45);
+        amb && amb.gain.setTargetAtTime(0.9, c.currentTime, 0.5);
+        CH.src = s;
+        CH.g = CH.last = g;
+      }
+    } else if (CH.src) {
+      const s = CH.src,
+        g = CH.g,
+        k = ctxOf();
+      CH.src = CH.g = null;
+      try {
+        if (k) {
+          const t = k.currentTime,
+            v = g.gain.value;
+          g.gain.cancelScheduledValues(t);
+          g.gain.setValueAtTime(v, t);
+          g.gain.setTargetAtTime(0, t, A && A.muted() ? 0.05 : 0.7);
+          amb && amb.gain.setTargetAtTime(2.2, t, 0.8);
+        }
+      } catch (e) {}
+      setTimeout(() => {
+        try {
+          s.stop();
+          g.disconnect();
+        } catch (e) {}
+      }, 4000);
+    }
+  }
+
   function stop() {
     sceneWanted = "";
     sceneNow = "";
     talkerEnd(talker, 0.05);
     stopAmb(0.5);
+    chaseSet(0);
   }
   function p(name, a1, a2) {
     try {
@@ -1512,6 +1595,12 @@
   /* Poller: starts the right ambience for what is on screen (room while playing, scene during a cutscene). */
   function ambTick() {
     try {
+      chaseSet(
+        !document.hidden &&
+          typeof GM !== "undefined" &&
+          GM.on &&
+          !!(window.__evoChase && window.__evoChase()),
+      );
       const c = ready();
       if (!c) {
         if (cur && A && A.muted()) stopAmb(0.4);
@@ -1559,6 +1648,19 @@
     ),
     _ready: ready,
     _amb: () => cur,
+    _chase: () => {
+      const d = CH.buf && CH.buf.getChannelData(0),
+        lv = new Set();
+      d && d.slice(100000, 400000).forEach((v) => lv.add(v));
+      return {
+        on: !!CH.src,
+        gain: CH.last ? CH.last.gain.value : 0,
+        loaded: !!CH.buf,
+        dur: CH.buf ? CH.buf.duration : 0,
+        levels: lv.size,
+        peak: d ? d.reduce((m, v) => Math.max(m, Math.abs(v)), 0) : 0,
+      };
+    },
     _tap: () => {
       const c = ready();
       if (!c || tap) return tap;
