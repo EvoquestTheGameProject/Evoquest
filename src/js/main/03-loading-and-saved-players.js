@@ -6,8 +6,8 @@ M.innerHTML = ["EVOGAME", "PRODUCTIONS"]
   .join("<br>");
 const T = M.querySelectorAll("span");
 for (let t = 0; t < 12; t++) w.append(document.createElement("i"));
-const S = w.children,
-  C = performance.now();
+const S = w.children;
+let C = performance.now();
 let R = 0;
 qs("#fd");
 const P = qs("#cr"),

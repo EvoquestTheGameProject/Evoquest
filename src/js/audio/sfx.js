@@ -566,6 +566,17 @@
         );
       go(first !== undefined ? first * 1000 : (0.4 + Math.random() * (max - min) * 0.7) * 1000);
     };
+    a.at = (sec, fn) =>
+      a.timers.push(
+        setTimeout(() => {
+          const cc = !a.dead && ready();
+          if (cc) {
+            try {
+              fn(cc, { dest: g });
+            } catch (e) {}
+          }
+        }, sec * 1000),
+      );
     return a;
   }
   function fadeAmb(a, sec) {
@@ -980,6 +991,8 @@
 
   /* loudness per effect: measured output peak, scaled towards a target so nothing is lost under the music-level mix */
   const LV = {
+    logo: 4,
+    keytap: 4,
     click: 7.5,
     toggle: 8,
     jump: 7,
@@ -1026,6 +1039,198 @@
     slither: 8,
     title: 10,
   };
+  Object.assign(S, {
+    logo: (c) => {
+      [196, 247, 294, 392].forEach((f, i) =>
+        tone(c, { f, d: 2.2, v: 0.035, a: 0.35 + i * 0.12, rv: 0.45, type: "triangle", lp: 1800 }),
+      );
+      arp(c, [784, 988, 1175, 1568], 0.11, 0.035, 1.2, 0.5);
+      noise(c, { d: 1.6, v: 0.025, f: 6000, type: "highpass", a: 0.6, rv: 0.4 });
+    },
+    keytap: (c) => {
+      noise(c, { d: 0.025, v: 0.05, f: 3200 * J(0.15), type: "bandpass", q: 2.5 });
+      tone(c, { f: 180 * J(0.1), d: 0.03, v: 0.03 });
+    },
+  });
+  /* story beats for the opening cutscene (seconds after each scene starts) */
+  const E2 = {
+    foot: (c, o, pan = 0) => {
+      noise(c, { d: 0.06, v: 0.05, f: 700 * J(0.2), type: "bandpass", q: 1.4, pan, ...o });
+      tone(c, { f: 110 * J(), f2: 70, d: 0.06, v: 0.04, pan, ...o });
+    },
+    flutter: (c, o) => {
+      const p = Math.random() - 0.5;
+      for (let i = 0; i < 9; i++)
+        noise(c, {
+          d: 0.04,
+          v: 0.04,
+          f: 1400 + Math.random() * 900,
+          type: "bandpass",
+          q: 1.2,
+          w: i * 0.06,
+          pan: p + i * 0.04,
+          ...o,
+        });
+    },
+    shatter: (c, o) => {
+      noise(c, { d: 0.35, v: 0.12, f: 5200, type: "highpass", rv: 0.3, ...o });
+      for (let i = 0; i < 10; i++)
+        tone(c, {
+          f: 2500 + Math.random() * 3000,
+          d: 0.12,
+          v: 0.025,
+          w: 0.05 + Math.random() * 0.5,
+          pan: Math.random() - 0.5,
+          rv: 0.3,
+          ...o,
+        });
+    },
+    screech: (c, o) => {
+      tone(c, {
+        f: 520,
+        f2: 1400,
+        d: 0.9,
+        v: 0.04,
+        type: "sawtooth",
+        lp: 2600,
+        det: 25,
+        a: 0.08,
+        rv: 0.5,
+        ...o,
+      });
+      noise(c, {
+        d: 0.9,
+        v: 0.04,
+        f: 2200,
+        f2: 3400,
+        type: "bandpass",
+        q: 3,
+        a: 0.1,
+        rv: 0.4,
+        ...o,
+      });
+    },
+    breath: (c, o) => {
+      noise(c, { d: 0.7, v: 0.05, f: 700, f2: 1300, type: "bandpass", q: 1.5, a: 0.4, ...o });
+      noise(c, {
+        d: 0.9,
+        v: 0.035,
+        f: 1100,
+        f2: 500,
+        type: "bandpass",
+        q: 1.5,
+        a: 0.15,
+        w: 0.8,
+        ...o,
+      });
+    },
+    hydraulic: (c, o) => {
+      noise(c, { d: 1.1, v: 0.06, f: 3000, f2: 900, type: "bandpass", q: 1, a: 0.05, ...o });
+      tone(c, { f: 70, f2: 40, d: 0.3, v: 0.09, w: 1.0, rv: 0.25, ...o });
+    },
+    countdown: (c, o) =>
+      [0, 1, 2].forEach((i) =>
+        tone(c, { f: i === 2 ? 1320 : 880, d: 0.18, v: 0.03, w: i * 1, lp: 2400, rv: 0.2, ...o }),
+      ),
+    boom: (c, o) => {
+      noise(c, { d: 2.5, v: 0.14, f: 260, f2: 45, brown: 1, a: 0.02, rv: 0.6, ...o });
+      tone(c, { f: 60, f2: 28, d: 1.6, v: 0.08, rv: 0.4, ...o });
+    },
+  };
+  const ACC = {
+    street: (a) => {
+      for (let i = 0; i < 10; i++)
+        a.at(0.4 + i * 0.48, (c, o) => E2.foot(c, o, i % 2 ? 0.12 : -0.12));
+      a.at(3.2, E2.flutter);
+    },
+    poster: (a) => {
+      a.at(0.3, D.paper);
+      a.at(1.4, (c, o) =>
+        noise(c, { d: 0.5, v: 0.04, f: 400, f2: 2400, type: "bandpass", q: 1.5, a: 0.2, ...o }),
+      );
+    },
+    call: (a) => {
+      a.at(2.0, (c, o) =>
+        [0, 0.1].forEach((w) => tone(c, { f: 1400, d: 0.06, v: 0.025, w, lp: 2600, ...o })),
+      );
+    },
+    pod: (a) => {
+      a.at(0.6, E2.hydraulic);
+      a.at(2.0, (c, o) =>
+        noise(c, { d: 2.2, v: 0.05, f: 5000, type: "highpass", a: 0.3, rv: 0.3, ...o }),
+      );
+      [3.0, 3.9, 5.0].forEach((s) => a.at(s, (c, o) => tone(c, { f: 56, d: 0.16, v: 0.12, ...o })));
+      a.at(5.4, (c, o) => {
+        for (let i = 0; i < 8; i++)
+          noise(c, {
+            d: 0.02,
+            v: 0.04,
+            f: 4000 + Math.random() * 2500,
+            type: "bandpass",
+            q: 4,
+            w: i * 0.09,
+            ...o,
+          });
+      });
+    },
+    lab: (a) => {
+      a.at(1.0, D.zap);
+      a.at(3.2, E2.shatter);
+      a.at(4.2, E2.screech);
+      a.at(9.5, E2.boom);
+      a.at(14, E2.screech);
+    },
+    out: (a) => {
+      a.at(1.5, (c, o) => {
+        noise(c, { d: 3, v: 0.1, f: 220, brown: 1, a: 0.6, ...o });
+        for (let i = 0; i < 16; i++)
+          tone(c, {
+            f: 70 + Math.random() * 30,
+            d: 0.08,
+            v: 0.05,
+            w: 0.6 + i * 0.13,
+            pan: Math.random() - 0.5,
+            ...o,
+          });
+      });
+      a.at(4.5, E2.flutter);
+      a.at(7.5, (c, o) => S.roar(c, o));
+    },
+    rock: (a) => {
+      a.at(1.0, (c, o) =>
+        [0, 0.15, 0.3].forEach((w) => tone(c, { f: 1600, d: 0.05, v: 0.02, w, lp: 2800, ...o })),
+      );
+      a.at(4.0, E2.countdown);
+    },
+    left: (a) => {
+      a.at(0.3, (c, o) => {
+        for (let i = 0; i < 12; i++)
+          noise(c, {
+            d: 0.03,
+            v: 0.05,
+            f: 2000 + Math.random() * 2000,
+            type: "bandpass",
+            q: 2,
+            w: i * 0.05,
+            ...o,
+          });
+      });
+      a.at(5.5, E2.boom);
+    },
+    wake: (a) => {
+      a.at(0.4, E2.hydraulic);
+      a.at(2.0, E2.breath);
+      a.at(4.5, E2.breath);
+      for (let i = 0; i < 4; i++) a.at(6.5 + i * 0.55, (c, o) => E2.foot(c, o, i % 2 ? 0.1 : -0.1));
+    },
+  };
+  for (const k in ACC) {
+    const base = SCENES[k];
+    SCENES[k] = (a, c) => {
+      base(a, c);
+      ACC[k](a, c);
+    };
+  }
   const MI = {
     heart: 200,
     rumble: 600,

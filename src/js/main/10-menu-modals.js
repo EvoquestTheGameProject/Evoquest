@@ -162,63 +162,66 @@ const be = () => {
   requestAnimationFrame(function t(a) {
     (drawMenuBg(a), o || requestAnimationFrame(t));
   }),
-  requestAnimationFrame(function a() {
-    const e = performance.now() - C,
-      n = Math.min(1, e / 4100),
-      l = Math.min(T.length, Math.max(0, Math.floor((e - 400) / 70)));
-    for (
-      (function (t, a) {
-        k.clearRect(0, 0, 64, 96);
-        const e = (t, a, e, o, r) => {
-          ((k.fillStyle = t), k.fillRect(a, e, o, r));
-        };
-        for (let a = 0; a < 12; a++)
-          if ((t / 20 + 5 * a) % 7 < 5) {
-            const t = (60 * r(a, 5) + 2) | 0,
-              o = (92 * r(a, 8)) | 0;
-            (e("#9be7ff", t - 1, o, 3, 1), e("#9be7ff", t, o - 1, 1, 3));
-          }
-        const o = 3 + 90 * Math.min(1, a / 1400),
-          n = [];
-        for (let a = 3; a < 93 && a < o; a += 2) {
-          const e = 0.14 * a + 0.05 * t,
-            o = 19 * Math.sin(e),
-            r = Math.cos(e) >= 0;
-          n.push([a, r ? 32 - o : 32 + o, r ? 32 + o : 32 - o]);
-        }
-        (n.forEach(([t, a]) => {
-          e("#1b46b0", (a - 1) | 0, t - 1, 3, 3);
-        }),
-          n.forEach(([t, a, o]) => {
-            if (t % 8 == 3) {
-              const r = 0 | Math.min(a, o),
-                n = 0 | Math.max(a, o);
-              if (n - r > 5) {
-                const a = (r + n) >> 1;
-                (e("#4da3ff", r + 2, t, a - r - 2, 2), e("#9be7ff", a, t, n - a - 1, 2));
-              }
+  (window.__evoStartLoader = () => (
+    (C = performance.now()),
+    requestAnimationFrame(function a() {
+      const e = performance.now() - C,
+        n = Math.min(1, e / 4100),
+        l = Math.min(T.length, Math.max(0, Math.floor((e - 400) / 70)));
+      for (
+        (function (t, a) {
+          k.clearRect(0, 0, 64, 96);
+          const e = (t, a, e, o, r) => {
+            ((k.fillStyle = t), k.fillRect(a, e, o, r));
+          };
+          for (let a = 0; a < 12; a++)
+            if ((t / 20 + 5 * a) % 7 < 5) {
+              const t = (60 * r(a, 5) + 2) | 0,
+                o = (92 * r(a, 8)) | 0;
+              (e("#9be7ff", t - 1, o, 3, 1), e("#9be7ff", t, o - 1, 1, 3));
             }
+          const o = 3 + 90 * Math.min(1, a / 1400),
+            n = [];
+          for (let a = 3; a < 93 && a < o; a += 2) {
+            const e = 0.14 * a + 0.05 * t,
+              o = 19 * Math.sin(e),
+              r = Math.cos(e) >= 0;
+            n.push([a, r ? 32 - o : 32 + o, r ? 32 + o : 32 - o]);
+          }
+          (n.forEach(([t, a]) => {
+            e("#1b46b0", (a - 1) | 0, t - 1, 3, 3);
           }),
-          n.forEach(([t, a, o]) => {
-            const r = 0 | o;
-            (e("#4da3ff", r - 1, t - 1, 3, 3),
-              e("#2158d6", r + 1, t + 1, 1, 1),
-              e("#e6fbff", r - 1, t - 1, 1, 1));
-          }));
-      })(o ? 1 : e / 16.7 + 90 * ZP * ZP, o ? 1e4 : e);
-      R < l;
-      R++
-    )
-      T[R].classList.add("v");
-    e > 2e3 && M.classList.add("done");
-    const s = Math.floor(12 * n);
-    for (let t = 0; t < 12; t++) S[t].classList.toggle("on", t < s);
-    e < 4100
-      ? requestAnimationFrame(a)
-      : e < 4100 + ZD
-        ? ($zs(e), requestAnimationFrame(a))
-        : $ze();
-  }),
+            n.forEach(([t, a, o]) => {
+              if (t % 8 == 3) {
+                const r = 0 | Math.min(a, o),
+                  n = 0 | Math.max(a, o);
+                if (n - r > 5) {
+                  const a = (r + n) >> 1;
+                  (e("#4da3ff", r + 2, t, a - r - 2, 2), e("#9be7ff", a, t, n - a - 1, 2));
+                }
+              }
+            }),
+            n.forEach(([t, a, o]) => {
+              const r = 0 | o;
+              (e("#4da3ff", r - 1, t - 1, 3, 3),
+                e("#2158d6", r + 1, t + 1, 1, 1),
+                e("#e6fbff", r - 1, t - 1, 1, 1));
+            }));
+        })(o ? 1 : e / 16.7 + 90 * ZP * ZP, o ? 1e4 : e);
+        R < l;
+        R++
+      )
+        T[R].classList.add("v");
+      e > 2e3 && M.classList.add("done");
+      const s = Math.floor(12 * n);
+      for (let t = 0; t < 12; t++) S[t].classList.toggle("on", t < s);
+      e < 4100
+        ? requestAnimationFrame(a)
+        : e < 4100 + ZD
+          ? ($zs(e), requestAnimationFrame(a))
+          : $ze();
+    })
+  )),
   (function () {
     const t = Ht;
     window.pxLayer = function (a) {

@@ -6,7 +6,8 @@ A browser game that ships as **one self-contained HTML file**: `EvoQuest_Cinemat
 The source lives in `src/` as many small files. `build.js` stitches them back into that single file.
 
 ```
-npm run build      # node build.js  -> rewrites the single HTML file (no dependencies needed)
+npm install        # once: lets the build compact the shipped JS (optional, see below)
+npm run build      # node build.js  -> rewrites the single HTML file
 npm run check      # build + compile every inline script + make sure the committed HTML is up to date
 npm run format     # prettier over src/ (optional, needs `npm install`)
 ```
@@ -19,7 +20,8 @@ Always commit the rebuilt HTML together with your `src/` change (`npm run check`
 src/
   index.html                  page markup + the order of everything ({{css:..}}, {{js:..}}, {{main}} includes)
   css/base.css, overrides.css the two <style> blocks
-  assets/                     binary files, inlined at build time as base64 (menu-music.mp3, boss PNGs)
+  assets/                     binary files, inlined at build time as base64 (menu-music.mp3, boss PNGs,
+                              press-start-2p.woff2 pixel font + its OFL license)
   js/
     audio/music.js            menu music: seamless loop, fades, mute button, iOS audio unlock/fallbacks
     audio/sfx.js              procedural sound-effect engine (no audio files) + `SFX.p(name)`
@@ -34,6 +36,7 @@ tools/check.js                sanity checks
 
 | Feature | File |
 | --- | --- |
+| Startup disclaimer + Claude intro | `js/main/00-boot-intro.js` |
 | Lab home screen + holographic PLAY NOW projector | `js/main/01-menu-background.js` |
 | DNA -> dividing-cells zoom intro | `js/main/02-intro-zoom.js` |
 | Saved players, character creator | `js/main/03-…`, `04-…` |
@@ -41,6 +44,12 @@ tools/check.js                sanity checks
 | Rooms, items, crafting bench, input, update loop | `js/game/01-…` to `06-…` |
 | Boss-room opening cinematic ("director") | `js/game/08-boss-opening-director.js` |
 | Combat, snake boss, game render, dev tools | `js/game/09-…` to `12-…` |
+
+## Shipped file is compacted
+
+With `acorn` installed (`npm install`), the build strips formatting whitespace from the shipped JS. It only does so when
+the compacted code parses to the exact same syntax tree; otherwise it ships the readable code. `node build.js --pretty`
+builds the readable version for debugging. `src/` is always the readable source.
 
 ## Rules that keep the single file working
 

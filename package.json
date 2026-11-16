@@ -8,6 +8,7 @@
     "format": "prettier --write \"src/**/*.{js,css}\""
   },
   "devDependencies": {
+    "acorn": "^8.0.0",
     "prettier": "^3.0.0"
   }
 }

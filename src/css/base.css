@@ -1,3 +1,11 @@
+/* Press Start 2P (c) 2012 The Press Start 2P Project Authors, SIL Open Font License 1.1: src/assets/OFL-press-start-2p.txt */
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("@@DATAURI:woff2:press-start-2p.woff2@@") format("woff2");
+}
 :root {
   --sky: #9be7ff;
   --grass: #5fcf45;
