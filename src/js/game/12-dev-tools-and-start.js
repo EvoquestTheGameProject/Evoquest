@@ -27,6 +27,7 @@
     tested: g,
     canFill: canFill,
     tray: Object.assign({}, ua),
+    tap: tapBench(),
     msg: ma,
   })),
   (GM.craft = () => openBench()),
@@ -238,6 +239,18 @@ function _o() {
       jo.map(([t, a]) => e(Eo.ts === t, 'data-s="' + t + '"', a)).join("") +
       "</div>"),
     (r +=
+      "<h4>WORKBENCH UI: NOW " +
+      (tapBench() ? "PHONE (TAP)" : "DESKTOP (DRAG)") +
+      '</h4><div class="dvg4">' +
+      [
+        ["auto", "AUTO"],
+        ["bench", "DESKTOP"],
+        ["tap", "PHONE"],
+      ]
+        .map(([t, a]) => e(benchPref === t, 'data-w="' + t + '"', a))
+        .join("") +
+      "</div>"),
+    (r +=
       '<h4>DEBUG VIEW</h4><div class="dvg">' +
       Vo.map(([t, a]) => e(Eo[t], 'data-t="' + t + '"', a + ": " + (Eo[t] ? "ON" : "OFF"))).join(
         "",
@@ -312,115 +325,117 @@ function or() {
         ? ((Eo[o.dataset.t] ^= 1), _o())
         : o.dataset.s
           ? ((Eo.ts = +o.dataset.s), _o())
-          : o.dataset.r
-            ? GM.on
-              ? (Zo(o.dataset.r), or())
-              : ((Eo.sRoom = Eo.sRoom === o.dataset.r ? "" : o.dataset.r), _o())
-            : o.dataset.a &&
-              (function (a) {
-                if (!GM.on)
-                  return (
-                    "items" === a ? (Eo.sItems ^= 1) : "open" === a && (Eo.sOpen ^= 1),
-                    void _o()
-                  );
-                if ("items" === a) (Xo(), toast("All items added.", 1600));
-                else if ("gun" === a) (Qo(), toast("Venom Blaster added.", 1600));
-                else if ("solvent" === a)
-                  ((hasPotion = !0),
-                    inv.includes("potion") || inv.push("potion"),
-                    0 === stage && (stage = 1),
-                    updateBag(),
-                    updateGuide(),
-                    toast("Solvent added.", 1600));
-                else if ("open" === a) (Ko(), toast("Barricade removed.", 1600));
-                else if ("heal" === a)
-                  ((hp = 5),
-                    (ammo = 4),
-                    (invuln = 0),
-                    updateHud(),
-                    toast("HP + ammo restored.", 1600));
-                else {
-                  if ("respawn" === a)
-                    return (enterRoom(room, "L"), (modal = 0), (Oo = 0), void (Do.hidden = !0));
-                  if ("killboss" === a)
-                    snakeBoss && "dead" !== snakeBoss.st
-                      ? ("intro" === snakeBoss.st && (snakeBoss.st = "walk"), hitBoss(9999))
-                      : toast("No boss in this room.", 2e3);
-                  else if ("resetboss" === a)
-                    ((bossDone = !1),
-                      (won = 0),
-                      (qs("#gw").hidden = !0),
-                      "exitlab" === room
-                        ? spawnBoss()
-                        : toast("Boss resets on entering the boss room.", 2200));
-                  else if ("win" === a) ((bossDone = !0), (won = 1), (qs("#gw").hidden = !1));
+          : o.dataset.w
+            ? (setBenchMode(o.dataset.w), _o())
+            : o.dataset.r
+              ? GM.on
+                ? (Zo(o.dataset.r), or())
+                : ((Eo.sRoom = Eo.sRoom === o.dataset.r ? "" : o.dataset.r), _o())
+              : o.dataset.a &&
+                (function (a) {
+                  if (!GM.on)
+                    return (
+                      "items" === a ? (Eo.sItems ^= 1) : "open" === a && (Eo.sOpen ^= 1),
+                      void _o()
+                    );
+                  if ("items" === a) (Xo(), toast("All items added.", 1600));
+                  else if ("gun" === a) (Qo(), toast("Venom Blaster added.", 1600));
+                  else if ("solvent" === a)
+                    ((hasPotion = !0),
+                      inv.includes("potion") || inv.push("potion"),
+                      0 === stage && (stage = 1),
+                      updateBag(),
+                      updateGuide(),
+                      toast("Solvent added.", 1600));
+                  else if ("open" === a) (Ko(), toast("Barricade removed.", 1600));
+                  else if ("heal" === a)
+                    ((hp = 5),
+                      (ammo = 4),
+                      (invuln = 0),
+                      updateHud(),
+                      toast("HP + ammo restored.", 1600));
                   else {
-                    if ("restart" === a) return (or(), resetGame(), void $o());
-                    if ("cpsave" === a)
-                      ((Lo = {
-                        room: room,
-                        P: Object.assign({}, player),
-                        inv: [...inv],
-                        got: [...got],
-                        taken: Object.assign({}, taken),
-                        broken: Object.assign({}, broken),
-                        stage: stage,
-                        exitOpen: exitOpen,
-                        hasPotion: hasPotion,
-                        hasGun: hasGun,
-                        ammo: ammo,
-                        hp: hp,
-                        bossDone: bossDone,
-                        worn: worn,
-                        gloved: gloved,
-                        potionUsed: potionUsed,
-                        erode: erode,
-                        runT: runT,
-                      }),
-                        toast("Checkpoint saved.", 1400));
-                    else if ("cpload" === a)
-                      return (
-                        Lo
-                          ? ((room = Lo.room),
-                            backdrops[room] || backdrop(room),
-                            Object.assign(player, Lo.P),
-                            (player.vx = player.vy = 0),
-                            (inv = [...Lo.inv]),
-                            (got = new Set(Lo.got)),
-                            (taken = Object.assign({}, Lo.taken)),
-                            (broken = Object.assign({}, Lo.broken)),
-                            (stage = Lo.stage),
-                            (exitOpen = Lo.exitOpen),
-                            (hasPotion = Lo.hasPotion),
-                            (hasGun = Lo.hasGun),
-                            (ammo = Lo.ammo),
-                            (hp = Lo.hp),
-                            (bossDone = Lo.bossDone),
-                            (worn = Lo.worn),
-                            (gloved = Lo.gloved),
-                            (potionUsed = Lo.potionUsed),
-                            (erode = Lo.erode),
-                            (runT = Lo.runT),
-                            (shots = []),
-                            (venoms = []),
-                            (waves = []),
-                            (snakeBoss = null),
-                            (dead = !1),
-                            (won = 0),
-                            (qs("#gd").hidden = !0),
-                            (qs("#gw").hidden = !0),
-                            "exitlab" !== room || bossDone || spawnBoss(),
-                            updateBag(),
-                            updateGuide(),
-                            updateHud(),
-                            toast("Checkpoint loaded.", 1400))
-                          : toast("No checkpoint saved yet.", 1600),
-                        void or()
-                      );
+                    if ("respawn" === a)
+                      return (enterRoom(room, "L"), (modal = 0), (Oo = 0), void (Do.hidden = !0));
+                    if ("killboss" === a)
+                      snakeBoss && "dead" !== snakeBoss.st
+                        ? ("intro" === snakeBoss.st && (snakeBoss.st = "walk"), hitBoss(9999))
+                        : toast("No boss in this room.", 2e3);
+                    else if ("resetboss" === a)
+                      ((bossDone = !1),
+                        (won = 0),
+                        (qs("#gw").hidden = !0),
+                        "exitlab" === room
+                          ? spawnBoss()
+                          : toast("Boss resets on entering the boss room.", 2200));
+                    else if ("win" === a) ((bossDone = !0), (won = 1), (qs("#gw").hidden = !1));
+                    else {
+                      if ("restart" === a) return (or(), resetGame(), void $o());
+                      if ("cpsave" === a)
+                        ((Lo = {
+                          room: room,
+                          P: Object.assign({}, player),
+                          inv: [...inv],
+                          got: [...got],
+                          taken: Object.assign({}, taken),
+                          broken: Object.assign({}, broken),
+                          stage: stage,
+                          exitOpen: exitOpen,
+                          hasPotion: hasPotion,
+                          hasGun: hasGun,
+                          ammo: ammo,
+                          hp: hp,
+                          bossDone: bossDone,
+                          worn: worn,
+                          gloved: gloved,
+                          potionUsed: potionUsed,
+                          erode: erode,
+                          runT: runT,
+                        }),
+                          toast("Checkpoint saved.", 1400));
+                      else if ("cpload" === a)
+                        return (
+                          Lo
+                            ? ((room = Lo.room),
+                              backdrops[room] || backdrop(room),
+                              Object.assign(player, Lo.P),
+                              (player.vx = player.vy = 0),
+                              (inv = [...Lo.inv]),
+                              (got = new Set(Lo.got)),
+                              (taken = Object.assign({}, Lo.taken)),
+                              (broken = Object.assign({}, Lo.broken)),
+                              (stage = Lo.stage),
+                              (exitOpen = Lo.exitOpen),
+                              (hasPotion = Lo.hasPotion),
+                              (hasGun = Lo.hasGun),
+                              (ammo = Lo.ammo),
+                              (hp = Lo.hp),
+                              (bossDone = Lo.bossDone),
+                              (worn = Lo.worn),
+                              (gloved = Lo.gloved),
+                              (potionUsed = Lo.potionUsed),
+                              (erode = Lo.erode),
+                              (runT = Lo.runT),
+                              (shots = []),
+                              (venoms = []),
+                              (waves = []),
+                              (snakeBoss = null),
+                              (dead = !1),
+                              (won = 0),
+                              (qs("#gd").hidden = !0),
+                              (qs("#gw").hidden = !0),
+                              "exitlab" !== room || bossDone || spawnBoss(),
+                              updateBag(),
+                              updateGuide(),
+                              updateHud(),
+                              toast("Checkpoint loaded.", 1400))
+                            : toast("No checkpoint saved yet.", 1600),
+                          void or()
+                        );
+                    }
                   }
-                }
-                _o();
-              })(o.dataset.a));
+                  _o();
+                })(o.dataset.a));
   }),
   addEventListener("keydown", (t) => {
     No.hidden ||

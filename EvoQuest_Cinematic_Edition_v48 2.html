@@ -1996,7 +1996,113 @@ body.ingame #dnab {
 .bl-on {
   opacity: 1 !important;
 }
-</style></head><body><noscript><style>#ld{display:none!important}</style><div style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:24px;background:#07050f;color:#9be7ff;font:14px/1.7 system-ui,sans-serif;text-align:center"><div><b style="font-size:18px;color:#5fcf45">EvoQuest needs JavaScript</b><br>This viewer shows the page with scripts turned off, so the game cannot start.<br>Open the file in a web browser (Chrome, Safari, Firefox) or open it as an artifact.</div></div></noscript><canvas id="bg" aria-hidden="true"></canvas><div class="scan"></div><main class="ui" inert><h1 class="in" aria-label="EvoQuest"><span class="e" style="--i:0">E</span><span class="e" style="--i:1">v</span><span class="e" style="--i:2">o</span><span class="q" style="--i:3">Q</span><span class="q" style="--i:4">u</span><span class="q" style="--i:5">e</span><span class="q" style="--i:6">s</span><span class="q" style="--i:7">t</span></h1><p class="tag in">Explore The Unknown, Discover The Science. Shape The Future</p><nav class="menu in"><button class="btn play" id="play">Play</button> <button class="btn cred" id="cb">Credits</button></nav><p class="foot in">EvoGames Production</p></main><div id="cr" class="modal" role="dialog" aria-modal="true" aria-labelledby="crt" hidden><div class="card"><h2 id="crt">Credits</h2><dl><dt>Studio</dt><dd>EvoGames Production</dd><dt>Designer</dt><dd>Kenji</dd><dt>Artist</dt><dd>Jace</dd><dt>Coders</dt><dd>Theodore<br>Yuriel</dd><dt>Balancers</dt><dd>Yuriel</dd><dt>Members</dt><dd>Jireh<br>Vwxyz<br>Basti</dd></dl><button class="btn cred" id="cl">Close</button></div></div><div id="sp" class="modal" role="dialog" aria-modal="true" aria-labelledby="spt" hidden><div class="card wide"><h2 id="spt">Saved Players</h2><div class="slots" id="slots"></div><div id="svMsg" role="status" aria-live="polite"></div><details id="svMore"><summary>Backup tools (optional)</summary><div class="svrow"><button class="btn cred sv" id="svExp">Export Saves</button><button class="btn cred sv" id="svImp">Import Saves</button></div><div class="svrow"><button class="btn cred sv" id="svCodeGet">Save Code</button><button class="btn cred sv" id="svCodeSet">Load Save Code</button></div><textarea id="svCode" hidden spellcheck="false" autocomplete="off" aria-label="Save code" placeholder="EQ1...."></textarea><div class="svrow"><button class="btn cred sv" id="svGame">Download Game + Progress</button></div><input type="file" id="svFile" accept=".json,application/json" hidden></details><button class="btn cred" id="spBack">Back</button></div></div><div id="cc" class="modal" role="dialog" aria-modal="true" aria-labelledby="cct" hidden><div class="card wide"><h2 id="cct">Customize</h2><div class="cc"><div class="cprev"><canvas id="cvs" width="40" height="50" role="img" aria-label="Character preview"></canvas><div id="cname"></div></div><div class="copts" id="copts"></div></div><div class="ccb"><button class="btn cred" id="ccBack">Back</button><button class="btn cred" id="ccRnd">Random</button><button class="btn play" id="ccGo">Start</button></div></div></div><div id="fd" aria-hidden="true">Loading…</div><div id="cut" hidden><canvas id="cs" width="384" height="216" aria-hidden="true"></canvas><div id="dlg" hidden><b id="who"></b><span id="say"></span></div><div id="card"></div><button id="skip">Skip &gt;&gt;</button><div id="fin" hidden><h2>CHAPTER 1</h2><p>THE LONG SLEEP</p><button class="btn play" id="finGo">Continue</button></div></div><div id="gm" hidden><canvas id="gc" width="384" height="216" aria-label="game"></canvas><div id="gh"><div id="gi"></div><div id="gl"></div><div id="ga"></div></div><div id="gb" hidden><div class="gbn">MUTATED SNAKE</div><div class="gbo"><div id="gbf"></div></div></div><div id="gg"><h4><span>GUIDE</span><span>&#9662;</span></h4><div class="gb" id="ggb"></div></div><div id="gt"></div><div id="dvh" hidden></div><button class="quit" id="gq2">MENU</button><button class="quit" id="cskip" hidden>SKIP &#9656;&#9656;</button><button class="quit" id="gdv" hidden>&#129516; DEV</button><div id="gp"><button class="pad" id="bL" aria-label="Move left" title="Left"><svg viewBox="0 0 5 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h2v1h-2zM2 2h3v1h-3zM1 3h4v1h-4zM0 4h5v1h-5zM1 5h4v1h-4zM2 6h3v1h-3zM3 7h2v1h-2zM4 8h1v1h-1z"/><path class="d" d=""/><path class="y" d=""/></svg></button><button class="pad" id="bR" aria-label="Move right" title="Right"><svg viewBox="0 0 5 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v1h-1zM0 1h2v1h-2zM0 2h3v1h-3zM0 3h4v1h-4zM0 4h5v1h-5zM0 5h4v1h-4zM0 6h3v1h-3zM0 7h2v1h-2zM0 8h1v1h-1z"/><path class="d" d=""/><path class="y" d=""/></svg></button><button class="pad" id="bJ" aria-label="Jump" title="Jump"><svg viewBox="0 0 9 10" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h3v1h-3zM2 2h5v1h-5zM1 3h7v1h-7zM0 4h9v1h-9zM3 5h3v1h-3zM3 6h3v1h-3zM3 7h3v1h-3z"/><path class="d" d=""/><path class="y" d="M0 9h9v1h-9z"/></svg></button><button class="pad" id="bP" aria-label="Punch" title="Punch"><svg viewBox="0 0 15 13" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 0h8v1h-8zM2 1h11v1h-11zM1 2h13v1h-13zM1 3h13v1h-13zM0 4h3v1h-3zM4 4h11v1h-11zM0 5h3v1h-3zM4 5h11v1h-11zM0 6h4v1h-4zM7 6h8v1h-8zM1 7h13v1h-13zM2 8h11v1h-11zM3 10h9v1h-9zM3 11h9v1h-9zM3 12h9v1h-9z"/><path class="d" d="M3 4h1v1h-1zM3 5h1v1h-1zM4 6h3v1h-3zM3 9h9v1h-9z"/><path class="y" d=""/></svg></button><button class="pad sm" id="bU" aria-label="Use / pick up" title="Use"><svg viewBox="0 0 14 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 0h1v1h-1zM6 0h1v1h-1zM2 1h1v1h-1zM4 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM2 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM8 2h1v1h-1zM2 3h9v1h-9zM2 4h10v1h-10zM2 5h11v1h-11zM3 6h9v1h-9zM4 7h7v1h-7zM4 8h7v1h-7z"/><path class="d" d=""/><path class="y" d=""/></svg></button><button class="pad sm" id="bS" aria-label="Shoot" title="Shoot" style="display:none"><svg viewBox="0 0 17 10" shape-rendering="crispEdges" aria-hidden="true"><path d="M6 0h5v1h-5zM6 1h1v1h-1zM10 1h1v1h-1zM6 2h1v1h-1zM10 2h1v1h-1zM0 3h17v1h-17zM0 4h2v1h-2zM3 4h14v1h-14zM0 5h16v1h-16zM2 6h5v1h-5zM2 7h5v1h-5zM2 8h4v1h-4zM2 9h4v1h-4z"/><path class="d" d="M2 4h1v1h-1z"/><path class="y" d="M7 1h3v1h-3zM7 2h3v1h-3z"/></svg></button></div><div class="gov" id="gk" hidden></div><div class="gov" id="gx" hidden><div id="fp"><canvas id="fpc" width="384" height="216"></canvas><div id="cmsg"></div><div id="cst"></div><div class="fpz" id="zSelf" data-drop="self"></div><div class="fpz" id="zTray" data-drop="tray"></div><div class="fpz" id="zH" data-drop="sh"></div><div class="fpz" id="zC" data-drop="sc"></div><div class="fpz" id="zB" data-drop="sb"></div><div class="fpz" id="zMain" data-drop="main"></div><div class="fpz" id="zSmall" data-drop="small" data-drag="small"></div><div id="cinv" hidden></div><button class="gbtn alt" id="fpBag">BAG</button><div id="fpBtns"><button class="gbtn" id="cmix" disabled="disabled">MIX</button><button class="gbtn alt" id="cres">EMPTY</button><button class="gbtn alt" id="cdone">CLOSE</button></div><img id="fpGhost" hidden alt=""><button id="ccb" hidden></button></div></div><div class="gov" id="gd" hidden><div class="gcard"><h3>YOU DIED</h3><p>The snake got you. Tips: jump over the ground shockwaves, dodge the venom (watch for the red circles), shoot from range, and punch it while it is stunned after a charge.</p><div class="btns"><button class="gbtn" id="gdR">RETRY</button><button class="gbtn alt" id="gdM">MENU</button></div></div></div><div class="gov" id="gw" hidden><div class="gcard"><h3>CHAPTER 1 COMPLETE</h3><p>You dissolved the barricade with real chemistry. WHAT YOU LEARNED: acid (HCl) eats iron and rust (Fe + 2HCl → FeCl₂ + H₂). Peroxide is an oxidizer that speeds it up. Chloride from salt cracks the metal’s oxide skin, and salt dries out plant cells by osmosis. Always add acid TO water, stir with glass, wear goggles and gloves, and baking soda (a base) neutralizes acid. You went down 10 floors of stairs, found venom and weapon parts in the staff storage, built a Venom Blaster, melted the sealed door, and took down the giant mutated snake in the Exit Lab. Outside, the city was swallowed by nature, and a paper in the wind told you the truth: the animals turned on humanity, and the people left Earth for Mars. You are alone. But what created the mutants?</p><div class="btns"><button class="gbtn" id="wMenu">MENU</button><button class="gbtn alt" id="wAgain">PLAY AGAIN</button></div></div></div></div><button id="dnab" aria-label="Developer mode"><svg viewBox="0 0 32 44" width="30" height="40" shape-rendering="crispEdges"><path d="M6 2C28 10 28 16 6 22S6 36 26 42" fill="none" stroke="#9fe8d4" stroke-width="3"/><path d="M26 2C4 10 4 16 26 22S26 36 6 42" fill="none" stroke="#e8a8d8" stroke-width="3"/><g stroke="#e8f8ff" stroke-width="2"><path d="M10 6h12M8 12h16M10 17h12M8 27h16M10 32h12M12 38h8"/></g></svg></button><div class="dvm" id="dvc" hidden><div class="dvcard"><h3>&#129516; DEVELOPER TOOLS</h3><p id="dvm">STAFF ACCESS CODE</p><div id="dvd">○○○○○○</div><div id="dvk"><button class="dvb" data-k="1">1</button><button class="dvb" data-k="2">2</button><button class="dvb" data-k="3">3</button><button class="dvb" data-k="4">4</button><button class="dvb" data-k="5">5</button><button class="dvb" data-k="6">6</button><button class="dvb" data-k="7">7</button><button class="dvb" data-k="8">8</button><button class="dvb" data-k="9">9</button><button class="dvb" data-k="C">&#9003;</button><button class="dvb" data-k="0">0</button><button class="dvb" data-k="OK">OK</button></div><button class="dvb big" id="dvq">CANCEL</button></div></div><div class="dvm" id="dvp" hidden><div class="dvcard wide" id="dvb"></div></div><div id="ld" role="status" aria-label="EvoGame Productions loading"><canvas id="dna" width="64" height="96" aria-hidden="true"></canvas><p class="lt" id="lt"></p><div class="bar" id="bar" aria-hidden="true"></div></div><script id="diag">(()=>{"use strict";const log=[];const IGNORE_CSP=/^(media-src|font-src)/;let box=null;let pending=false;const env=()=>{const bits=[];try{bits.push(window.top!==window?"framed":"top-level");}catch(e){bits.push("framed");}
+#fpT,
+#fpHint,
+#fp #bkr {
+  display: none;
+}
+#gx.tap #fp {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 8px 12px;
+  align-content: start;
+  width: min(520px, 100%);
+  height: auto;
+  max-height: 94vh;
+  max-height: 94dvh;
+  overflow: auto;
+  padding: 14px;
+  font-size: 8px;
+  line-height: 1.8;
+  color: #e8f2ff;
+  background: #101a30;
+  border: 3px solid #8fb8ff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 3px #060a16;
+  touch-action: pan-y;
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+#gx.tap #fp > * {
+  grid-column: 1 / -1;
+}
+#gx.tap #fpc,
+#gx.tap .fpz,
+#gx.tap #fpBag,
+#gx.tap #fpGhost {
+  display: none;
+}
+#gx.tap #fpT {
+  display: block;
+  margin: 0;
+  font-size: 11px;
+  color: #ffe070;
+  line-height: 1.5;
+}
+#gx.tap #fpHint {
+  display: block;
+  margin: 0;
+}
+#gx.tap #fp #bkr {
+  display: block;
+  grid-column: 1;
+  grid-row: 2;
+  height: 112px;
+  align-self: end;
+}
+#gx.tap #fp #cmsg {
+  position: static;
+  grid-column: 2;
+  grid-row: 2;
+  width: auto;
+  min-height: 112px;
+  padding: 8px;
+  font-size: 7px;
+  line-height: 1.8;
+  background: #0a1224;
+}
+#gx.tap #fp #cst {
+  position: static;
+  justify-content: flex-start;
+  width: auto;
+  text-align: left;
+  font-size: 7px;
+  line-height: 1.9;
+  text-shadow: none;
+}
+#gx.tap #fp #cinv {
+  position: static;
+  width: auto;
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+  background: none;
+  border: 0;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 6px;
+}
+#gx.tap #fp #cinv button {
+  flex-direction: row;
+  text-align: left;
+  font-size: 7px;
+  line-height: 1.4;
+  padding: 5px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+#gx.tap #fp #cinv button img {
+  width: 28px;
+  height: 28px;
+}
+#gx.tap #fpBtns {
+  position: static;
+  flex-wrap: wrap;
+}
+#gx.tap #fpBtns .gbtn {
+  font-size: 9px;
+  padding: 10px 12px;
+}
+</style></head><body><noscript><style>#ld{display:none!important}</style><div style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:24px;background:#07050f;color:#9be7ff;font:14px/1.7 system-ui,sans-serif;text-align:center"><div><b style="font-size:18px;color:#5fcf45">EvoQuest needs JavaScript</b><br>This viewer shows the page with scripts turned off, so the game cannot start.<br>Open the file in a web browser (Chrome, Safari, Firefox) or open it as an artifact.</div></div></noscript><canvas id="bg" aria-hidden="true"></canvas><div class="scan"></div><main class="ui" inert><h1 class="in" aria-label="EvoQuest"><span class="e" style="--i:0">E</span><span class="e" style="--i:1">v</span><span class="e" style="--i:2">o</span><span class="q" style="--i:3">Q</span><span class="q" style="--i:4">u</span><span class="q" style="--i:5">e</span><span class="q" style="--i:6">s</span><span class="q" style="--i:7">t</span></h1><p class="tag in">Explore The Unknown, Discover The Science. Shape The Future</p><nav class="menu in"><button class="btn play" id="play">Play</button> <button class="btn cred" id="cb">Credits</button></nav><p class="foot in">EvoGames Production</p></main><div id="cr" class="modal" role="dialog" aria-modal="true" aria-labelledby="crt" hidden><div class="card"><h2 id="crt">Credits</h2><dl><dt>Studio</dt><dd>EvoGames Production</dd><dt>Designer</dt><dd>Kenji</dd><dt>Artist</dt><dd>Jace</dd><dt>Coders</dt><dd>Theodore<br>Yuriel</dd><dt>Balancers</dt><dd>Yuriel</dd><dt>Members</dt><dd>Jireh<br>Vwxyz<br>Basti</dd></dl><button class="btn cred" id="cl">Close</button></div></div><div id="sp" class="modal" role="dialog" aria-modal="true" aria-labelledby="spt" hidden><div class="card wide"><h2 id="spt">Saved Players</h2><div class="slots" id="slots"></div><div id="svMsg" role="status" aria-live="polite"></div><details id="svMore"><summary>Backup tools (optional)</summary><div class="svrow"><button class="btn cred sv" id="svExp">Export Saves</button><button class="btn cred sv" id="svImp">Import Saves</button></div><div class="svrow"><button class="btn cred sv" id="svCodeGet">Save Code</button><button class="btn cred sv" id="svCodeSet">Load Save Code</button></div><textarea id="svCode" hidden spellcheck="false" autocomplete="off" aria-label="Save code" placeholder="EQ1...."></textarea><div class="svrow"><button class="btn cred sv" id="svGame">Download Game + Progress</button></div><input type="file" id="svFile" accept=".json,application/json" hidden></details><button class="btn cred" id="spBack">Back</button></div></div><div id="cc" class="modal" role="dialog" aria-modal="true" aria-labelledby="cct" hidden><div class="card wide"><h2 id="cct">Customize</h2><div class="cc"><div class="cprev"><canvas id="cvs" width="40" height="50" role="img" aria-label="Character preview"></canvas><div id="cname"></div></div><div class="copts" id="copts"></div></div><div class="ccb"><button class="btn cred" id="ccBack">Back</button><button class="btn cred" id="ccRnd">Random</button><button class="btn play" id="ccGo">Start</button></div></div></div><div id="fd" aria-hidden="true">Loading…</div><div id="cut" hidden><canvas id="cs" width="384" height="216" aria-hidden="true"></canvas><div id="dlg" hidden><b id="who"></b><span id="say"></span></div><div id="card"></div><button id="skip">Skip &gt;&gt;</button><div id="fin" hidden><h2>CHAPTER 1</h2><p>THE LONG SLEEP</p><button class="btn play" id="finGo">Continue</button></div></div><div id="gm" hidden><canvas id="gc" width="384" height="216" aria-label="game"></canvas><div id="gh"><div id="gi"></div><div id="gl"></div><div id="ga"></div></div><div id="gb" hidden><div class="gbn">MUTATED SNAKE</div><div class="gbo"><div id="gbf"></div></div></div><div id="gg"><h4><span>GUIDE</span><span>&#9662;</span></h4><div class="gb" id="ggb"></div></div><div id="gt"></div><div id="dvh" hidden></div><button class="quit" id="gq2">MENU</button><button class="quit" id="cskip" hidden>SKIP &#9656;&#9656;</button><button class="quit" id="gdv" hidden>&#129516; DEV</button><div id="gp"><button class="pad" id="bL" aria-label="Move left" title="Left"><svg viewBox="0 0 5 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h2v1h-2zM2 2h3v1h-3zM1 3h4v1h-4zM0 4h5v1h-5zM1 5h4v1h-4zM2 6h3v1h-3zM3 7h2v1h-2zM4 8h1v1h-1z"/><path class="d" d=""/><path class="y" d=""/></svg></button><button class="pad" id="bR" aria-label="Move right" title="Right"><svg viewBox="0 0 5 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v1h-1zM0 1h2v1h-2zM0 2h3v1h-3zM0 3h4v1h-4zM0 4h5v1h-5zM0 5h4v1h-4zM0 6h3v1h-3zM0 7h2v1h-2zM0 8h1v1h-1z"/><path class="d" d=""/><path class="y" d=""/></svg></button><button class="pad" id="bJ" aria-label="Jump" title="Jump"><svg viewBox="0 0 9 10" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h3v1h-3zM2 2h5v1h-5zM1 3h7v1h-7zM0 4h9v1h-9zM3 5h3v1h-3zM3 6h3v1h-3zM3 7h3v1h-3z"/><path class="d" d=""/><path class="y" d="M0 9h9v1h-9z"/></svg></button><button class="pad" id="bP" aria-label="Punch" title="Punch"><svg viewBox="0 0 15 13" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 0h8v1h-8zM2 1h11v1h-11zM1 2h13v1h-13zM1 3h13v1h-13zM0 4h3v1h-3zM4 4h11v1h-11zM0 5h3v1h-3zM4 5h11v1h-11zM0 6h4v1h-4zM7 6h8v1h-8zM1 7h13v1h-13zM2 8h11v1h-11zM3 10h9v1h-9zM3 11h9v1h-9zM3 12h9v1h-9z"/><path class="d" d="M3 4h1v1h-1zM3 5h1v1h-1zM4 6h3v1h-3zM3 9h9v1h-9z"/><path class="y" d=""/></svg></button><button class="pad sm" id="bU" aria-label="Use / pick up" title="Use"><svg viewBox="0 0 14 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 0h1v1h-1zM6 0h1v1h-1zM2 1h1v1h-1zM4 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM2 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM8 2h1v1h-1zM2 3h9v1h-9zM2 4h10v1h-10zM2 5h11v1h-11zM3 6h9v1h-9zM4 7h7v1h-7zM4 8h7v1h-7z"/><path class="d" d=""/><path class="y" d=""/></svg></button><button class="pad sm" id="bS" aria-label="Shoot" title="Shoot" style="display:none"><svg viewBox="0 0 17 10" shape-rendering="crispEdges" aria-hidden="true"><path d="M6 0h5v1h-5zM6 1h1v1h-1zM10 1h1v1h-1zM6 2h1v1h-1zM10 2h1v1h-1zM0 3h17v1h-17zM0 4h2v1h-2zM3 4h14v1h-14zM0 5h16v1h-16zM2 6h5v1h-5zM2 7h5v1h-5zM2 8h4v1h-4zM2 9h4v1h-4z"/><path class="d" d="M2 4h1v1h-1z"/><path class="y" d="M7 1h3v1h-3zM7 2h3v1h-3z"/></svg></button></div><div class="gov" id="gk" hidden></div><div class="gov" id="gx" hidden><div id="fp"><canvas id="fpc" width="384" height="216"></canvas><h3 id="fpT">MIXING BENCH</h3><div id="bkr"><div id="bkl"></div></div><div id="cmsg"></div><div id="cst"></div><p id="fpHint">Tap your tools and chemicals:</p><div class="fpz" id="zSelf" data-drop="self"></div><div class="fpz" id="zTray" data-drop="tray"></div><div class="fpz" id="zH" data-drop="sh"></div><div class="fpz" id="zC" data-drop="sc"></div><div class="fpz" id="zB" data-drop="sb"></div><div class="fpz" id="zMain" data-drop="main"></div><div class="fpz" id="zSmall" data-drop="small" data-drag="small"></div><div id="cinv" hidden></div><button class="gbtn alt" id="fpBag">BAG</button><div id="fpBtns"><button class="gbtn" id="cmix" disabled="disabled">MIX</button><button class="gbtn alt" id="cres">EMPTY</button><button class="gbtn alt" id="cdone">CLOSE</button></div><img id="fpGhost" hidden alt=""><button id="ccb" hidden></button></div></div><div class="gov" id="gd" hidden><div class="gcard"><h3>YOU DIED</h3><p>The snake got you. Tips: jump over the ground shockwaves, dodge the venom (watch for the red circles), shoot from range, and punch it while it is stunned after a charge.</p><div class="btns"><button class="gbtn" id="gdR">RETRY</button><button class="gbtn alt" id="gdM">MENU</button></div></div></div><div class="gov" id="gw" hidden><div class="gcard"><h3>CHAPTER 1 COMPLETE</h3><p>You dissolved the barricade with real chemistry. WHAT YOU LEARNED: acid (HCl) eats iron and rust (Fe + 2HCl → FeCl₂ + H₂). Peroxide is an oxidizer that speeds it up. Chloride from salt cracks the metal’s oxide skin, and salt dries out plant cells by osmosis. Always add acid TO water, stir with glass, wear goggles and gloves, and baking soda (a base) neutralizes acid. You went down 10 floors of stairs, found venom and weapon parts in the staff storage, built a Venom Blaster, melted the sealed door, and took down the giant mutated snake in the Exit Lab. Outside, the city was swallowed by nature, and a paper in the wind told you the truth: the animals turned on humanity, and the people left Earth for Mars. You are alone. But what created the mutants?</p><div class="btns"><button class="gbtn" id="wMenu">MENU</button><button class="gbtn alt" id="wAgain">PLAY AGAIN</button></div></div></div></div><button id="dnab" aria-label="Developer mode"><svg viewBox="0 0 32 44" width="30" height="40" shape-rendering="crispEdges"><path d="M6 2C28 10 28 16 6 22S6 36 26 42" fill="none" stroke="#9fe8d4" stroke-width="3"/><path d="M26 2C4 10 4 16 26 22S26 36 6 42" fill="none" stroke="#e8a8d8" stroke-width="3"/><g stroke="#e8f8ff" stroke-width="2"><path d="M10 6h12M8 12h16M10 17h12M8 27h16M10 32h12M12 38h8"/></g></svg></button><div class="dvm" id="dvc" hidden><div class="dvcard"><h3>&#129516; DEVELOPER TOOLS</h3><p id="dvm">STAFF ACCESS CODE</p><div id="dvd">○○○○○○</div><div id="dvk"><button class="dvb" data-k="1">1</button><button class="dvb" data-k="2">2</button><button class="dvb" data-k="3">3</button><button class="dvb" data-k="4">4</button><button class="dvb" data-k="5">5</button><button class="dvb" data-k="6">6</button><button class="dvb" data-k="7">7</button><button class="dvb" data-k="8">8</button><button class="dvb" data-k="9">9</button><button class="dvb" data-k="C">&#9003;</button><button class="dvb" data-k="0">0</button><button class="dvb" data-k="OK">OK</button></div><button class="dvb big" id="dvq">CANCEL</button></div></div><div class="dvm" id="dvp" hidden><div class="dvcard wide" id="dvb"></div></div><div id="ld" role="status" aria-label="EvoGame Productions loading"><canvas id="dna" width="64" height="96" aria-hidden="true"></canvas><p class="lt" id="lt"></p><div class="bar" id="bar" aria-hidden="true"></div></div><script id="diag">(()=>{"use strict";const log=[];const IGNORE_CSP=/^(media-src|font-src)/;let box=null;let pending=false;const env=()=>{const bits=[];try{bits.push(window.top!==window?"framed":"top-level");}catch(e){bits.push("framed");}
 try{window.localStorage.setItem("evoquest__d","1");window.localStorage.removeItem("evoquest__d");bits.push("storage:ok");}catch(e){bits.push("storage:blocked");}
 bits.push("indexedDB:"+(typeof indexedDB!=="undefined"?"yes":"no"));bits.push("webaudio:"+(window.AudioContext||window.webkitAudioContext?"yes":"no"));bits.push(innerWidth+"x"+innerHeight);bits.push(((navigator.userAgent||"").match(/(Chrome|Firefox|Version|CriOS|FxiOS)\/[\d.]+/g)||[]).slice(0,2).join(" "),);return bits.join(" | ");};const render=()=>{pending=false;if(!document.body)return;if(!box){box=document.createElement("div");box.id="evoDiag";box.setAttribute("role","alert");box.style.cssText=
 "position:fixed;left:0;right:0;bottom:0;max-height:45vh;overflow:auto;z-index:2147483000;"+
@@ -3110,8 +3216,13 @@ t.line(e,216,e+3*(r(e,7)-0.5),216-a,r(e,126)<0.5?[38,90,40]:[70,140,60],);}
 (Ga(t,0,198,40,10,51),Ga(t,346,198,38,10,52),Da(t,8,216,22,3,[20,90,50],[120,220,100]),Da(t,378,216,20,5,[20,90,50],[120,220,100]),Oe(t,20,200,3),Oe(t,366,200,8),t.light(192,22,190,"#fff0c8",0.55,0.85),t.light(192,150,90,"#fff4d8",0.18,0.35),t.light(60,40,80,"#9affc0",0.25),t.light(330,60,90,"#9affc0",0.2),t.fog(0,60,a,112,"#c8e8d0",0.45,9,40,8,0.12),t.vig(0.4));}
 let ba=null,ga=[],pa=null,ua={h:0,b:0,c:0},ma="",ya="",xa=0,wa=null,va=null,ka=null,Ea=0,Ta=0;const Sa=(t)=>ga.filter((a)=>a===t).length,Ca={water:"#5fb8ff",hcl:"#e8e060",h2o2:"#c9a86a",salt:"#f4f4ff"},Ra=["water","hcl","h2o2"],Pa=["vial1","vial2","vial3"],Ia={handle:"sh",barrel:"sb",canister:"sc",fullcan:"sc"},Oa={handle:"h",barrel:"b",canister:"c",fullcan:"c"},La=()=>
 (!hasGun&&(Zt("canister")||Zt("fullcan")||Zt("barrel")||Zt("handle")||Pa.some(Zt)))||
-performance.now()-Ta<4e3;function openBench(){((modal=2),(ga=[]),(pa=null),(Ea=0),(wa=null),(b=g=!1),(qs("#gx").hidden=!1),(qs("#cinv").hidden=!0),(qs("#cdone").textContent="CLOSE"),Ya("<b>Workbench.</b> Open your <b>BAG</b> and drag things onto the table. Liquids must be measured in the <b>small beaker</b> first, then poured into the big one. Safety gear first: tap your goggles and gloves."+
-(La()?" Weapon parts go on the <b>assembly mat</b>.":""),"",),cancelAnimationFrame(xa),(xa=requestAnimationFrame(Za)));}
+performance.now()-Ta<4e3;let benchPref="auto";try{benchPref=localStorage.getItem("evoquest_bench")||"auto";}catch(e){}
+const screenInches=()=>
+Math.hypot(screen.width||innerWidth,screen.height||innerHeight)/160,tapBench=()=>("auto"===benchPref?screenInches()<7:"tap"===benchPref);function applyBenchUi(){const t=tapBench();(qs("#gx").classList.toggle("tap",t),(qs("#cinv").hidden=!t),cancelAnimationFrame(xa),t||(xa=requestAnimationFrame(Za)));}
+function setBenchMode(t){benchPref=t;try{localStorage.setItem("evoquest_bench",t);}catch(e){}}
+function openBench(){((modal=2),(ga=[]),(pa=null),(Ea=0),(wa=null),(b=g=!1),(qs("#gx").hidden=!1),(qs("#cdone").textContent="CLOSE"),applyBenchUi(),Ya(tapBench()?"<b>Mixing bench.</b> There is no recipe card, so use what you learned. Safety gear first, then build the solvent. Think about the SAFE ORDER and the right AMOUNTS (the beaker holds 6 parts)."+
+(La()?" Tap weapon parts to set them on the bench.":""):"<b>Workbench.</b> Open your <b>BAG</b> and drag things onto the table. Liquids must be measured in the <b>small beaker</b> first, then poured into the big one. Safety gear first: tap your goggles and gloves."+
+(La()?" Weapon parts go on the <b>assembly mat</b>.":""),"",));}
 function Na(){((qs("#gx").hidden=!0),(modal=0),(ga=[]),(pa=null),(b=g=!1),cancelAnimationFrame(xa),(ka=null),(qs("#fpGhost").hidden=!0),updateBag(),updateGuide(),updateHud());}
 function Ya(a,e){((ma=a),(ya=e||""));const o=inv.filter((t)=>"potion"!==t&&"blaster"!==t);qs("#cinv").innerHTML=
 o.map((t)=>
@@ -3122,9 +3233,8 @@ t+
 '"><img draggable="false" src="'+
 s(items[t].k,items[t].c)+
 '"><span>'+
-((t)=>
-"goggles"===t?worn?"GOGGLES ✔":"GOGGLES (tap)":"gloves"===t?gloved?"GLOVES ✔":"GLOVES (tap)":items[t].n.split(" (")[0])(t)+
-"</span></button>",).join("")||"<p>Your bag is empty.</p>";const r=(t,a)=>
+(tapBench()?tapLabel(t):"goggles"===t?worn?"GOGGLES ✔":"GOGGLES (tap)":"gloves"===t?gloved?"GLOVES ✔":"GLOVES (tap)":items[t].n.split(" (")[0])+
+"</span></button>",).join("")||"<p>Your bag is empty.</p>";qs("#bkl").innerHTML=ga.map((t)=>'<div style="background:'+(Ca[t]||"#888")+'cc"></div>').join("");const r=(t,a)=>
 '<span class="chip'+(a?" on":"")+'">'+(a?"✔ ":"")+t+"</span>";qs("#cst").innerHTML=
 r("Goggles",worn)+
 r("Gloves",gloved)+
@@ -3146,6 +3256,7 @@ r("Barrel",ua.b):"");const n=qs("#cmsg");((n.className=e||""),(n.innerHTML=Qt(a)
 b&&
 g)));const l=La();(["zTray","zH","zC","zB"].forEach((a)=>(qs("#"+a).style.display=l?"":"none")),(qs("#fpBag").innerHTML=
 '<img draggable="false" src="'+s("bottle","#e8e060")+'">BAG '+o.length));}
+function tapLabel(t){return"goggles"===t?worn?"GOGGLES ✔":"WEAR GOGGLES":"gloves"===t?gloved?"GLOVES ✔":"WEAR GLOVES":"rod"===t?"STIR (glass rod)":"strip"===t?"TEST pH (strip)":(Ia[t]?"PLACE ":"POUR ")+items[t].n.split(" (")[0];}
 function Va(t,a){wa={k:t,c:a,t0:performance.now()};}
 function ja(t){const a=(t)=>Ya(t,"bad"),e=(t)=>Ya(t,"good");if("goggles"===t)
 return((worn=!worn),e(worn?"Goggles on. Eyes protected.":"Goggles off. Put them back on before touching anything.",));if("gloves"===t)
@@ -3238,7 +3349,7 @@ for(let t=0;t<8;t++){const a=(t/8)*6.283,e=26*x;o("#eaf8ff",85+Math.cos(a)*e,142
 if(ka&&ka.moved&&"@small"!==ka.id){const t=ka.id,o=0.45+0.35*Math.sin(a/120);((e.lineWidth=1),e.setLineDash([3,2]),(e.strokeStyle="rgba(255,224,112,"+o+")"),Ra.includes(t)?e.strokeRect(258.5,114.5,35,48):Pa.includes(t)?e.strokeRect(62.5,118.5,40,36):Ia[t]?e.strokeRect(...{handle:[26.5,130.5,34,34],canister:[62.5,118.5,40,36],fullcan:[62.5,118.5,40,36],barrel:[104.5,130.5,42,26],}[t],):"goggles"!==t&&"gloves"!==t&&e.strokeRect(160.5,60.5,63,94),e.setLineDash([]));}
 if(worn){o("rgba(120,230,255,.04)",0,0,384,216);const t=e.createRadialGradient(192,108,150,192,108,240);(t.addColorStop(0,"rgba(10,20,24,0)"),t.addColorStop(1,"rgba(10,20,24,.55)"),(e.fillStyle=t),e.fillRect(0,0,384,216),o("rgba(160,240,255,.18)",60,2,264,1));}
 gloved&&(o("rgba(74,154,255,.9)",4,4,6,6),o("#9ad0ff",4,4,6,1));})(performance.now()),(xa=requestAnimationFrame(Za)));}
-(qs("#fp").addEventListener("pointerdown",function(t){const a=t.target.closest("[data-id],[data-drag]");if(!a)return;let e=a.dataset.id||null;if("small"===a.dataset.drag){if(!pa)return;e="@small";}
+(qs("#fp").addEventListener("pointerdown",function(t){const a=t.target.closest("[data-id],[data-drag]");if(!a||tapBench())return;let e=a.dataset.id||null;if("small"===a.dataset.drag){if(!pa)return;e="@small";}
 e&&(t.preventDefault(),(ka={id:e,x0:t.clientX,y0:t.clientY,moved:0}));}),window.addEventListener("pointermove",function(a){const e=ka;if(!e)return;const o=a.clientX-e.x0,r=a.clientY-e.y0;if(!e.moved&&o*o+r*r>49){((e.moved=1),(qs("#cinv").hidden=!0));const a=qs("#fpGhost");"@small"!==e.id&&((a.src=s(items[e.id].k,items[e.id].c)),(a.hidden=!1));}
 if(e.moved){const e=qs("#fp").getBoundingClientRect(),o=qs("#fpGhost");((o.style.left=a.clientX-e.left+"px"),(o.style.top=a.clientY-e.top+"px"),(va=(function(a){const e=qs("#fpc").getBoundingClientRect();return[((a.clientX-e.left)/e.width)*384,((a.clientY-e.top)/e.height)*216];})(a)));}}),window.addEventListener("pointerup",function(a){const e=ka;if(!e)return;if(((ka=null),(qs("#fpGhost").hidden=!0),(va=null),!e.moved))
 return void(function(t){if("goggles"===t||"gloves"===t)return ja(t);if("@small"===t)
@@ -3246,7 +3357,7 @@ return Ya("Drag the small beaker onto the big beaker to pour it in.","");const a
 items[t].n+
 "</b><br>"+
 (a?a.what:"")+
-'<br><span style="color:#ffe070">Drag it onto the table to use it.</span>',"",);})(e.id);const o=document.elementFromPoint(a.clientX,a.clientY),r=o&&o.closest?o.closest("[data-drop]"):null;!(function(a,e){const o=(t)=>Ya(t,"bad"),r=(t)=>Ya(t,"good");if(((qs("#cdone").textContent="CLOSE"),"goggles"===a||"gloves"===a))return ja(a);if(!e)
+'<br><span style="color:#ffe070">Drag it onto the table to use it.</span>',"",);})(e.id);const o=document.elementFromPoint(a.clientX,a.clientY),r=o&&o.closest?o.closest("[data-drop]"):null;benchDrop(e.id,r?r.dataset.drop:null);}),window.addEventListener("pointercancel",()=>{((ka=null),(va=null),(qs("#fpGhost").hidden=!0));}),(qs("#fpBag").onclick=()=>{const a=qs("#cinv");a.hidden=!a.hidden;}),(qs("#cinv").onclick=(t)=>{const a=t.target.closest("[data-id]");if(!a||!tapBench())return;const e=a.dataset.id;Ia[e]?benchDrop(e,Ia[e]):Pa.includes(e)?benchDrop(e,"sc"):ja(e);}));function benchDrop(a,e){const o=(t)=>Ya(t,"bad"),r=(t)=>Ya(t,"good");if(((qs("#cdone").textContent="CLOSE"),"goggles"===a||"gloves"===a))return ja(a);if(!e)
 return Ya("Drop it on the table: on a beaker"+(La()?" or on the assembly mat":"")+".","",);if("@small"===a){if("main"!==e)return o("Pour the small beaker into the <b>big beaker</b>.");const t=pa,a=ga.length;return(ja(t),void(ga.length>a&&((pa=null),Va("pour",Ca[t]),Ya(ma,ya))));}
 if(Ra.includes(a)){if("main"===e)
 return o("<b>Not straight from the bottle.</b> Measure one part into the <b>small beaker</b> first, then pour the small beaker into the big one. That is how you control the amounts.",);if("small"!==e)return o("Liquids go into the <b>small beaker</b>.");if(!Xa())return;return pa?o("The small beaker already holds "+
@@ -3266,7 +3377,8 @@ return o("Put the <b>Venom Canister</b> on the mat first, then drop the vials in
 r("<b>FULL VENOM CANISTER!</b> All three vials are sealed inside. Now put the <b>handle</b> and the <b>barrel</b> on the mat to assemble the weapon.",));}else
 r("Venom vial "+
 canFill+
-" of 3 poured into the canister. The venom hisses against the steel.",);updateGuide();}else Ya("That does not belong on the bench.","");})(e.id,r?r.dataset.drop:null);}),window.addEventListener("pointercancel",()=>{((ka=null),(va=null),(qs("#fpGhost").hidden=!0));}),(qs("#fpBag").onclick=()=>{const a=qs("#cinv");a.hidden=!a.hidden;}));const $a={ArrowLeft:"l",a:"l",A:"l",ArrowRight:"r",d:"r",D:"r"};(window.addEventListener("keydown",function(a){if(!GM.on)return;const e=a.key;if(cine)return(("Escape"!==e&&"Enter"!==e)||skipCine(),void a.preventDefault());modal?"Escape"===e&&(2===modal?Na():qs("#gkOk").click()):$a[e]?((keys[$a[e]]=1),a.preventDefault(),a.stopPropagation()):"ArrowUp"===e||"w"===e||"W"===e||" "===e?((jumpBuf=8),a.preventDefault(),a.stopPropagation()):"j"===e||"J"===e||"x"===e||"X"===e||"z"===e||"Z"===e?((punchBuf=8),a.preventDefault(),a.stopPropagation()):"f"===e||"F"===e||"k"===e||"K"===e?((shootBuf=3),a.preventDefault(),a.stopPropagation()):("e"!==e&&
+" of 3 poured into the canister. The venom hisses against the steel.",);updateGuide();}else Ya("That does not belong on the bench.","");}
+const $a={ArrowLeft:"l",a:"l",A:"l",ArrowRight:"r",d:"r",D:"r"};(window.addEventListener("keydown",function(a){if(!GM.on)return;const e=a.key;if(cine)return(("Escape"!==e&&"Enter"!==e)||skipCine(),void a.preventDefault());modal?"Escape"===e&&(2===modal?Na():qs("#gkOk").click()):$a[e]?((keys[$a[e]]=1),a.preventDefault(),a.stopPropagation()):"ArrowUp"===e||"w"===e||"W"===e||" "===e?((jumpBuf=8),a.preventDefault(),a.stopPropagation()):"j"===e||"J"===e||"x"===e||"X"===e||"z"===e||"Z"===e?((punchBuf=8),a.preventDefault(),a.stopPropagation()):"f"===e||"F"===e||"k"===e||"K"===e?((shootBuf=3),a.preventDefault(),a.stopPropagation()):("e"!==e&&
 "E"!==e&&
 "Enter"!==e&&
 "ArrowDown"!==e&&
@@ -3700,7 +3812,7 @@ stage+
 (0|tr)),t!==Ho&&((Ho=t),(Fo.textContent=t),(Fo.hidden=!1)));})());}
 function frameLoop(t){if(GM.on){for(ar&&(tr=0.9*tr+(1e3/Math.max(1,t-ar))*0.1),ar=t,lt||(lt=t),st+=Math.min(100,t-lt)*(Eo.ts||1),lt=t,st>400&&(st=400);st>=16.67;)
 (update(),(st-=16.67));(render(),(Ot=requestAnimationFrame(frameLoop)));}}
-((GM.step=(t)=>{for(let a=0;a<t;a++)update();}),(GM.render=render),(GM.spawnBoss=()=>{(spawnBoss(),(snakeBoss.st="walk"),(snakeBoss.t=0));}),(GM.cheat=()=>{((bossOpen=!0),Qo());}),(GM.sealTest=()=>{((bossOpen=!1),(corrode=0),Qo());}),(GM.give=(t)=>{(t.forEach((t)=>{(inv.includes(t)||inv.push(t),got.add(t));}),updateBag(),updateGuide());}),(GM.bench=()=>({beaker:[...ga],small:pa,worn:worn,gloved:gloved,stirred:b,tested:g,canFill:canFill,tray:Object.assign({},ua),msg:ma,})),(GM.craft=()=>openBench()),(GM.dbg=()=>({bossOpen:bossOpen,cine:cine?cine.ph:null,canFill:canFill,drops:drops.length,doorCut:doorCut,minis:minis.length,camX:camX,exitOpen:exitOpen,bv:shots.map((t)=>t.vx),face:player.face,hasGun:hasGun,ammo:ammo,hp:hp,boss:snakeBoss&&{hp:snakeBoss.hp,st:snakeBoss.st,x:snakeBoss.x},dead:dead,room:room,x:player.x,y:player.y,stage:stage,got:[...got],inv:[...inv],hasPotion:hasPotion,exitOpen:exitOpen,erode:erode,pour:pourT,modal:modal,win:won,})),(GM.boss=(t)=>{snakeBoss&&Object.assign(snakeBoss,t);}),(GM.hurt=(t)=>hurtPlayer(t)),(GM.set=(t)=>{(t.room&&((room=t.room),backdrops[room]||backdrop(room)),void 0!==t.x&&(player.x=t.x),void 0!==t.y&&(player.y=t.y));}));const Eo={on:!1,god:0,ammo:0,speed:0,jump:0,fly:0,one:0,nopop:0,ts:1,dbg:0,box:0,tmr:1,sItems:0,sOpen:0,sRoom:"",};let Io="",Oo=0,Lo=null,Ho="";const No=qs("#dvc"),Do=qs("#dvp"),Go=qs("#gdv"),Bo=qs("#dnab"),Fo=qs("#dvh"),Wo=(t)=>{const a=t/60,e=Math.floor(a/60);return(e<10?"0":"")+e+":"+(a%60<10?"0":"")+(a%60).toFixed(2);};function zo(){qs("#dvd").textContent="●".repeat(Io.length)+"○".repeat(6-Io.length);}
+((GM.step=(t)=>{for(let a=0;a<t;a++)update();}),(GM.render=render),(GM.spawnBoss=()=>{(spawnBoss(),(snakeBoss.st="walk"),(snakeBoss.t=0));}),(GM.cheat=()=>{((bossOpen=!0),Qo());}),(GM.sealTest=()=>{((bossOpen=!1),(corrode=0),Qo());}),(GM.give=(t)=>{(t.forEach((t)=>{(inv.includes(t)||inv.push(t),got.add(t));}),updateBag(),updateGuide());}),(GM.bench=()=>({beaker:[...ga],small:pa,worn:worn,gloved:gloved,stirred:b,tested:g,canFill:canFill,tray:Object.assign({},ua),tap:tapBench(),msg:ma,})),(GM.craft=()=>openBench()),(GM.dbg=()=>({bossOpen:bossOpen,cine:cine?cine.ph:null,canFill:canFill,drops:drops.length,doorCut:doorCut,minis:minis.length,camX:camX,exitOpen:exitOpen,bv:shots.map((t)=>t.vx),face:player.face,hasGun:hasGun,ammo:ammo,hp:hp,boss:snakeBoss&&{hp:snakeBoss.hp,st:snakeBoss.st,x:snakeBoss.x},dead:dead,room:room,x:player.x,y:player.y,stage:stage,got:[...got],inv:[...inv],hasPotion:hasPotion,exitOpen:exitOpen,erode:erode,pour:pourT,modal:modal,win:won,})),(GM.boss=(t)=>{snakeBoss&&Object.assign(snakeBoss,t);}),(GM.hurt=(t)=>hurtPlayer(t)),(GM.set=(t)=>{(t.room&&((room=t.room),backdrops[room]||backdrop(room)),void 0!==t.x&&(player.x=t.x),void 0!==t.y&&(player.y=t.y));}));const Eo={on:!1,god:0,ammo:0,speed:0,jump:0,fly:0,one:0,nopop:0,ts:1,dbg:0,box:0,tmr:1,sItems:0,sOpen:0,sRoom:"",};let Io="",Oo=0,Lo=null,Ho="";const No=qs("#dvc"),Do=qs("#dvp"),Go=qs("#gdv"),Bo=qs("#dnab"),Fo=qs("#dvh"),Wo=(t)=>{const a=t/60,e=Math.floor(a/60);return(e<10?"0":"")+e+":"+(a%60<10?"0":"")+(a%60).toFixed(2);};function zo(){qs("#dvd").textContent="●".repeat(Io.length)+"○".repeat(6-Io.length);}
 function qo(){"712411"===Io?((Eo.on=!0),(No.hidden=!0),er()):((qs("#dvm").textContent="INVALID CODE"),(Io=""),zo(),No.classList.add("bad"),setTimeout(()=>No.classList.remove("bad"),400));}
 function Yo(t){if("C"===t)Io=Io.slice(0,-1);else{if("OK"===t)return void qo();Io.length<6&&(Io+=t);}
 (zo(),6===Io.length&&setTimeout(qo,140));}
@@ -3719,6 +3831,11 @@ Uo.map(([t,a])=>e(Eo[t],'data-t="'+t+'"',a+": "+(Eo[t]?"ON":"OFF"))).join("")+
 "</div>"),(r+=
 '<h4>GAME SPEED</h4><div class="dvg4">'+
 jo.map(([t,a])=>e(Eo.ts===t,'data-s="'+t+'"',a)).join("")+
+"</div>"),(r+=
+"<h4>WORKBENCH UI: NOW "+
+(tapBench()?"PHONE (TAP)":"DESKTOP (DRAG)")+
+'</h4><div class="dvg4">'+
+[["auto","AUTO"],["bench","DESKTOP"],["tap","PHONE"],].map(([t,a])=>e(benchPref===t,'data-w="'+t+'"',a)).join("")+
 "</div>"),(r+=
 '<h4>DEBUG VIEW</h4><div class="dvg">'+
 Vo.map(([t,a])=>e(Eo[t],'data-t="'+t+'"',a+": "+(Eo[t]?"ON":"OFF"))).join("",)+
@@ -3748,7 +3865,7 @@ Wo(runT)+
 let tr=60,ar=0;function er(){(GM.on&&((Oo=modal),(modal=1)),_o(),(Do.hidden=!1));}
 function or(){((Do.hidden=!0),GM.on&&(modal=Oo?1:0),(Oo=0));}
 ((Bo.onclick=()=>((Io=""),zo(),(qs("#dvm").textContent="STAFF ACCESS CODE"),void(No.hidden=!1))),(Go.onclick=()=>er()),(qs("#dvk").onclick=(t)=>{const a=t.target.closest("[data-k]");a&&Yo(a.dataset.k);}),(qs("#dvq").onclick=()=>{No.hidden=!0;}),(Do.onclick=(a)=>{const e=a.target;if("dvx"===e.id||e===Do)return void or();const o=e.closest("button");o&&
-(o.dataset.t?((Eo[o.dataset.t]^=1),_o()):o.dataset.s?((Eo.ts=+o.dataset.s),_o()):o.dataset.r?GM.on?(Zo(o.dataset.r),or()):((Eo.sRoom=Eo.sRoom===o.dataset.r?"":o.dataset.r),_o()):o.dataset.a&&
+(o.dataset.t?((Eo[o.dataset.t]^=1),_o()):o.dataset.s?((Eo.ts=+o.dataset.s),_o()):o.dataset.w?(setBenchMode(o.dataset.w),_o()):o.dataset.r?GM.on?(Zo(o.dataset.r),or()):((Eo.sRoom=Eo.sRoom===o.dataset.r?"":o.dataset.r),_o()):o.dataset.a&&
 (function(a){if(!GM.on)
 return("items"===a?(Eo.sItems^=1):"open"===a&&(Eo.sOpen^=1),void _o());if("items"===a)(Xo(),toast("All items added.",1600));else if("gun"===a)(Qo(),toast("Venom Blaster added.",1600));else if("solvent"===a)
 ((hasPotion=!0),inv.includes("potion")||inv.push("potion"),0===stage&&(stage=1),updateBag(),updateGuide(),toast("Solvent added.",1600));else if("open"===a)(Ko(),toast("Barricade removed.",1600));else if("heal"===a)

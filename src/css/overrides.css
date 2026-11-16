@@ -1064,3 +1064,109 @@ body.ingame #dnab {
 .bl-on {
   opacity: 1 !important;
 }
+#fpT,
+#fpHint,
+#fp #bkr {
+  display: none;
+}
+#gx.tap #fp {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 8px 12px;
+  align-content: start;
+  width: min(520px, 100%);
+  height: auto;
+  max-height: 94vh;
+  max-height: 94dvh;
+  overflow: auto;
+  padding: 14px;
+  font-size: 8px;
+  line-height: 1.8;
+  color: #e8f2ff;
+  background: #101a30;
+  border: 3px solid #8fb8ff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 3px #060a16;
+  touch-action: pan-y;
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+#gx.tap #fp > * {
+  grid-column: 1 / -1;
+}
+#gx.tap #fpc,
+#gx.tap .fpz,
+#gx.tap #fpBag,
+#gx.tap #fpGhost {
+  display: none;
+}
+#gx.tap #fpT {
+  display: block;
+  margin: 0;
+  font-size: 11px;
+  color: #ffe070;
+  line-height: 1.5;
+}
+#gx.tap #fpHint {
+  display: block;
+  margin: 0;
+}
+#gx.tap #fp #bkr {
+  display: block;
+  grid-column: 1;
+  grid-row: 2;
+  height: 112px;
+  align-self: end;
+}
+#gx.tap #fp #cmsg {
+  position: static;
+  grid-column: 2;
+  grid-row: 2;
+  width: auto;
+  min-height: 112px;
+  padding: 8px;
+  font-size: 7px;
+  line-height: 1.8;
+  background: #0a1224;
+}
+#gx.tap #fp #cst {
+  position: static;
+  justify-content: flex-start;
+  width: auto;
+  text-align: left;
+  font-size: 7px;
+  line-height: 1.9;
+  text-shadow: none;
+}
+#gx.tap #fp #cinv {
+  position: static;
+  width: auto;
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+  background: none;
+  border: 0;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 6px;
+}
+#gx.tap #fp #cinv button {
+  flex-direction: row;
+  text-align: left;
+  font-size: 7px;
+  line-height: 1.4;
+  padding: 5px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+#gx.tap #fp #cinv button img {
+  width: 28px;
+  height: 28px;
+}
+#gx.tap #fpBtns {
+  position: static;
+  flex-wrap: wrap;
+}
+#gx.tap #fpBtns .gbtn {
+  font-size: 9px;
+  padding: 10px 12px;
+}

@@ -303,6 +303,26 @@ const Sa = (t) => ga.filter((a) => a === t).length,
   La = () =>
     (!hasGun && (Zt("canister") || Zt("fullcan") || Zt("barrel") || Zt("handle") || Pa.some(Zt))) ||
     performance.now() - Ta < 4e3;
+let benchPref = "auto";
+try {
+  benchPref = localStorage.getItem("evoquest_bench") || "auto";
+} catch (e) {}
+const screenInches = () =>
+    Math.hypot(screen.width || innerWidth, screen.height || innerHeight) / 160,
+  tapBench = () => ("auto" === benchPref ? screenInches() < 7 : "tap" === benchPref);
+function applyBenchUi() {
+  const t = tapBench();
+  (qs("#gx").classList.toggle("tap", t),
+    (qs("#cinv").hidden = !t),
+    cancelAnimationFrame(xa),
+    t || (xa = requestAnimationFrame(Za)));
+}
+function setBenchMode(t) {
+  benchPref = t;
+  try {
+    localStorage.setItem("evoquest_bench", t);
+  } catch (e) {}
+}
 function openBench() {
   ((modal = 2),
     (ga = []),
@@ -311,15 +331,16 @@ function openBench() {
     (wa = null),
     (b = g = !1),
     (qs("#gx").hidden = !1),
-    (qs("#cinv").hidden = !0),
     (qs("#cdone").textContent = "CLOSE"),
+    applyBenchUi(),
     Ya(
-      "<b>Workbench.</b> Open your <b>BAG</b> and drag things onto the table. Liquids must be measured in the <b>small beaker</b> first, then poured into the big one. Safety gear first: tap your goggles and gloves." +
-        (La() ? " Weapon parts go on the <b>assembly mat</b>." : ""),
+      tapBench()
+        ? "<b>Mixing bench.</b> There is no recipe card, so use what you learned. Safety gear first, then build the solvent. Think about the SAFE ORDER and the right AMOUNTS (the beaker holds 6 parts)." +
+            (La() ? " Tap weapon parts to set them on the bench." : "")
+        : "<b>Workbench.</b> Open your <b>BAG</b> and drag things onto the table. Liquids must be measured in the <b>small beaker</b> first, then poured into the big one. Safety gear first: tap your goggles and gloves." +
+            (La() ? " Weapon parts go on the <b>assembly mat</b>." : ""),
       "",
-    ),
-    cancelAnimationFrame(xa),
-    (xa = requestAnimationFrame(Za)));
+    ));
 }
 function Na() {
   ((qs("#gx").hidden = !0),
@@ -348,8 +369,9 @@ function Ya(a, e) {
           '"><img draggable="false" src="' +
           s(items[t].k, items[t].c) +
           '"><span>' +
-          ((t) =>
-            "goggles" === t
+          (tapBench()
+            ? tapLabel(t)
+            : "goggles" === t
               ? worn
                 ? "GOGGLES ✔"
                 : "GOGGLES (tap)"
@@ -357,10 +379,13 @@ function Ya(a, e) {
                 ? gloved
                   ? "GLOVES ✔"
                   : "GLOVES (tap)"
-                : items[t].n.split(" (")[0])(t) +
+                : items[t].n.split(" (")[0]) +
           "</span></button>",
       )
       .join("") || "<p>Your bag is empty.</p>";
+  qs("#bkl").innerHTML = ga
+    .map((t) => '<div style="background:' + (Ca[t] || "#888") + 'cc"></div>')
+    .join("");
   const r = (t, a) =>
     '<span class="chip' + (a ? " on" : "") + '">' + (a ? "✔ " : "") + t + "</span>";
   qs("#cst").innerHTML =
@@ -395,6 +420,21 @@ function Ya(a, e) {
   (["zTray", "zH", "zC", "zB"].forEach((a) => (qs("#" + a).style.display = l ? "" : "none")),
     (qs("#fpBag").innerHTML =
       '<img draggable="false" src="' + s("bottle", "#e8e060") + '">BAG ' + o.length));
+}
+function tapLabel(t) {
+  return "goggles" === t
+    ? worn
+      ? "GOGGLES ✔"
+      : "WEAR GOGGLES"
+    : "gloves" === t
+      ? gloved
+        ? "GLOVES ✔"
+        : "WEAR GLOVES"
+      : "rod" === t
+        ? "STIR (glass rod)"
+        : "strip" === t
+          ? "TEST pH (strip)"
+          : (Ia[t] ? "PLACE " : "POUR ") + items[t].n.split(" (")[0];
 }
 function Va(t, a) {
   wa = { k: t, c: a, t0: performance.now() };
