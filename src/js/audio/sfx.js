@@ -1002,6 +1002,41 @@
       a.ev(1.5, 4, D.chirp);
       a.ev(6, 12, D.rustle);
     },
+    street: (a) => {
+      a.noise({ f: 650, type: "bandpass", q: 0.6, v: 0.05, lfoF: [0.05, 260] });
+      a.noise({ f: 4200, type: "highpass", v: 0.006, lfoV: [0.2, 0.005] });
+      a.ev(1.5, 4, D.chirp);
+      a.ev(6, 12, D.rustle);
+      a.ev(14, 26, D.creak);
+    },
+    road: (a) => {
+      a.noise({ f: 520, type: "bandpass", q: 0.5, v: 0.06, lfoF: [0.04, 240] });
+      a.noise({ f: 140, v: 0.05, brown: 1 });
+      a.ev(2.5, 6, D.chirp);
+      a.ev(9, 18, D.rustle);
+      a.ev(16, 30, D.howl);
+    },
+    highway: (a) => {
+      a.noise({ f: 420, type: "bandpass", q: 0.5, v: 0.08, lfoF: [0.05, 260] });
+      a.noise({ f: 160, v: 0.06, brown: 1 });
+      a.ev(5, 10, D.creak);
+      a.ev(12, 22, D.howl);
+    },
+    "highway:chase": (a) => {
+      a.osc({ f: 44, type: "sawtooth", lp: 200, v: 0.06, lfoV: [0.2, 0.02] });
+      a.noise({ f: 420, type: "bandpass", q: 0.5, v: 0.07, lfoF: [0.05, 260] });
+      a.ev(
+        0.5,
+        0.55,
+        (c, o) => {
+          tone(c, { f: 58, d: 0.14, v: 0.1, ...o });
+          tone(c, { f: 52, d: 0.14, v: 0.07, w: 0.17, ...o });
+        },
+        0.2,
+      );
+      a.ev(3, 6, D.hiss);
+      a.ev(6, 12, D.growl);
+    },
   };
 
   /* Cutscene scene beds. Keys match the scene ids used by the cutscene player. */
@@ -1106,6 +1141,11 @@
 
   /* loudness per effect: measured output peak, scaled towards a target so nothing is lost under the music-level mix */
   const LV = {
+    spiderscreech: 7,
+    skitter: 5,
+    web: 6,
+    websplat: 6,
+    stuck: 6,
     logo: 4,
     keytap: 4,
     click: 7.5,
@@ -1155,6 +1195,48 @@
     title: 10,
   };
   Object.assign(S, {
+    /* chapter 2: the giant spider */
+    spiderscreech: (c) => {
+      tone(c, {
+        f: 640,
+        f2: 1500,
+        d: 0.85,
+        v: 0.035,
+        type: "sawtooth",
+        lp: 3200,
+        a: 0.04,
+        rv: 0.5,
+      });
+      tone(c, {
+        f: 905,
+        f2: 1980,
+        d: 0.7,
+        v: 0.02,
+        type: "sawtooth",
+        lp: 3800,
+        a: 0.06,
+        w: 0.05,
+        rv: 0.5,
+      });
+      tone(c, { f: 180, f2: 90, d: 0.9, v: 0.04, type: "sawtooth", lp: 600, rv: 0.4 });
+      noise(c, { d: 0.8, v: 0.05, f: 2600, f2: 1400, type: "bandpass", q: 2, a: 0.05, rv: 0.5 });
+    },
+    skitter: (c) =>
+      [0, 0.045, 0.09].forEach((w, i) =>
+        noise(c, { d: 0.03, v: 0.04, f: 2200 + 500 * i, type: "bandpass", q: 3, w }),
+      ),
+    web: (c) => {
+      noise(c, { d: 0.4, v: 0.06, f: 1900, f2: 500, type: "bandpass", q: 2.5, a: 0.02 });
+      tone(c, { f: 320, f2: 110, d: 0.32, v: 0.04, type: "triangle", lp: 1200 });
+    },
+    websplat: (c) => {
+      noise(c, { d: 0.2, v: 0.09, f: 900, type: "lowpass" });
+      tone(c, { f: 150, f2: 70, d: 0.16, v: 0.05 });
+    },
+    stuck: (c) => {
+      noise(c, { d: 0.45, v: 0.05, f: 1300, type: "bandpass", q: 6, a: 0.04 });
+      tone(c, { f: 260, f2: 200, d: 0.4, v: 0.02, type: "triangle", lp: 900, a: 0.05 });
+    },
     logo: (c) => {
       [196, 247, 294, 392].forEach((f, i) =>
         tone(c, { f, d: 2.2, v: 0.035, a: 0.35 + i * 0.12, rv: 0.45, type: "triangle", lp: 1800 }),
@@ -1347,6 +1429,11 @@
     };
   }
   const MI = {
+    spiderscreech: 400,
+    skitter: 90,
+    web: 60,
+    websplat: 60,
+    stuck: 200,
     heart: 200,
     rumble: 600,
     stinger: 600,
@@ -1420,7 +1507,11 @@
         const room = window.__evoRoom && window.__evoRoom();
         if (room) {
           const boss = window.__evoBoss && window.__evoBoss(),
-            key = room === "exitlab" && boss && boss !== "dead" ? "exitlab:boss" : room;
+            key = ROOMS[room + ":" + boss]
+              ? room + ":" + boss
+              : room === "exitlab" && boss && boss !== "dead"
+                ? "exitlab:boss"
+                : room;
           if (!cur || cur.key !== key) startAmb("room", key, ROOMS[key] || ROOMS[room]);
         }
       } else if (inCut) {

@@ -90,7 +90,8 @@ const Ne = {
     outside: { c: "120,160,160", l: "255,246,206", a: 0.1, dk: 0.2 },
   };
 function updateHud() {
-  const a = "stair" === room || "exitlab" === room || "hall" === room || "ware" === room;
+  const a =
+    "stair" === room || "exitlab" === room || "hall" === room || "ware" === room || !!C2[room];
   ((qs("#gl").innerHTML = a
     ? Array.from(
         { length: 5 },

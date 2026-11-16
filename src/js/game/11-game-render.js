@@ -19,7 +19,7 @@ function render() {
     const t =
       cine && cine.d && null != cine.d.cx
         ? Math.max(0, Math.min(e.W - 192, cine.d.cx))
-        : Math.max(0, Math.min(e.W - 192, player.x - 96));
+        : Math.max(0, Math.min(e.W - 192, player.x - (ch2 && ch2.sp ? 56 : 96)));
     ((camX += 0.12 * (t - camX)), Math.abs(t - camX) < 0.05 && (camX = t));
   } else camX = 0;
   if (
@@ -553,6 +553,7 @@ function render() {
             (fill("#3a2400", e - 0.5, o - 0.5, 2, 2), fill("#ffd23a", e, o, 1, 1));
           }
       })(),
+    c2Draw(),
     "stair" === room &&
       (function () {
         const t = 179,
@@ -1008,6 +1009,7 @@ function render() {
   else if ("ware" === room) modal || (!ta() && !hasGun) || vo(roomW() - 18, 58, 1);
   else if ("exitlab" === room) !bossDone || modal || won || vo(roomW() - 20, floorY() - 34, 1);
   else if ("outside" === room) modal || won || doorCut || vo(146, 62, 1);
+  else if (C2[room]) c2Arrow();
   else if (!(modal || won || pourT > 0)) {
     const t = (function () {
       if (exitOpen) return ta() ? { room: "lab", x: 92 } : { room: "pod", x: 190 };

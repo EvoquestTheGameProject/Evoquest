@@ -174,6 +174,8 @@ function platforms() {
 }
 let ra = !1;
 function updateGuide() {
+  if (C2[room]) return void c2Guide();
+  qs("#gg h4 span").textContent = "GUIDE";
   const a = qs("#ggb");
   let e =
     "exitlab" === room

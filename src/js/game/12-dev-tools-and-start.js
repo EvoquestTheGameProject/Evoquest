@@ -150,6 +150,9 @@ const Uo = [
     ["ware", "STAFF STORAGE"],
     ["exitlab", "BOSS ROOM"],
     ["outside", "OUTSIDE"],
+    ["street", "CH2 STREET"],
+    ["road", "CH2 ROAD"],
+    ["highway", "CH2 HIGHWAY"],
   ];
 function Xo() {
   for (const t in items)
@@ -186,6 +189,14 @@ function Ko() {
     updateGuide());
 }
 function Zo(a) {
+  if (C2[a])
+    return (
+      (modal = 0),
+      (Oo = 0),
+      (qs("#gk").hidden = qs("#gx").hidden = !0),
+      Eo.sItems && Xo(),
+      void c2Start(a)
+    );
   ((modal = 0),
     (Oo = 0),
     (qs("#gk").hidden = !0),
@@ -451,6 +462,7 @@ function or() {
         } catch (t) {}
         !t ||
           !(t.v >= 1) ||
+          (2 === t.ch ? (c2Resume(t), 1) : 0) ||
           ((inv = t.inv || []),
           (got = new Set(t.got || [])),
           (taken = t.taken || {}),
@@ -488,4 +500,4 @@ const fitHud = () =>
   );
 (fitHud(), addEventListener("resize", fitHud));
 window.__evoRoom = () => room;
-window.__evoBoss = () => (snakeBoss ? snakeBoss.st : "");
+window.__evoBoss = () => (snakeBoss ? snakeBoss.st : ch2 && ch2.sp ? "chase" : "");

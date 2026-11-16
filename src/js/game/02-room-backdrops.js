@@ -2,6 +2,7 @@ function backdrop(t) {
   return (
     backdrops[t] ||
     (backdrops[t] = (function (t) {
+      if (C2[t]) return c2Backdrop(t);
       if ("stair" === t)
         return (function () {
           const t = document.createElement("canvas");
@@ -857,5 +858,5 @@ const jt = (t, a, e) => {
 function toast(a, e) {
   const o = qs("#gt");
   if (!a) return (o.classList.remove("on"), void (xt = 0));
-  ((o.innerHTML = a), o.classList.add("on"), (xt = e || 2600));
+  ((o.innerHTML = a), o.classList.add("on"), (xt = Math.round((e || 2600) / 16.7)));
 }

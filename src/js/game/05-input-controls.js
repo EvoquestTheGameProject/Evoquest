@@ -254,7 +254,7 @@ const ae = (t) => {
   );
 }
 function ee() {
-  (document.body.classList.remove("ingame"),
+  (document.body.classList.remove("ingame", "ch2"),
     (GM.on = !1),
     cancelAnimationFrame(Ot),
     (e.hidden = !0),
@@ -280,6 +280,7 @@ function enterRoom(t, e) {
     backdrops[t] || backdrop(t),
     "exitlab" !== t || bossDone || cine || ((player.x = 24), spawnBoss()),
     "outside" === t && ((snakeBoss = null), (venoms = []), (waves = []), (shots = [])),
+    c2Enter(t),
     updateGuide(),
     updateHud());
 }

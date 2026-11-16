@@ -44,6 +44,7 @@ tools/check.js                sanity checks
 | Rooms, items, crafting bench, input, update loop | `js/game/01-…` to `06-…` |
 | Boss-room opening cinematic ("director") | `js/game/08-boss-opening-director.js` |
 | Combat, snake boss, game render, dev tools | `js/game/09-…` to `12-…` |
+| Chapter 2 (street, road, highway spider chase, tunnel escape) | `js/game/13-chapter2.js` |
 
 ## Shipped file is compacted
 

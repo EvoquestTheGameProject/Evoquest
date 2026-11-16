@@ -908,6 +908,7 @@ function update() {
     player.on || (be = player.vy),
     ue > 0 && ue--,
     Te > 0 && Te--);
+  c2Update();
   const o = rooms[room];
   (player.x <= 9 &&
     e < 0 &&
@@ -985,7 +986,7 @@ function ne() {
           e.hidden ||
             ((GM.on = !0),
             (won = 1),
-            clearCheckpoint(),
+            c2Save("street"),
             (qs("#gw").hidden = !1),
             (fadeNow = 1),
             (fadeTo = 1),
@@ -996,14 +997,17 @@ function ne() {
     }));
 }
 function physics(t) {
-  player.x += player.vx;
+  const x0 = player.x;
+  (c2Pre(), (player.x += player.vx));
   const a =
     "pod" !== room || exitOpen || 0 !== erode
       ? "stair" === room && !bossOpen && player.y >= 296
         ? 176
         : roomW() - 6
       : 141;
-  ((player.x = Math.max(8, Math.min(a, player.x))), (player.vy = Math.min(5, player.vy + 0.24)));
+  ((player.x = Math.max(8, Math.min(a, player.x))),
+    c2Walls(x0),
+    (player.vy = Math.min(5, player.vy + 0.24)));
   const e = player.y;
   ((player.y += player.vy), (player.on = !1));
   const o = floorY();
@@ -1037,6 +1041,7 @@ function se(t, a, e) {
 }
 ((qs("#gdR").onclick = () =>
   (function () {
+    if (C2[room]) return void c2Retry();
     if ("fall" === Ue)
       return (
         (qs("#gd").hidden = !0),

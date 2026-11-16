@@ -1080,3 +1080,8 @@ body.ingame #dnab {
 #gm .gov > .gcard {
   max-height: calc(94vh / var(--hud, 1));
 }
+/* chapter 2: keep messages in the sky, off the player and the chase */
+body.ch2 #gt {
+  bottom: auto;
+  top: 24%;
+}
