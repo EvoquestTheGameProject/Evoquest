@@ -309,9 +309,7 @@ function $dT(a) {
   if (d.txt && d.cp < d.txt.length) {
     d.cp += 0.85;
     const c = Math.floor(d.cp);
-    c !== d.lc &&
-      ((d.lc = c),
-      /[a-z0-9]/i.test(d.txt[c - 1] || "") && c % 3 == 0 && $sx("blip", d.who, d.txt[c - 1]));
+    for (; d.lc < c; d.lc++) $sx("blip", d.who, d.txt[d.lc]);
   }
 }
 

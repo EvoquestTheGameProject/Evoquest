@@ -32,10 +32,8 @@ async function say(t, a) {
     nt.classList.add("speaker-in"),
     (st.textContent = ""));
   let e = 0;
-  for (typing = 1; e < a.length && typing; )
-    ((st.textContent = a.slice(0, ++e)),
-      e % 3 || !/[a-z0-9]/i.test(a[e - 1]) || $sx("blip", speaker, a[e - 1]),
-      await sleep(22));
+  for (typing = 1; e < a.length && typing;)
+    ((st.textContent = a.slice(0, ++e)), $sx("blip", speaker, a[e - 1]), await sleep(22));
   ((st.textContent = a), (typing = 0), await wait(1350 + Math.min(2600, 34 * a.length)));
 }
 async function titleCard(t, a = 2300) {

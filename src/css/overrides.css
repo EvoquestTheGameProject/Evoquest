@@ -515,7 +515,7 @@
   position: relative;
   width: min(100vw, 177.78vh);
   height: min(56.25vw, 100vh);
-  font-size: clamp(6px, 1.3vw, 11px);
+  font-size: clamp(6px, min(1.3vw, 2.31vh), 26px);
   touch-action: none;
   overflow: hidden;
   user-select: none;
@@ -970,6 +970,9 @@ body.ingame #dnab {
   gap: 18px;
   justify-items: center;
 }
+#bootWarn[hidden] {
+  display: none;
+}
 #bootWarn h2 {
   font-weight: 400;
   font-size: clamp(16px, 4vw, 22px);
@@ -1169,4 +1172,17 @@ body.ingame #dnab {
 #gx.tap #fpBtns .gbtn {
   font-size: 9px;
   padding: 10px 12px;
+}
+/* HUD grows with big screens (desktop, laptop, iPad); --hud is set from the window size */
+#gh,
+#gg,
+#gt,
+#gb,
+#dvh,
+#gm .quit,
+#gm .gov > .gcard {
+  zoom: var(--hud, 1);
+}
+#gm .gov > .gcard {
+  max-height: calc(94vh / var(--hud, 1));
 }

@@ -86,6 +86,10 @@ function snakePose(t) {
       } else if ("walk" === e)
         ((o = 0.05 * Math.sin(tick / 8)), (n = 1.4 * Math.sin(tick / 8 + 1.2)));
       else "tail" === e ? (l = cine ? cine.sink : 22) : (o = 0.035 * Math.sin(tick / 30));
+      if ("walk" === e || "throw" === e || "charge" === e)
+        o += 0.12 * Math.max(0, Math.min(1, (floorY() - player.y) / 50));
+      const fl = (t.flash || 0) / 6;
+      ((o += 0.14 * fl), (n -= 4 * fl), (r += 3 * fl));
       return {
         hr: o,
         hdx: r,
@@ -113,6 +117,7 @@ function snakePose(t) {
     by: n,
     W: s,
     mouth: s(...l(...a.mouth)),
+    tip: s(...l(a.mouth[0] - 20, a.mouth[1])),
     eye: s(...l(...a.eye)),
     head: s(...l(...a.hc)),
     f: -o,
@@ -229,11 +234,11 @@ function drawSnake(t, a) {
             l.clearRect(0, 0, o.w, o.h),
             ((t) => {
               (!(function (t, a, e, o, r) {
-                for (let n = 0; n < r; n += 8)
-                  for (let l = 0; l < o; l += 8) {
-                    const s = e(l + 4, n + 4, r),
-                      c = Math.min(9, o - l),
-                      i = Math.min(9, r - n);
+                for (let n = 0; n < r; n += 6)
+                  for (let l = 0; l < o; l += 6) {
+                    const s = e(l + 3, n + 3, r),
+                      c = Math.min(7, o - l),
+                      i = Math.min(7, r - n);
                     t.drawImage(a, l, n, c, i, l + s[0], n + s[1], c, i);
                   }
               })(t, e.b, s, o.w, o.h),
@@ -278,6 +283,7 @@ function drawSnake(t, a) {
         0,
       ),
       ctx.restore(),
+      snakeFace(t, n, a),
       "dead" !== t.st &&
         "tail" !== t.st &&
         o.sparks.forEach((t, e) => {
@@ -296,6 +302,53 @@ function drawSnake(t, a) {
         }),
       n)
     : n;
+}
+/* tongue flicks, eye glow and blinks, drawn on top of the warped sprite in room space */
+function snakeFace(t, n, al) {
+  const st = t.st,
+    k = tick + 37;
+  if ("dead" === st || "tail" === st) return;
+  const e = n.eye,
+    angry = ("charge" === st && t.t < 40) || ("throw" === st && t.t < 30);
+  glow(e.x, e.y, angry ? 7 : 4 + Math.sin(tick / 9), "255,70,40", (angry ? 0.8 : 0.4) * al);
+  k % 230 < 7 && "stun" !== st && fill("#1c2a1e", e.x - 1.8, e.y - 1.4, 3.6, 2.8);
+  let ext = 0;
+  if ("stun" === st) ext = 0.55;
+  else if (angry) ext = 0.75 + 0.25 * Math.sin(tick / 1.6);
+  else {
+    const u = k % ("walk" === st ? 110 : 150);
+    u < 24 && (ext = Math.abs(Math.sin((u / 24) * 2 * Math.PI)));
+  }
+  if (ext < 0.08 || "intro" === st) return;
+  const m = n.mouth,
+    dx = n.tip.x - m.x,
+    dy = n.tip.y - m.y,
+    d = Math.hypot(dx, dy) || 1,
+    ux = dx / d,
+    uy = dy / d + ("stun" === st ? 0.6 : 0),
+    L = 8 * ext,
+    w = "stun" === st ? 0 : Math.sin(tick / 1.3) * 0.8,
+    x1 = m.x + ux * L,
+    y1 = m.y + uy * L + w;
+  ((ctx.globalAlpha = al),
+    (ctx.lineCap = "round"),
+    (ctx.strokeStyle = "#8a1424"),
+    (ctx.lineWidth = 1.1),
+    ctx.beginPath(),
+    ctx.moveTo(m.x, m.y),
+    ctx.quadraticCurveTo(m.x + ux * L * 0.5, m.y + uy * L * 0.5 - w, x1, y1),
+    ctx.lineTo(x1 + ux * 2.4 - uy * 1.3, y1 + uy * 2.4 + ux * 1.3),
+    ctx.moveTo(x1, y1),
+    ctx.lineTo(x1 + ux * 2.4 + uy * 1.3, y1 + uy * 2.4 - ux * 1.3),
+    ctx.stroke(),
+    (ctx.strokeStyle = "#ff5a6a"),
+    (ctx.lineWidth = 0.4),
+    ctx.beginPath(),
+    ctx.moveTo(m.x, m.y - 0.2),
+    ctx.lineTo(x1, y1 - 0.2),
+    ctx.stroke(),
+    (ctx.lineCap = "butt"),
+    (ctx.globalAlpha = 1));
 }
 function Mo(t, a, e, o) {
   const r = floorY(),

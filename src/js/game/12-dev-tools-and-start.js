@@ -496,5 +496,11 @@ function or() {
       cancelAnimationFrame(Ot),
       (Ot = requestAnimationFrame(frameLoop)));
   }));
+const fitHud = () =>
+  document.documentElement.style.setProperty(
+    "--hud",
+    Math.max(1, Math.min(innerWidth / 900, innerHeight / 440, 2.4)).toFixed(2),
+  );
+(fitHud(), addEventListener("resize", fitHud));
 window.__evoRoom = () => room;
 window.__evoBoss = () => (snakeBoss ? snakeBoss.st : "");

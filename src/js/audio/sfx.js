@@ -1,6 +1,6 @@
 /* EvoQuest sound design: a procedural Web Audio engine (no audio files).
    - Effects are layered (body + noise texture + tail) and softened with filters and a small-room reverb.
-   - Talking uses a formant voice synth (vowel-shaped, per-character pitch) instead of beeps.
+   - Talking is one continuous formant voice for every speaker, steered letter by letter (no beeps).
    - Rooms and cutscene scenes each get their own looping ambience bed plus random one-shot details.
    Everything is called through $sx(), which is wrapped in try/catch so audio can never break the game. */
 (() => {
@@ -187,71 +187,186 @@
   const arp = (c, fs, step, v, d, w0 = 0, o = {}) =>
     fs.forEach((f, i) => bell(c, f, w0 + i * step, v, d, o));
 
-  /* ---------- the talking voice: formant synthesis ---------- */
+  /* ---------- the talking voice: one continuous speech synth shared by every speaker ----------
+     A talker (glottal pulse -> 3 moving formants + breath) is kept alive while text types out.
+     Each character steers it: vowels open the mouth and move the formants, consonants close it or
+     add a hiss/click, spaces and punctuation make the pauses, and the pitch follows a phrase contour. */
   const VOW = {
-    a: [800, 1150, 2800],
-    e: [530, 1840, 2480],
-    i: [270, 2290, 3010],
-    o: [570, 840, 2410],
-    u: [300, 870, 2240],
+    a: [760, 1220, 2600],
+    e: [520, 1800, 2500],
+    i: [300, 2200, 2950],
+    o: [540, 880, 2450],
+    u: [330, 900, 2300],
+    y: [320, 2000, 2800],
   };
-  function voice(c, kind, letter, gender) {
-    const ch = String(letter || "a").toLowerCase()[0] || "a",
-      code = ch.charCodeAt(0) || 97,
-      vw = VOW[ch] || VOW["aeiou"[code % 5]],
-      t = c.currentTime,
-      narr = kind === "",
-      fem = kind === "p" && gender === 1;
-    const base = kind === "p" ? (fem ? 232 : 124) : kind === "a" ? 168 : 92;
-    const f0 = base * J(0.07) * (1 + ((code % 7) - 3) * 0.016);
-    const d = narr ? 0.14 : 0.09;
-    const src = narr ? c.createBufferSource() : c.createOscillator();
-    if (narr) {
-      src.buffer = nb;
-      src.loop = true;
-    } else {
-      src.type = "sawtooth";
-      src.frequency.setValueAtTime(f0 * 1.03, t);
-      src.frequency.exponentialRampToValueAtTime(f0 * 0.95, t + d);
+  const VOICES = {
+    p: { f0: 122, lp: 3300, v: 0.26, rv: 0.08 },
+    pf: { f0: 215, lp: 4300, v: 0.24, rv: 0.08, fm: 1.14 },
+    a: { f0: 158, lp: 3600, v: 0.24, rv: 0.06, fm: 0.96 },
+    "": { f0: 96, lp: 2600, v: 0.2, rv: 0.32, fm: 0.92, br: 0.5 },
+  };
+  let talker = null;
+  function glide(prm, v, t, tc) {
+    if (prm.cancelAndHoldAtTime) prm.cancelAndHoldAtTime(t);
+    else {
+      prm.cancelScheduledValues(t);
+      prm.setValueAtTime(prm.value, t);
     }
-    /* sawtooth -> gentle low-pass (mouth) -> three resonant boosts at the vowel's formants */
-    const lp = c.createBiquadFilter();
+    prm.setTargetAtTime(v, t, tc);
+  }
+  function talkerEnd(tk, fade) {
+    if (!tk || tk.dead) return;
+    tk.dead = 1;
+    const c = tk.c,
+      t = c.currentTime;
+    glide(tk.amp.gain, 0, t, fade);
+    clearTimeout(tk.timer);
+    setTimeout(
+      () =>
+        tk.nodes.forEach((n) => {
+          try {
+            n.stop && n.stop();
+            n.disconnect();
+          } catch (e) {}
+        }),
+      fade * 6000 + 60,
+    );
+    if (talker === tk) talker = null;
+  }
+  function talkerNew(c, key) {
+    const V = VOICES[key],
+      t = c.currentTime,
+      osc = c.createOscillator(),
+      vib = c.createOscillator(),
+      vibG = c.createGain(),
+      lp = c.createBiquadFilter(),
+      breath = c.createBufferSource(),
+      brF = c.createBiquadFilter(),
+      brG = c.createGain(),
+      amp = c.createGain(),
+      hiss = c.createBufferSource(),
+      hsF = c.createBiquadFilter(),
+      hsG = c.createGain();
+    osc.type = "sawtooth";
+    osc.frequency.value = V.f0;
+    vib.frequency.value = 5.2;
+    vibG.gain.value = V.f0 * 0.012;
+    vib.connect(vibG);
+    vibG.connect(osc.frequency);
     lp.type = "lowpass";
-    lp.frequency.value = fem ? 4200 : 3400;
-    lp.Q.value = 0.5;
-    src.connect(lp);
+    lp.frequency.value = V.lp;
+    lp.Q.value = 0.4;
+    osc.connect(lp);
+    breath.buffer = nb;
+    breath.loop = true;
+    brF.type = "bandpass";
+    brF.frequency.value = 1400;
+    brF.Q.value = 0.7;
+    brG.gain.value = V.br || 0.12;
+    breath.connect(brF);
+    brF.connect(brG);
+    brG.connect(lp);
     let node = lp;
-    [
-      [vw[0], 4.5, 15],
-      [vw[1], 6, 11],
-      [vw[2], 8, 6],
-    ].forEach(([f, q, gain]) => {
+    const fs = VOW.a.map((f, i) => {
       const pk = c.createBiquadFilter();
       pk.type = "peaking";
-      pk.frequency.value = f * (kind === "a" ? 0.96 : 1) * (fem ? 1.12 : 1);
-      pk.Q.value = q;
-      pk.gain.value = gain;
+      pk.frequency.value = f * (V.fm || 1);
+      pk.Q.value = [4, 6, 8][i];
+      pk.gain.value = [16, 12, 7][i];
       node.connect(pk);
       node = pk;
+      return pk;
     });
-    const out = c.createGain();
-    env(out, t, (narr ? 0.2 : 0.3) * MUL, 0.014, d);
-    node.connect(out);
-    let head = out;
-    if (kind === "a" && sceneNow === "call") {
-      /* the agent is on a phone: narrow the band */
+    amp.gain.value = 0;
+    node.connect(amp);
+    let head = amp;
+    if (key === "a" && sceneNow === "call") {
       const bp = c.createBiquadFilter();
       bp.type = "bandpass";
       bp.frequency.value = 1500;
-      bp.Q.value = 0.55;
-      out.connect(bp);
+      bp.Q.value = 0.6;
+      amp.connect(bp);
       head = bp;
     }
-    route(c, head, { rv: narr ? 0.3 : 0.1, pan: (code % 5) * 0.02 - 0.04 });
-    src.start(t, narr ? Math.random() : undefined);
-    src.stop(t + d + 0.05);
-    done(src, lp, out);
-    if (/[sfhtkpcxzj]/.test(ch)) noise(c, { d: 0.035, v: 0.03, f: 4200, type: "bandpass", q: 1.2 });
+    route(c, head, { rv: V.rv, pan: 0 });
+    hiss.buffer = nb;
+    hiss.loop = true;
+    hsF.type = "bandpass";
+    hsF.frequency.value = 5200;
+    hsF.Q.value = 1.1;
+    hsG.gain.value = 0;
+    hiss.connect(hsF);
+    hsF.connect(hsG);
+    route(c, hsG, { rv: V.rv * 0.5 });
+    [osc, vib, breath, hiss].forEach((s) => s.start(t, s.buffer ? Math.random() : undefined));
+    return {
+      c,
+      key,
+      V,
+      osc,
+      fs,
+      amp,
+      hs: hsG.gain,
+      n: 0,
+      nodes: [osc, vib, breath, hiss, vibG, lp, brF, brG, amp, hsF, hsG, ...fs, head],
+    };
+  }
+  function voice(c, kind, letter, gender) {
+    const key = kind === "p" && gender === 1 ? "pf" : VOICES[kind] ? kind : "";
+    if (talker && talker.key !== key) talkerEnd(talker, 0.03);
+    if (!talker) {
+      if (cnt > 40) return;
+      talker = talkerNew(c, key);
+    }
+    const tk = talker,
+      V = tk.V,
+      t = c.currentTime,
+      ch = String(letter || " ").toLowerCase()[0] || " ",
+      lvl = V.v * MUL;
+    tk.n++;
+    clearTimeout(tk.timer);
+    tk.timer = setTimeout(() => talkerEnd(tk, 0.05), 260);
+    const pitch = (m, tc) => glide(tk.osc.frequency, V.f0 * m, t, tc);
+    if (/[.!?]/.test(ch)) {
+      /* end of a sentence: a falling (or for ? rising) glide, then silence */
+      pitch(ch === "?" ? 1.22 : ch === "!" ? 1.12 : 0.82, 0.05);
+      glide(tk.amp.gain, 0, t + 0.03, 0.03);
+      tk.n = 0;
+      return;
+    }
+    if (/[,;:\-]/.test(ch)) {
+      pitch(0.94, 0.05);
+      glide(tk.amp.gain, 0.02 * lvl, t, 0.02);
+      return;
+    }
+    if (ch === " ") {
+      glide(tk.amp.gain, 0.12 * lvl, t, 0.012);
+      return;
+    }
+    /* phrase contour: starts a bit high, drifts down, small wobble per syllable */
+    const drift = Math.max(0.86, 1.1 - tk.n * 0.006) * (1 + 0.045 * Math.sin(tk.n * 1.7));
+    if (VOW[ch]) {
+      VOW[ch].forEach((f, i) => glide(tk.fs[i].frequency, f * (V.fm || 1), t, 0.018));
+      pitch(drift, 0.03);
+      glide(tk.amp.gain, lvl, t, 0.014);
+    } else if (/[mnlrwv]/.test(ch)) {
+      /* voiced consonants: mouth mostly closed, low first formant */
+      glide(tk.fs[0].frequency, 280 * (V.fm || 1), t, 0.015);
+      glide(tk.amp.gain, 0.45 * lvl, t, 0.012);
+      pitch(drift * 0.98, 0.03);
+    } else if (/[a-z]/.test(ch)) {
+      /* stops and hisses: a quick close plus a burst of air */
+      const fric = /[sfhzxcj]/.test(ch);
+      glide(tk.amp.gain, (fric ? 0.15 : 0.06) * lvl, t, 0.008);
+      tk.hs.cancelScheduledValues(t);
+      tk.hs.setValueAtTime(0, t);
+      tk.hs.linearRampToValueAtTime((fric ? 0.07 : 0.045) * MUL, t + 0.006);
+      tk.hs.exponentialRampToValueAtTime(0.0001, t + (fric ? 0.06 : 0.025));
+    } else {
+      /* digits and anything else read as a neutral vowel */
+      VOW.e.forEach((f, i) => glide(tk.fs[i].frequency, f * (V.fm || 1), t, 0.02));
+      glide(tk.amp.gain, 0.8 * lvl, t, 0.014);
+    }
   }
 
   /* ---------- one-shot effects ---------- */
@@ -1241,7 +1356,7 @@
     sizzle: 80,
     creak: 300,
     step: 120,
-    blip: 20,
+    blip: 1,
     hit: 45,
     hitbig: 45,
     poof: 60,
@@ -1257,6 +1372,7 @@
   function stop() {
     sceneWanted = "";
     sceneNow = "";
+    talkerEnd(talker, 0.05);
     stopAmb(0.5);
   }
   function p(name, a1, a2) {
