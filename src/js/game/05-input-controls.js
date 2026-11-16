@@ -1,6 +1,6 @@
 (qs("#fp").addEventListener("pointerdown", function (t) {
   const a = t.target.closest("[data-id],[data-drag]");
-  if (!a || tapBench()) return;
+  if (!a) return;
   let e = a.dataset.id || null;
   if ("small" === a.dataset.drag) {
     if (!pa) return;
@@ -49,7 +49,101 @@
       })(e.id);
     const o = document.elementFromPoint(a.clientX, a.clientY),
       r = o && o.closest ? o.closest("[data-drop]") : null;
-    benchDrop(e.id, r ? r.dataset.drop : null);
+    !(function (a, e) {
+      const o = (t) => Ya(t, "bad"),
+        r = (t) => Ya(t, "good");
+      if (((qs("#cdone").textContent = "CLOSE"), "goggles" === a || "gloves" === a)) return ja(a);
+      if (!e)
+        return Ya(
+          "Drop it on the table: on a beaker" + (La() ? " or on the assembly mat" : "") + ".",
+          "",
+        );
+      if ("@small" === a) {
+        if ("main" !== e) return o("Pour the small beaker into the <b>big beaker</b>.");
+        const t = pa,
+          a = ga.length;
+        return (ja(t), void (ga.length > a && ((pa = null), Va("pour", Ca[t]), Ya(ma, ya))));
+      }
+      if (Ra.includes(a)) {
+        if ("main" === e)
+          return o(
+            "<b>Not straight from the bottle.</b> Measure one part into the <b>small beaker</b> first, then pour the small beaker into the big one. That is how you control the amounts.",
+          );
+        if ("small" !== e) return o("Liquids go into the <b>small beaker</b>.");
+        if (!Xa()) return;
+        return pa
+          ? o(
+              "The small beaker already holds " +
+                items[pa].n.split(" (")[0] +
+                ". Pour it into the big beaker first, or press EMPTY.",
+            )
+          : ((pa = a),
+            Va("fill", Ca[a]),
+            r(
+              "One measured part of <b>" +
+                items[a].n.split(" (")[0] +
+                "</b> is in the small beaker. Now drag the small beaker onto the big beaker to pour it in.",
+            ));
+      }
+      if (["salt", "sugar", "soda", "rod", "strip"].includes(a)) {
+        if ("small" === e)
+          return o(
+            "The small beaker is only for measuring liquids. That goes in the <b>big beaker</b>.",
+          );
+        if ("main" !== e) return o("That goes in the <b>big beaker</b>.");
+        const t = ga.length,
+          r = b,
+          n = g;
+        return (
+          ja(a),
+          void (ga.length > t
+            ? Va("sprinkle", "#f4f4ff")
+            : b && !r
+              ? Va("stir")
+              : g && !n && Va("strip"))
+        );
+      }
+      if (Ia[a])
+        return e === Ia[a]
+          ? ((ua[Oa[a]] = 1),
+            Va("click"),
+            void (
+              Qa() ||
+              r(
+                "<b>" +
+                  items[a].n +
+                  "</b> is on the mat." +
+                  ("canister" === a ? " Now drop the venom vials into it." : ""),
+              )
+            ))
+          : o(
+              "sh" === e || "sb" === e || "sc" === e || "tray" === e
+                ? "That part does not fit there. Match each part to its outline: HANDLE, CANISTER, BARREL."
+                : "Weapon parts go on the <b>assembly mat</b> on the left.",
+            );
+      if (Pa.includes(a)) {
+        if ("sc" !== e) return o("Venom vials are poured into the <b>Venom Canister</b>.");
+        if (!ua.c)
+          return o("Put the <b>Venom Canister</b> on the mat first, then drop the vials into it.");
+        if (!Xa()) return;
+        if ((inv.splice(inv.indexOf(a), 1), canFill++, Va("venom", "#b06aff"), canFill >= 3)) {
+          const t = inv.indexOf("canister");
+          (t >= 0 && inv.splice(t, 1),
+            inv.push("fullcan"),
+            got.add("fullcan"),
+            Qa() ||
+              r(
+                "<b>FULL VENOM CANISTER!</b> All three vials are sealed inside. Now put the <b>handle</b> and the <b>barrel</b> on the mat to assemble the weapon.",
+              ));
+        } else
+          r(
+            "Venom vial " +
+              canFill +
+              " of 3 poured into the canister. The venom hisses against the steel.",
+          );
+        updateGuide();
+      } else Ya("That does not belong on the bench.", "");
+    })(e.id, r ? r.dataset.drop : null);
   }),
   window.addEventListener("pointercancel", () => {
     ((ka = null), (va = null), (qs("#fpGhost").hidden = !0));
@@ -57,108 +151,7 @@
   (qs("#fpBag").onclick = () => {
     const a = qs("#cinv");
     a.hidden = !a.hidden;
-  }),
-  (qs("#cinv").onclick = (t) => {
-    const a = t.target.closest("[data-id]");
-    if (!a || !tapBench()) return;
-    const e = a.dataset.id;
-    Ia[e] ? benchDrop(e, Ia[e]) : Pa.includes(e) ? benchDrop(e, "sc") : ja(e);
   }));
-function benchDrop(a, e) {
-  const o = (t) => Ya(t, "bad"),
-    r = (t) => Ya(t, "good");
-  if (((qs("#cdone").textContent = "CLOSE"), "goggles" === a || "gloves" === a)) return ja(a);
-  if (!e)
-    return Ya(
-      "Drop it on the table: on a beaker" + (La() ? " or on the assembly mat" : "") + ".",
-      "",
-    );
-  if ("@small" === a) {
-    if ("main" !== e) return o("Pour the small beaker into the <b>big beaker</b>.");
-    const t = pa,
-      a = ga.length;
-    return (ja(t), void (ga.length > a && ((pa = null), Va("pour", Ca[t]), Ya(ma, ya))));
-  }
-  if (Ra.includes(a)) {
-    if ("main" === e)
-      return o(
-        "<b>Not straight from the bottle.</b> Measure one part into the <b>small beaker</b> first, then pour the small beaker into the big one. That is how you control the amounts.",
-      );
-    if ("small" !== e) return o("Liquids go into the <b>small beaker</b>.");
-    if (!Xa()) return;
-    return pa
-      ? o(
-          "The small beaker already holds " +
-            items[pa].n.split(" (")[0] +
-            ". Pour it into the big beaker first, or press EMPTY.",
-        )
-      : ((pa = a),
-        Va("fill", Ca[a]),
-        r(
-          "One measured part of <b>" +
-            items[a].n.split(" (")[0] +
-            "</b> is in the small beaker. Now drag the small beaker onto the big beaker to pour it in.",
-        ));
-  }
-  if (["salt", "sugar", "soda", "rod", "strip"].includes(a)) {
-    if ("small" === e)
-      return o(
-        "The small beaker is only for measuring liquids. That goes in the <b>big beaker</b>.",
-      );
-    if ("main" !== e) return o("That goes in the <b>big beaker</b>.");
-    const t = ga.length,
-      r = b,
-      n = g;
-    return (
-      ja(a),
-      void (ga.length > t
-        ? Va("sprinkle", "#f4f4ff")
-        : b && !r
-          ? Va("stir")
-          : g && !n && Va("strip"))
-    );
-  }
-  if (Ia[a])
-    return e === Ia[a]
-      ? ((ua[Oa[a]] = 1),
-        Va("click"),
-        void (
-          Qa() ||
-          r(
-            "<b>" +
-              items[a].n +
-              "</b> is on the mat." +
-              ("canister" === a ? " Now drop the venom vials into it." : ""),
-          )
-        ))
-      : o(
-          "sh" === e || "sb" === e || "sc" === e || "tray" === e
-            ? "That part does not fit there. Match each part to its outline: HANDLE, CANISTER, BARREL."
-            : "Weapon parts go on the <b>assembly mat</b> on the left.",
-        );
-  if (Pa.includes(a)) {
-    if ("sc" !== e) return o("Venom vials are poured into the <b>Venom Canister</b>.");
-    if (!ua.c)
-      return o("Put the <b>Venom Canister</b> on the mat first, then drop the vials into it.");
-    if (!Xa()) return;
-    if ((inv.splice(inv.indexOf(a), 1), canFill++, Va("venom", "#b06aff"), canFill >= 3)) {
-      const t = inv.indexOf("canister");
-      (t >= 0 && inv.splice(t, 1),
-        inv.push("fullcan"),
-        got.add("fullcan"),
-        Qa() ||
-          r(
-            "<b>FULL VENOM CANISTER!</b> All three vials are sealed inside. Now put the <b>handle</b> and the <b>barrel</b> on the mat to assemble the weapon.",
-          ));
-    } else
-      r(
-        "Venom vial " +
-          canFill +
-          " of 3 poured into the canister. The venom hisses against the steel.",
-      );
-    updateGuide();
-  } else Ya("That does not belong on the bench.", "");
-}
 const $a = { ArrowLeft: "l", a: "l", A: "l", ArrowRight: "r", d: "r", D: "r" };
 (window.addEventListener(
   "keydown",

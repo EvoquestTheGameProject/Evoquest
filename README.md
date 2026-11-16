@@ -43,7 +43,6 @@ tools/check.js                sanity checks
 | Cutscene canvas / sequencer / scene painters / timelines | `js/main/05-…` to `14-…` |
 | Rooms, items, crafting bench, input, update loop | `js/game/01-…` to `06-…` |
 | Boss-room opening cinematic ("director") | `js/game/08-boss-opening-director.js` |
-| Workbench: drag-and-drop table (screens 7 in and up) or the old tap-to-mix card (under 7 in); switch in dev tools > WORKBENCH UI | `js/game/04-…`, `05-…`, `12-…` |
 | Combat, snake boss, game render, dev tools | `js/game/09-…` to `12-…` |
 
 ## Shipped file is compacted
