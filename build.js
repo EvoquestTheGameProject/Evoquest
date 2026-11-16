@@ -20,7 +20,8 @@ function resolveAssets(text){
 let html=read("index.html");
 /* Compact the shipped JS (src/ stays readable). Uses acorn when installed (npm install); the result must parse to
    the exact same syntax tree as the readable code, otherwise the readable code is shipped unchanged. */
-let acorn=null;try{if(!process.argv.includes("--pretty"))acorn=require("acorn")}catch(e){}
+const argvPretty=process.argv.includes("--pretty");
+let acorn=null;try{if(!argvPretty)acorn=require("acorn")}catch(e){}
 const tree=js=>JSON.stringify(acorn.parse(js,{ecmaVersion:"latest"}),(k,v)=>k==="start"||k==="end"||k==="raw"?undefined:v);
 function compact(js){
   if(!acorn)return js;
@@ -37,7 +38,9 @@ function compact(js){
   return tree(out)===tree(js)?out:js;
 }
 const js=f=>compact(resolveAssets(f));
-html=html.replace(/\{\{css:([^}]+)\}\}/g,(m,f)=>resolveAssets(read(f))).replace(/\{\{js:([^}]+)\}\}/g,(m,f)=>js(read(f))).replace("{{main}}",()=>js(mainJs()));
+/* CSS: drop comments and layout whitespace (strings and url() data are left alone) */
+const css=s=>argvPretty?s:s.split(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|url\([^)]*\))/).map((p,i)=>i%2?p:p.replace(/\/\*[\s\S]*?\*\//g,"").replace(/\s+/g," ").replace(/\s*([{};,>])\s*/g,"$1").replace(/;}/g,"}").replace(/:\s+/g,":")).join("").trim();
+html=html.replace(/\{\{css:([^}]+)\}\}/g,(m,f)=>css(resolveAssets(read(f)))).replace(/\{\{js:([^}]+)\}\}/g,(m,f)=>js(read(f))).replace("{{main}}",()=>js(mainJs()));
 if(/\{\{(css|js|main)/.test(html))throw new Error("unresolved include left in output");
 /* a stray "</script" inside inline code would end the script early */
 const scripts=html.split(/<script\b/i).slice(1).map(s=>s.slice(s.indexOf(">")+1));

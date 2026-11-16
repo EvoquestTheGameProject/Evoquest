@@ -50,6 +50,9 @@ tools/check.js                sanity checks
 With `acorn` installed (`npm install`), the build strips formatting whitespace from the shipped JS. It only does so when
 the compacted code parses to the exact same syntax tree; otherwise it ships the readable code. `node build.js --pretty`
 builds the readable version for debugging. `src/` is always the readable source.
+CSS comments and layout whitespace are always stripped (no dependency needed). The page loads nothing from the
+internet: the pixel font, music and images are all inlined, so strict viewers (in-app file previews) cannot block them.
+The menu music is a 16 kHz / 24 kbps mono MP3: the track is low-passed below 6 kHz, so a higher rate only adds size.
 
 ## Rules that keep the single file working
 
