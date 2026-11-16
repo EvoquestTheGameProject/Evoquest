@@ -293,7 +293,7 @@ let ba = null,
   va = null,
   ka = null,
   Ea = 0,
-  Ta = 0;
+  Ta = -1e4;
 const Sa = (t) => ga.filter((a) => a === t).length,
   Ca = { water: "#5fb8ff", hcl: "#e8e060", h2o2: "#c9a86a", salt: "#f4f4ff" },
   Ra = ["water", "hcl", "h2o2"],
@@ -1266,7 +1266,7 @@ function Za() {
             (e.fillStyle = l),
             e.fillRect(t - 14, o - 14, 28, 28));
         }),
-        La())
+        1)
       ) {
         const t = [],
           c = (a, e, o, n, l, s) => {
