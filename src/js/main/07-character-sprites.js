@@ -750,12 +750,12 @@ function Ma(t, a, e, o, r, n) {
       { step: 5 },
     ),
     h = 0.5 * l;
-  (ft.save(),
-    (ft.imageSmoothingEnabled = !1),
+  (ctx.save(),
+    (ctx.imageSmoothingEnabled = !1),
     n.noshd || Ft(t, void 0 !== n.shy ? n.shy : a, (n.shw || 7) * l, n.sha || 0.5),
-    ft.translate(t, a),
-    r < 0 && ft.scale(-1, 1),
-    ft.drawImage(
+    ctx.translate(t, a),
+    r < 0 && ctx.scale(-1, 1),
+    ctx.drawImage(
       n.env
         ? (function (t, a, e, o) {
             wa || ((wa = document.createElement("canvas")), (wa.width = 48), (wa.height = e));
@@ -788,7 +788,7 @@ function Ma(t, a, e, o, r, n) {
       48 * h,
       56 * h,
     ),
-    ft.restore());
+    ctx.restore());
 }
 let wa = null,
   va = {};
@@ -1897,22 +1897,22 @@ function Ea(t, a, e, o, r) {
       [31.4, -29.4],
     ][n];
   (Ft(t + 18 * e, a, 34 * e, 0.7),
-    ft.save(),
-    (ft.imageSmoothingEnabled = !1),
-    ft.translate(t, a),
-    ft.drawImage(u, -u._ax * m, -u._ay * m, d * m, b * m),
-    ft.restore());
+    ctx.save(),
+    (ctx.imageSmoothingEnabled = !1),
+    ctx.translate(t, a),
+    ctx.drawImage(u, -u._ax * m, -u._ay * m, d * m, b * m),
+    ctx.restore());
   const M = ["98,245,255", "255,76,154", "200,255,82", "181,138,255"][n],
     w = 1.5 * e,
     v = [t + x[0] * w, a + x[1] * w],
     k = [t + y[0] * w, a + y[1] * w],
     A = 0.6 + 0.4 * Math.sin(o / 230 + 2 * n);
-  (Gt(k[0], k[1], 10 * e, M, 0.18 + 0.22 * l),
-    Gt(v[0], v[1], 5 * e, "255,226,140", 0.85 * A),
-    pt("#fff6c8", v[0] - 0.3, v[1] - 0.3, 0.7, 0.7));
+  (glow(k[0], k[1], 10 * e, M, 0.18 + 0.22 * l),
+    glow(v[0], v[1], 5 * e, "255,226,140", 0.85 * A),
+    rect("#fff6c8", v[0] - 0.3, v[1] - 0.3, 0.7, 0.7));
   for (let t = 0; t < 4; t++) {
     const a = (o / 900 + 0.25 * t + 0.13 * n) % 1;
-    pt(
+    rect(
       "rgba(220,240,230," + 0.22 * (1 - a) + ")",
       v[0] + (4 + 10 * a) * e,
       v[1] + 3 * e - 5 * a * e,
@@ -1922,7 +1922,7 @@ function Ea(t, a, e, o, r) {
   }
   for (let t = 0; t < 2; t++) {
     const a = (o / 700 + 0.5 * t + 0.3 * n) % 1;
-    pt(
+    rect(
       "rgba(" + M + "," + 0.7 * (1 - a) + ")",
       k[0] + (t ? 2 : -2) * e,
       k[1] + 4 * e + 8 * a * e,

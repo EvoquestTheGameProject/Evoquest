@@ -49,7 +49,7 @@ function fo() {
   };
   return ((t.onload = e), (a.onload = e), (t.src = so.body), (a.src = so.head), io);
 }
-function ho(t) {
+function snakePose(t) {
   const a = so.m,
     e = (function (t) {
       const a = t.t,
@@ -59,7 +59,7 @@ function ho(t) {
         n = 0,
         l = 0;
       if ("intro" === e) {
-        const t = Math.min(1, a / (O ? 150 : 100));
+        const t = Math.min(1, a / (cine ? 150 : 100));
         ((l = 80 * (1 - t)), (o = 0.12 * Math.sin(a / 7) * (1 - t)));
       } else if ("slam" === e)
         if (a < 46) {
@@ -79,23 +79,24 @@ function ho(t) {
           }));
       else if ("charge" === e)
         a < 40 ? ((o = -0.1), (r = a % 4 < 2 ? 1 : -1)) : ((o = -0.14), (r = -3));
-      else if ("stun" === e) o = 0.04 * Math.sin(nt / 6) - 0.3;
+      else if ("stun" === e) o = 0.04 * Math.sin(tick / 6) - 0.3;
       else if ("dead" === e) {
         const t = Math.min(1, a / 120);
         ((o = -0.45 * t), (l = 22 * t));
-      } else if ("walk" === e) ((o = 0.05 * Math.sin(nt / 8)), (n = 1.4 * Math.sin(nt / 8 + 1.2)));
-      else "tail" === e ? (l = O ? O.sink : 22) : (o = 0.035 * Math.sin(nt / 30));
+      } else if ("walk" === e)
+        ((o = 0.05 * Math.sin(tick / 8)), (n = 1.4 * Math.sin(tick / 8 + 1.2)));
+      else "tail" === e ? (l = cine ? cine.sink : 22) : (o = 0.035 * Math.sin(tick / 30));
       return {
         hr: o,
         hdx: r,
         hdy: n,
         sink: l,
-        br: "walk" === e ? 4 * Math.sin(nt / 8) : Math.sin(nt / 24),
+        br: "walk" === e ? 4 * Math.sin(tick / 8) : Math.sin(tick / 24),
       };
     })(t),
     o = t.face > 0 ? -1 : 1,
     r = a.w / 2,
-    n = B() + 1 + e.sink,
+    n = floorY() + 1 + e.sink,
     l = (t, o) => {
       const r = t - a.pivot[0],
         n = o - a.pivot[1],
@@ -118,11 +119,11 @@ function ho(t) {
   };
 }
 const bo = (t) => t.x + 46 * (t.face > 0 ? 1 : -1);
-function go(t, a, e) {
+function snakeHit(t, a, e) {
   const o = fo(),
     r = so.m;
-  if (!o.mask) return Math.abs(t - e.x) < 48 && a > B() - 50;
-  const n = ho(e),
+  if (!o.mask) return Math.abs(t - e.x) < 48 && a > floorY() - 50;
+  const n = snakePose(e),
     l = n.cx + (t - e.x) / (n.mir * co),
     s = r.h + (a - n.by) / co,
     c = (t, a) => (
@@ -141,23 +142,24 @@ function go(t, a, e) {
 let po = null,
   uo = null,
   yo = null;
-function xo(t, a) {
+function drawSnake(t, a) {
   const e = fo(),
     o = so.m,
-    n = ho(t),
+    n = snakePose(t),
     l = n.p,
-    s = B();
+    s = floorY();
   return e.mask
-    ? (ft.save(),
-      (ft.globalAlpha = a),
-      (ft.imageSmoothingEnabled = !1),
+    ? (ctx.save(),
+      (ctx.globalAlpha = a),
+      (ctx.imageSmoothingEnabled = !1),
       ("intro" !== t.st && "dead" !== t.st) ||
-        (ft.beginPath(), ft.rect(-400, -400, G() + 800, s + 1.5 + 400), ft.clip()),
-      "tail" === t.st && (ft.beginPath(), ft.rect(t.x + 19, -400, 400, s + 1.5 + 400), ft.clip()),
-      ft.translate(t.x, n.by),
-      ft.scale(n.mir * co, co * (1 + 0.012 * l.br)),
-      ft.translate(-n.cx, -o.h),
-      ft.drawImage(
+        (ctx.beginPath(), ctx.rect(-400, -400, roomW() + 800, s + 1.5 + 400), ctx.clip()),
+      "tail" === t.st &&
+        (ctx.beginPath(), ctx.rect(t.x + 19, -400, 400, s + 1.5 + 400), ctx.clip()),
+      ctx.translate(t.x, n.by),
+      ctx.scale(n.mir * co, co * (1 + 0.012 * l.br)),
+      ctx.translate(-n.cx, -o.h),
+      ctx.drawImage(
         (function (t, a) {
           const e = io,
             o = so.m,
@@ -174,7 +176,7 @@ function xo(t, a) {
             s = (function (t) {
               const a = t.st,
                 e = t.t,
-                o = nt;
+                o = tick;
               let r = 1.4,
                 n = 1.1,
                 l = 0.055,
@@ -183,7 +185,7 @@ function xo(t, a) {
                 i = 0;
               if ("walk" === a) ((r = 4), (n = 2.6), (l = 0.2));
               else if ("intro" === a) {
-                const t = Math.min(1, e / (O ? 150 : 100));
+                const t = Math.min(1, e / (cine ? 150 : 100));
                 ((r = 1.6 + 3.4 * (1 - t)), (n = 1.2 + 3 * (1 - t)), (l = 0.16));
               } else if ("slam" === a)
                 if (e < 46) ((s = (0.07 * e) / 46), (i = (-4 * e) / 46), (r = 1));
@@ -201,9 +203,9 @@ function xo(t, a) {
                   : ((s = -0.08), (r = 2.8), (l = 0.24));
               else if ("stun" === a) ((r = 0.7), (n = 0.9), (l = 0.025));
               else if ("tail" === a)
-                ((r = 2 + (O ? O.tw : 0)),
-                  (n = 1.6 + 0.6 * (O ? O.tw : 0)),
-                  (l = 0.1 + 0.04 * (O ? O.tw : 0)));
+                ((r = 2 + (cine ? cine.tw : 0)),
+                  (n = 1.6 + 0.6 * (cine ? cine.tw : 0)),
+                  (l = 0.1 + 0.04 * (cine ? cine.tw : 0)));
               else if ("dead" === a) {
                 const t = Math.min(1, e / 120);
                 ((r = 0.5 * (1 - t)), (n = 0.4 * (1 - t)), (c = t));
@@ -275,37 +277,37 @@ function xo(t, a) {
         0,
         0,
       ),
-      ft.restore(),
+      ctx.restore(),
       "dead" !== t.st &&
         "tail" !== t.st &&
         o.sparks.forEach((t, e) => {
           const o = n.W(t[0], t[1]);
-          if ((nt + 9 * e) % 29 < 6) {
+          if ((tick + 9 * e) % 29 < 6) {
             for (let t = 0; t < 6; t++)
-              Yt(
+              fill(
                 t % 2 ? "#bfe8ff" : "#ffffff",
-                o.x + 6 * (r(t, nt + e) - 0.5),
-                o.y + 5 * (r(t + 5, nt + e) - 0.5),
+                o.x + 6 * (r(t, tick + e) - 0.5),
+                o.y + 5 * (r(t + 5, tick + e) - 0.5),
                 0.5,
                 0.5,
               );
-            Gt(o.x, o.y, 7, "150,210,255", 0.7 * a);
+            glow(o.x, o.y, 7, "150,210,255", 0.7 * a);
           }
         }),
       n)
     : n;
 }
 function Mo(t, a, e, o) {
-  const r = B(),
-    n = 0.5 + 0.5 * Math.sin(nt / (e > 0.6 ? 1.6 : 3.5)),
+  const r = floorY(),
+    n = 0.5 + 0.5 * Math.sin(tick / (e > 0.6 ? 1.6 : 3.5)),
     l = 0.35 + 0.55 * e,
     s = 0.3 * a;
-  ft.globalAlpha = l * (0.1 + 0.08 * n);
-  for (let e = 0; e < 8; e++) Yt("#ff2020", t - 0.55 * a + e * a * 0.14, r - 26, 0.12 * a, 26);
-  ft.globalAlpha = l * (0.4 + 0.25 * n);
+  ctx.globalAlpha = l * (0.1 + 0.08 * n);
+  for (let e = 0; e < 8; e++) fill("#ff2020", t - 0.55 * a + e * a * 0.14, r - 26, 0.12 * a, 26);
+  ctx.globalAlpha = l * (0.4 + 0.25 * n);
   for (let e = -s; e <= s; e += 0.5) {
     const o = a * Math.sqrt(Math.max(0, 1 - (e * e) / (s * s)));
-    Yt(
+    fill(
       "#ff2020",
       Math.round(2 * (t - o)) / 2,
       Math.round(2 * (r + e)) / 2,
@@ -313,10 +315,10 @@ function Mo(t, a, e, o) {
       0.5,
     );
   }
-  ft.globalAlpha = l * (0.7 + 0.3 * n);
+  ctx.globalAlpha = l * (0.7 + 0.3 * n);
   for (let e = 0; e < 40; e++) {
     const o = (e / 40) * 6.283;
-    Yt(
+    fill(
       "#ff4a4a",
       Math.round(2 * (t + Math.cos(o) * a)) / 2,
       Math.round(2 * (r + Math.sin(o) * s)) / 2,
@@ -325,11 +327,11 @@ function Mo(t, a, e, o) {
     );
   }
   const c = a * (1.6 - 0.6 * e);
-  ft.globalAlpha = 0.5 * l;
+  ctx.globalAlpha = 0.5 * l;
   for (let a = 0; a < 28; a++) {
-    const e = (a / 28) * 6.283 + nt / 20;
+    const e = (a / 28) * 6.283 + tick / 20;
     a % 2 &&
-      Yt(
+      fill(
         "#ff8080",
         Math.round(2 * (t + Math.cos(e) * c)) / 2,
         Math.round(2 * (r + Math.sin(e) * c * 0.3)) / 2,
@@ -337,16 +339,16 @@ function Mo(t, a, e, o) {
         0.5,
       );
   }
-  ((ft.globalAlpha = l),
-    Yt("#ff3a3a", t - a - 3, r - 0.25, 2, 0.5),
-    Yt("#ff3a3a", t + a + 1, r - 0.25, 2, 0.5),
+  ((ctx.globalAlpha = l),
+    fill("#ff3a3a", t - a - 3, r - 0.25, 2, 0.5),
+    fill("#ff3a3a", t + a + 1, r - 0.25, 2, 0.5),
     o &&
       n > 0.35 &&
-      (Yt("#2a0000", t - 1.5, r - s - 13, 3, 9),
-      Yt("#ff4040", t - 1, r - s - 12.5, 2, 5),
-      Yt("#ff4040", t - 1, r - s - 6.5, 2, 2)),
-    (ft.globalAlpha = 1),
-    Gt(t, r, a + 4, "255,40,40", 0.18 * l));
+      (fill("#2a0000", t - 1.5, r - s - 13, 3, 9),
+      fill("#ff4040", t - 1, r - s - 12.5, 2, 5),
+      fill("#ff4040", t - 1, r - s - 6.5, 2, 2)),
+    (ctx.globalAlpha = 1),
+    glow(t, r, a + 4, "255,40,40", 0.18 * l));
 }
 const wo = {
   pod: { d: [34, 78, 150], bf: 1 },
@@ -359,14 +361,14 @@ const wo = {
   ware: { d: [20, 118, 214, 310], lamp: [58, 138, 198, 278] },
 };
 function vo(t, a, e) {
-  const o = 2 * Math.sin(nt / 8);
+  const o = 2 * Math.sin(tick / 8);
   t += o * e;
   const r = (o, r) => {
-    (Yt(o, t - 8 * e - (e > 0 ? r : -r) - 0 + (e > 0 ? 0 : -0), a - 1 - r, 0, 0),
-      Yt(o, e > 0 ? t - 8 - r : t - r, a - 1 - r, 8 + 2 * r, 3 + 2 * r));
+    (fill(o, t - 8 * e - (e > 0 ? r : -r) - 0 + (e > 0 ? 0 : -0), a - 1 - r, 0, 0),
+      fill(o, e > 0 ? t - 8 - r : t - r, a - 1 - r, 8 + 2 * r, 3 + 2 * r));
     for (let n = 0; n < 5; n++) {
       const l = 2 * (5 - n) - 1 + 2 * r;
-      Yt(
+      fill(
         o,
         e > 0 ? t + n - r * (0 == n ? 1 : 0) : t - n - 1 + (0 == n ? r : 0),
         a - (l - 1) / 2,

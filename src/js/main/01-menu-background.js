@@ -3,8 +3,8 @@ const $sx = (...a) => {
     window.SFX && window.SFX.p(...a);
   } catch (e) {}
 };
-const t = (t) => document.querySelector(t),
-  a = t("#bg"),
+const qs = (t) => document.querySelector(t),
+  a = qs("#bg"),
   e = a.getContext("2d"),
   o = matchMedia("(prefers-reduced-motion:reduce)").matches,
   r = (t, a) => {
@@ -29,7 +29,7 @@ let s,
   b,
   g = 0;
 const p = (t) => 1 + ((Math.round(t) >> 1) << 1);
-function u() {
+function layoutMenu() {
   ((i = Math.max(3, Math.round(Math.min(innerWidth, innerHeight) / 150))),
     (s = Math.ceil(innerWidth / i)),
     (c = Math.ceil(innerHeight / i)),
@@ -51,7 +51,7 @@ function u() {
   var g;
   b = Array.from({ length: Math.ceil(s / 4) }, () => [l() * s, l() * f, 0.1 + 0.2 * l()]);
 }
-function m(t, a) {
+function drawTube(t, a) {
   const e = t.w >> 1,
     o = t.cx - e,
     s = f - 1,
@@ -132,7 +132,7 @@ function mtx(w, x, y, c, sc) {
     for (let q = 0; q < 15; q++) "1" === g[q] && n(c, x + 4 * k + (q % 3), y + ((q / 3) | 0), 1, 1);
   }
 }
-function mon(tm) {
+function drawHolo(tm) {
   const $T = o ? 0 : tm / 1000,
     $pw = 20,
     $ph = 20,
@@ -297,11 +297,13 @@ function mon(tm) {
   {
     const $an = o ? 0 : 2.2 * $T,
       $d = Math.sin($an);
-    if (!(
-      $d < 0 &&
-      Math.abs(Math.cos($an)) < ($pw / 2 + 4) / ($pw / 2 + 4) &&
-      Math.abs(Math.cos($an) * ($pw / 2 + 4)) < $pw / 2
-    )) {
+    if (
+      !(
+        $d < 0 &&
+        Math.abs(Math.cos($an)) < ($pw / 2 + 4) / ($pw / 2 + 4) &&
+        Math.abs(Math.cos($an) * ($pw / 2 + 4)) < $pw / 2
+      )
+    ) {
       n(
         "rgba(255,255,255," + $fa.toFixed(2) + ")",
         $xc + Math.round(Math.cos($an) * ($pw / 2 + 4)) - 1,
@@ -325,7 +327,7 @@ function mon(tm) {
             n("rgba(" + $col + "," + $a.toFixed(2) + ")", $nx2 + w, $ny + z, 1, 1);
     }
 }
-function y(t) {
+function drawMenuBg(t) {
   const i = (o ? 0 : t / 16.7) / 60,
     h = s >> 1,
     u = f - ((0.32 * c) | 0);
@@ -378,9 +380,9 @@ function y(t) {
     }
     (n("rgba(255,255,255,.1)", t, l, e, 1), n("#2a3f5e", (t + e / 2 - 1) | 0, l + o + 1, 2, 3));
   }),
-    m(d[0], i),
-    m(d[1], i),
-    m(d[2], i),
+    drawTube(d[0], i),
+    drawTube(d[1], i),
+    drawTube(d[2], i),
     (e.globalCompositeOperation = "lighter"),
     d.forEach((t) => {
       const a = 1.7 * t.w,
@@ -422,7 +424,7 @@ function y(t) {
       n("#2f7bff", t + 1, o + r, a - 2, e - 1 - r),
       n("#d6fff0", t + 1, o + r, a - 2, 1));
   })((0.08 * s) | 0, p(0.2 * u), Math.round(0.28 * u)),
-    mon(t),
+    drawHolo(t),
     o ||
       b.forEach((t) => {
         ((t[1] -= t[2]), t[1] < 0 && (t[1] = f));
@@ -432,10 +434,10 @@ function y(t) {
     !o && g <= 0 && Math.random() < 0.002 && (g = 1),
     g > 0 && (n("rgba(2,6,20," + 0.4 * g + ")", 0, 0, s, c), (g -= 0.03)));
 }
-const x = t("#ld"),
-  M = t("#lt"),
-  w = t("#bar"),
-  v = t("#dna"),
+const x = qs("#ld"),
+  M = qs("#lt"),
+  w = qs("#bar"),
+  v = qs("#dna"),
   k = v.getContext("2d"),
   A = () => {
     const t = Math.max(

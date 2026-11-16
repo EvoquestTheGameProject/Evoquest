@@ -1,72 +1,72 @@
 ((GM.step = (t) => {
-  for (let a = 0; a < t; a++) re();
+  for (let a = 0; a < t; a++) update();
 }),
-  (GM.render = ko),
+  (GM.render = render),
   (GM.spawnBoss = () => {
-    (qe(), (M.st = "walk"), (M.t = 0));
+    (spawnBoss(), (snakeBoss.st = "walk"), (snakeBoss.t = 0));
   }),
   (GM.cheat = () => {
-    ((P = !0), Qo());
+    ((bossOpen = !0), Qo());
   }),
   (GM.sealTest = () => {
-    ((P = !1), (H = 0), Qo());
+    ((bossOpen = !1), (corrode = 0), Qo());
   }),
   (GM.give = (t) => {
     (t.forEach((t) => {
-      (X.includes(t) || X.push(t), J.add(t));
+      (inv.includes(t) || inv.push(t), got.add(t));
     }),
-      la(),
-      na());
+      updateBag(),
+      updateGuide());
   }),
   (GM.bench = () => ({
     beaker: [...ga],
     small: pa,
-    worn: V,
-    gloved: d,
+    worn: worn,
+    gloved: gloved,
     stirred: b,
     tested: g,
-    canFill: I,
+    canFill: canFill,
     tray: Object.assign({}, ua),
     msg: ma,
   })),
-  (GM.craft = () => Ha()),
+  (GM.craft = () => openBench()),
   (GM.dbg = () => ({
-    bossOpen: P,
-    cine: O ? O.ph : null,
-    canFill: I,
-    drops: L.length,
-    doorCut: ut,
-    minis: R.length,
-    camX: C,
-    exitOpen: q,
-    bv: x.map((t) => t.vx),
-    face: F.face,
-    hasGun: p,
-    ammo: u,
-    hp: m,
-    boss: M && { hp: M.hp, st: M.st, x: M.x },
-    dead: v,
-    room: W,
-    x: F.x,
-    y: F.y,
-    stage: z,
-    got: [...J],
-    inv: [...X],
-    hasPotion: Y,
-    exitOpen: q,
-    erode: kt,
-    pour: vt,
-    modal: Pt,
-    win: At,
+    bossOpen: bossOpen,
+    cine: cine ? cine.ph : null,
+    canFill: canFill,
+    drops: drops.length,
+    doorCut: doorCut,
+    minis: minis.length,
+    camX: camX,
+    exitOpen: exitOpen,
+    bv: shots.map((t) => t.vx),
+    face: player.face,
+    hasGun: hasGun,
+    ammo: ammo,
+    hp: hp,
+    boss: snakeBoss && { hp: snakeBoss.hp, st: snakeBoss.st, x: snakeBoss.x },
+    dead: dead,
+    room: room,
+    x: player.x,
+    y: player.y,
+    stage: stage,
+    got: [...got],
+    inv: [...inv],
+    hasPotion: hasPotion,
+    exitOpen: exitOpen,
+    erode: erode,
+    pour: pourT,
+    modal: modal,
+    win: won,
   })),
   (GM.boss = (t) => {
-    M && Object.assign(M, t);
+    snakeBoss && Object.assign(snakeBoss, t);
   }),
-  (GM.hurt = (t) => Ye(t)),
+  (GM.hurt = (t) => hurtPlayer(t)),
   (GM.set = (t) => {
-    (t.room && ((W = t.room), Wt[W] || Ut(W)),
-      void 0 !== t.x && (F.x = t.x),
-      void 0 !== t.y && (F.y = t.y));
+    (t.room && ((room = t.room), backdrops[room] || backdrop(room)),
+      void 0 !== t.x && (player.x = t.x),
+      void 0 !== t.y && (player.y = t.y));
   }));
 const Eo = {
   on: !1,
@@ -89,23 +89,23 @@ let Io = "",
   Oo = 0,
   Lo = null,
   Ho = "";
-const No = t("#dvc"),
-  Do = t("#dvp"),
-  Go = t("#gdv"),
-  Bo = t("#dnab"),
-  Fo = t("#dvh"),
+const No = qs("#dvc"),
+  Do = qs("#dvp"),
+  Go = qs("#gdv"),
+  Bo = qs("#dnab"),
+  Fo = qs("#dvh"),
   Wo = (t) => {
     const a = t / 60,
       e = Math.floor(a / 60);
     return (e < 10 ? "0" : "") + e + ":" + (a % 60 < 10 ? "0" : "") + (a % 60).toFixed(2);
   };
 function zo() {
-  t("#dvd").textContent = "●".repeat(Io.length) + "○".repeat(6 - Io.length);
+  qs("#dvd").textContent = "●".repeat(Io.length) + "○".repeat(6 - Io.length);
 }
 function qo() {
   "712411" === Io
     ? ((Eo.on = !0), (No.hidden = !0), er())
-    : ((t("#dvm").textContent = "INVALID CODE"),
+    : ((qs("#dvm").textContent = "INVALID CODE"),
       (Io = ""),
       zo(),
       No.classList.add("bad"),
@@ -152,52 +152,58 @@ const Uo = [
     ["outside", "OUTSIDE"],
   ];
 function Xo() {
-  for (const t in f) "potion" === t || _t.includes(t) || (X.includes(t) || X.push(t), J.add(t));
-  for (const t in h) (h[t].items || []).forEach((t) => (Q[t.id] = 1));
-  ((p = !0),
-    (u = 4),
-    X.includes("blaster") || X.push("blaster"),
-    (Y = !0),
-    X.includes("potion") || X.push("potion"),
-    0 === z && (z = 1),
+  for (const t in items)
+    "potion" === t || _t.includes(t) || (inv.includes(t) || inv.push(t), got.add(t));
+  for (const t in rooms) (rooms[t].items || []).forEach((t) => (taken[t.id] = 1));
+  ((hasGun = !0),
+    (ammo = 4),
+    inv.includes("blaster") || inv.push("blaster"),
+    (hasPotion = !0),
+    inv.includes("potion") || inv.push("potion"),
+    0 === stage && (stage = 1),
     (Tt = !0),
-    la(),
-    na(),
-    Be());
+    updateBag(),
+    updateGuide(),
+    updateHud());
 }
 function Qo() {
-  ((p = !0), (u = 4), J.add("blaster"), X.includes("blaster") || X.push("blaster"), la(), Be());
+  ((hasGun = !0),
+    (ammo = 4),
+    got.add("blaster"),
+    inv.includes("blaster") || inv.push("blaster"),
+    updateBag(),
+    updateHud());
 }
 function Ko() {
-  ((q = !0),
-    (z = 2),
-    (kt = 260),
-    (vt = 0),
-    (j = !0),
-    (Y = !1),
-    (X = X.filter((t) => "potion" !== t)),
-    la(),
-    na());
+  ((exitOpen = !0),
+    (stage = 2),
+    (erode = 260),
+    (pourT = 0),
+    (potionUsed = !0),
+    (hasPotion = !1),
+    (inv = inv.filter((t) => "potion" !== t)),
+    updateBag(),
+    updateGuide());
 }
 function Zo(a) {
-  ((Pt = 0),
+  ((modal = 0),
     (Oo = 0),
-    (t("#gk").hidden = !0),
-    (t("#gx").hidden = !0),
-    (F.vx = F.vy = 0),
+    (qs("#gk").hidden = !0),
+    (qs("#gx").hidden = !0),
+    (player.vx = player.vy = 0),
     ("stair" !== a && "exitlab" !== a) || Ko(),
     ("hall" !== a && "ware" !== a) || Ko(),
-    "exitlab" === a && ((P = !0), p || Qo()),
-    "outside" === a && (Ko(), p || Qo(), (w = !0), (ut = 0)),
-    oe(a, "L"),
-    "stair" === a && (F.x = 24),
-    na(),
-    Be());
+    "exitlab" === a && ((bossOpen = !0), hasGun || Qo()),
+    "outside" === a && (Ko(), hasGun || Qo(), (bossDone = !0), (doorCut = 0)),
+    enterRoom(a, "L"),
+    "stair" === a && (player.x = 24),
+    updateGuide(),
+    updateHud());
 }
 function $o() {
   (document.body.classList.add("ingame"),
     (Go.hidden = !Eo.on),
-    Eo.on && (Eo.sItems && Xo(), Eo.sOpen && Ko(), Eo.sRoom && Zo(Eo.sRoom), Be()));
+    Eo.on && (Eo.sItems && Xo(), Eo.sOpen && Ko(), Eo.sRoom && Zo(Eo.sRoom), updateHud()));
 }
 function _o() {
   const a = GM.on,
@@ -241,9 +247,9 @@ function _o() {
       "<h4>" +
       (a ? "TELEPORT" : "START AT ROOM") +
       '</h4><div class="dvg">' +
-      Jo.map(([t, o]) => e((!a && Eo.sRoom === t) || (a && W === t), 'data-r="' + t + '"', o)).join(
-        "",
-      ) +
+      Jo.map(([t, o]) =>
+        e((!a && Eo.sRoom === t) || (a && room === t), 'data-r="' + t + '"', o),
+      ).join("") +
       "</div>"),
     (r +=
       "<h4>" +
@@ -268,33 +274,33 @@ function _o() {
       (r +=
         '<h4>SPLITS</h4><div class="dvsp">' +
         ($.length
-          ? $.map((t) => (h[t[0]].name || t[0]) + "  " + Wo(t[1])).join("<br>")
+          ? $.map((t) => (rooms[t[0]].name || t[0]) + "  " + Wo(t[1])).join("<br>")
           : "No splits yet.") +
         "<br><b>RUN " +
-        Wo(Z) +
+        Wo(runT) +
         "</b></div>")),
-    (t("#dvb").innerHTML = r + '<button class="dvb big" id="dvx">CLOSE</button>'));
+    (qs("#dvb").innerHTML = r + '<button class="dvb big" id="dvx">CLOSE</button>'));
 }
 let tr = 60,
   ar = 0;
 function er() {
-  (GM.on && ((Oo = Pt), (Pt = 1)), _o(), (Do.hidden = !1));
+  (GM.on && ((Oo = modal), (modal = 1)), _o(), (Do.hidden = !1));
 }
 function or() {
-  ((Do.hidden = !0), GM.on && (Pt = Oo ? 1 : 0), (Oo = 0));
+  ((Do.hidden = !0), GM.on && (modal = Oo ? 1 : 0), (Oo = 0));
 }
 ((Bo.onclick = () => (
   (Io = ""),
   zo(),
-  (t("#dvm").textContent = "STAFF ACCESS CODE"),
+  (qs("#dvm").textContent = "STAFF ACCESS CODE"),
   void (No.hidden = !1)
 )),
   (Go.onclick = () => er()),
-  (t("#dvk").onclick = (t) => {
+  (qs("#dvk").onclick = (t) => {
     const a = t.target.closest("[data-k]");
     a && Yo(a.dataset.k);
   }),
-  (t("#dvq").onclick = () => {
+  (qs("#dvq").onclick = () => {
     No.hidden = !0;
   }),
   (Do.onclick = (a) => {
@@ -317,92 +323,98 @@ function or() {
                     "items" === a ? (Eo.sItems ^= 1) : "open" === a && (Eo.sOpen ^= 1),
                     void _o()
                   );
-                if ("items" === a) (Xo(), Jt("All items added.", 1600));
-                else if ("gun" === a) (Qo(), Jt("Venom Blaster added.", 1600));
+                if ("items" === a) (Xo(), toast("All items added.", 1600));
+                else if ("gun" === a) (Qo(), toast("Venom Blaster added.", 1600));
                 else if ("solvent" === a)
-                  ((Y = !0),
-                    X.includes("potion") || X.push("potion"),
-                    0 === z && (z = 1),
-                    la(),
-                    na(),
-                    Jt("Solvent added.", 1600));
-                else if ("open" === a) (Ko(), Jt("Barricade removed.", 1600));
+                  ((hasPotion = !0),
+                    inv.includes("potion") || inv.push("potion"),
+                    0 === stage && (stage = 1),
+                    updateBag(),
+                    updateGuide(),
+                    toast("Solvent added.", 1600));
+                else if ("open" === a) (Ko(), toast("Barricade removed.", 1600));
                 else if ("heal" === a)
-                  ((m = 5), (u = 4), (y = 0), Be(), Jt("HP + ammo restored.", 1600));
+                  ((hp = 5),
+                    (ammo = 4),
+                    (invuln = 0),
+                    updateHud(),
+                    toast("HP + ammo restored.", 1600));
                 else {
                   if ("respawn" === a)
-                    return (oe(W, "L"), (Pt = 0), (Oo = 0), void (Do.hidden = !0));
+                    return (enterRoom(room, "L"), (modal = 0), (Oo = 0), void (Do.hidden = !0));
                   if ("killboss" === a)
-                    M && "dead" !== M.st
-                      ? ("intro" === M.st && (M.st = "walk"), oo(9999))
-                      : Jt("No boss in this room.", 2e3);
+                    snakeBoss && "dead" !== snakeBoss.st
+                      ? ("intro" === snakeBoss.st && (snakeBoss.st = "walk"), hitBoss(9999))
+                      : toast("No boss in this room.", 2e3);
                   else if ("resetboss" === a)
-                    ((w = !1),
-                      (At = 0),
-                      (t("#gw").hidden = !0),
-                      "exitlab" === W ? qe() : Jt("Boss resets on entering the boss room.", 2200));
-                  else if ("win" === a) ((w = !0), (At = 1), (t("#gw").hidden = !1));
+                    ((bossDone = !1),
+                      (won = 0),
+                      (qs("#gw").hidden = !0),
+                      "exitlab" === room
+                        ? spawnBoss()
+                        : toast("Boss resets on entering the boss room.", 2200));
+                  else if ("win" === a) ((bossDone = !0), (won = 1), (qs("#gw").hidden = !1));
                   else {
-                    if ("restart" === a) return (or(), Bt(), void $o());
+                    if ("restart" === a) return (or(), resetGame(), void $o());
                     if ("cpsave" === a)
                       ((Lo = {
-                        room: W,
-                        P: Object.assign({}, F),
-                        inv: [...X],
-                        got: [...J],
-                        taken: Object.assign({}, Q),
-                        broken: Object.assign({}, K),
-                        stage: z,
-                        exitOpen: q,
-                        hasPotion: Y,
-                        hasGun: p,
-                        ammo: u,
-                        hp: m,
-                        bossDone: w,
-                        worn: V,
-                        gloved: d,
-                        potionUsed: j,
-                        erode: kt,
-                        runT: Z,
+                        room: room,
+                        P: Object.assign({}, player),
+                        inv: [...inv],
+                        got: [...got],
+                        taken: Object.assign({}, taken),
+                        broken: Object.assign({}, broken),
+                        stage: stage,
+                        exitOpen: exitOpen,
+                        hasPotion: hasPotion,
+                        hasGun: hasGun,
+                        ammo: ammo,
+                        hp: hp,
+                        bossDone: bossDone,
+                        worn: worn,
+                        gloved: gloved,
+                        potionUsed: potionUsed,
+                        erode: erode,
+                        runT: runT,
                       }),
-                        Jt("Checkpoint saved.", 1400));
+                        toast("Checkpoint saved.", 1400));
                     else if ("cpload" === a)
                       return (
                         Lo
-                          ? ((W = Lo.room),
-                            Wt[W] || Ut(W),
-                            Object.assign(F, Lo.P),
-                            (F.vx = F.vy = 0),
-                            (X = [...Lo.inv]),
-                            (J = new Set(Lo.got)),
-                            (Q = Object.assign({}, Lo.taken)),
-                            (K = Object.assign({}, Lo.broken)),
-                            (z = Lo.stage),
-                            (q = Lo.exitOpen),
-                            (Y = Lo.hasPotion),
-                            (p = Lo.hasGun),
-                            (u = Lo.ammo),
-                            (m = Lo.hp),
-                            (w = Lo.bossDone),
-                            (V = Lo.worn),
-                            (d = Lo.gloved),
-                            (j = Lo.potionUsed),
-                            (kt = Lo.erode),
-                            (Z = Lo.runT),
-                            (x = []),
-                            (E = []),
-                            (T = []),
-                            (M = null),
-                            (v = !1),
-                            (At = 0),
-                            (t("#gd").hidden = !0),
-                            (t("#gw").hidden = !0),
-                            "exitlab" !== W || w || qe(),
-                            la(),
-                            na(),
-                            Be(),
-                            Jt("Checkpoint loaded.", 1400))
-                          : Jt("No checkpoint saved yet.", 1600),
+                          ? ((room = Lo.room),
+                            backdrops[room] || backdrop(room),
+                            Object.assign(player, Lo.P),
+                            (player.vx = player.vy = 0),
+                            (inv = [...Lo.inv]),
+                            (got = new Set(Lo.got)),
+                            (taken = Object.assign({}, Lo.taken)),
+                            (broken = Object.assign({}, Lo.broken)),
+                            (stage = Lo.stage),
+                            (exitOpen = Lo.exitOpen),
+                            (hasPotion = Lo.hasPotion),
+                            (hasGun = Lo.hasGun),
+                            (ammo = Lo.ammo),
+                            (hp = Lo.hp),
+                            (bossDone = Lo.bossDone),
+                            (worn = Lo.worn),
+                            (gloved = Lo.gloved),
+                            (potionUsed = Lo.potionUsed),
+                            (erode = Lo.erode),
+                            (runT = Lo.runT),
+                            (shots = []),
+                            (venoms = []),
+                            (waves = []),
+                            (snakeBoss = null),
+                            (dead = !1),
+                            (won = 0),
+                            (qs("#gd").hidden = !0),
+                            (qs("#gw").hidden = !0),
+                            "exitlab" !== room || bossDone || spawnBoss(),
+                            updateBag(),
+                            updateGuide(),
+                            updateHud(),
+                            toast("Checkpoint loaded.", 1400))
+                          : toast("No checkpoint saved yet.", 1600),
                         void or()
                       );
                   }
@@ -419,50 +431,55 @@ function or() {
           : "Escape" === t.key && (No.hidden = !0));
   }),
   (window.startGame = function (a, o) {
-    ($sx("stop"), ($t = a || $t), o && (qt = o), (GM.on = !0), (e.hidden = !1), (ot.hidden = !0));
+    ($sx("stop"),
+      (playerName = a || playerName),
+      o && (playerLook = o),
+      (GM.on = !0),
+      (e.hidden = !1),
+      (ot.hidden = !0));
     const r = (ra = matchMedia("(pointer:coarse)").matches || "ontouchstart" in window);
-    (t("#gp").classList.toggle("on", r || "#touch" === location.hash),
+    (qs("#gp").classList.toggle("on", r || "#touch" === location.hash),
       document.activeElement && document.activeElement.blur && document.activeElement.blur());
     for (const t in _a) _a[t].rel();
-    ((_.l = _.r = _.s = 0),
-      (tt = at = et = 0),
-      Bt(),
+    ((keys.l = keys.r = keys.s = 0),
+      (jumpBuf = punchBuf = useBuf = 0),
+      resetGame(),
       (function () {
         let t = null;
         try {
-          t = JSON.parse(localStorage.getItem(Nt()) || "null");
+          t = JSON.parse(localStorage.getItem(checkpointKey()) || "null");
         } catch (t) {}
         !t ||
           !(t.v >= 1) ||
-          ((X = t.inv || []),
-          (J = new Set(t.got || [])),
-          (Q = t.taken || {}),
-          (K = t.broken || {}),
-          (V = !!t.worn),
-          (d = !!t.gloved),
-          (U = !!t.hasGoggles),
-          (z = 2),
-          (q = !0),
-          (kt = 260),
-          (vt = 0),
-          (Y = !1),
-          (j = !0),
+          ((inv = t.inv || []),
+          (got = new Set(t.got || [])),
+          (taken = t.taken || {}),
+          (broken = t.broken || {}),
+          (worn = !!t.worn),
+          (gloved = !!t.gloved),
+          (hasGoggles = !!t.hasGoggles),
+          (stage = 2),
+          (exitOpen = !0),
+          (erode = 260),
+          (pourT = 0),
+          (hasPotion = !1),
+          (potionUsed = !0),
           (Tt = !0),
-          la(),
-          na(),
-          Jt(
+          updateBag(),
+          updateGuide(),
+          toast(
             "<b>CHECKPOINT</b><br>The barricade is already dissolved. Head for the fire exit.",
             3400,
           ));
       })(),
       fo(),
-      Wt.pod || Ut("pod"),
+      backdrops.pod || backdrop("pod"),
       $o(),
-      t("#gg").classList.remove("min"),
+      qs("#gg").classList.remove("min"),
       (lt = 0),
       (st = 0),
       cancelAnimationFrame(Ot),
-      (Ot = requestAnimationFrame(Ao)));
+      (Ot = requestAnimationFrame(frameLoop)));
   }));
-window.__evoRoom = () => W;
-window.__evoBoss = () => (M ? M.st : "");
+window.__evoRoom = () => room;
+window.__evoBoss = () => (snakeBoss ? snakeBoss.st : "");

@@ -1,20 +1,20 @@
 let ce = [],
-  ie = [],
-  fe = 0,
-  he = 0,
+  fx = [],
+  hitStop = 0,
+  hurtFlash = 0,
   de = !0,
   be = 0,
   ue = 0,
   Te = 0,
   Se = 92;
-function Re(t) {
-  ie.push(Object.assign({ t: 0, life: 20, a: 1 }, t));
+function addFx(t) {
+  fx.push(Object.assign({ t: 0, life: 20, a: 1 }, t));
 }
-function Ie(t, a, e, o, r, n, l) {
+function sparks(t, a, e, o, r, n, l) {
   for (let s = 0; s < e; s++) {
     const e = 6.283 * Math.random(),
       c = r * (0.4 + 0.8 * Math.random());
-    Re({
+    addFx({
       k: "spark",
       x: t,
       y: a,
@@ -26,9 +26,9 @@ function Ie(t, a, e, o, r, n, l) {
     });
   }
 }
-function Le(t, a, e) {
+function hitFx(t, a, e) {
   ($sx(e ? "hitbig" : "hit"),
-    Re({
+    addFx({
       k: "flash",
       x: t,
       y: a,
@@ -37,15 +37,24 @@ function Le(t, a, e) {
       a: e ? 0.9 : 0.6,
       life: e ? 10 : 6,
     }),
-    Re({ k: "ring", x: t, y: a, r0: 2, r1: e ? 20 : 11, c: "#fff4c8", life: e ? 14 : 10, sq: 1 }),
-    Re({ k: "star", x: t, y: a, r: e ? 11 : 6, life: e ? 8 : 6, c: "#ffffff" }),
-    Ie(t, a, e ? 14 : 7, ["#ffe070", "#ffffff", "#ffb030"], e ? 2.6 : 1.8, 0.1, 12),
-    Ie(t, a, e ? 10 : 5, ["#8aff9a", "#c8ff70", "#4ad860"], e ? 1.8 : 1.3, 0.16, 24));
+    addFx({
+      k: "ring",
+      x: t,
+      y: a,
+      r0: 2,
+      r1: e ? 20 : 11,
+      c: "#fff4c8",
+      life: e ? 14 : 10,
+      sq: 1,
+    }),
+    addFx({ k: "star", x: t, y: a, r: e ? 11 : 6, life: e ? 8 : 6, c: "#ffffff" }),
+    sparks(t, a, e ? 14 : 7, ["#ffe070", "#ffffff", "#ffb030"], e ? 2.6 : 1.8, 0.1, 12),
+    sparks(t, a, e ? 10 : 5, ["#8aff9a", "#c8ff70", "#4ad860"], e ? 1.8 : 1.3, 0.16, 24));
 }
-function He(t, a, e, o) {
+function smoke(t, a, e, o) {
   $sx("poof");
   for (let r = 0; r < e; r++)
-    Re({
+    addFx({
       k: "smoke",
       x: t + 6 * (Math.random() - 0.5),
       y: a - 1,
@@ -80,77 +89,77 @@ const Ne = {
     exitlab: { c: "70,180,100", l: "200,255,190", a: 0.22, dk: 0.32 },
     outside: { c: "120,160,160", l: "255,246,206", a: 0.1, dk: 0.2 },
   };
-function Be() {
-  const a = "stair" === W || "exitlab" === W || "hall" === W || "ware" === W;
-  ((t("#gl").innerHTML = a
+function updateHud() {
+  const a = "stair" === room || "exitlab" === room || "hall" === room || "ware" === room;
+  ((qs("#gl").innerHTML = a
     ? Array.from(
         { length: 5 },
-        (t, a) => '<span style="color:' + (a < m ? "#ff4a5a" : "#3a2a3a") + '">♥</span>',
+        (t, a) => '<span style="color:' + (a < hp ? "#ff4a5a" : "#3a2a3a") + '">♥</span>',
       ).join("")
     : ""),
-    (t("#ga").innerHTML = p
-      ? '<img src="' + s("blaster", "#b06aff") + '"> x' + (Eo.ammo ? "∞" : u)
+    (qs("#ga").innerHTML = hasGun
+      ? '<img src="' + s("blaster", "#b06aff") + '"> x' + (Eo.ammo ? "∞" : ammo)
       : ""),
-    (t("#bS").style.display = p ? "grid" : "none"),
-    (t("#gb").hidden = !(M && "exitlab" === W && "dead" !== M.st && !O)),
-    (t("#gbf").style.width = Math.max(0, M ? M.hp : 0) + "%"));
+    (qs("#bS").style.display = hasGun ? "grid" : "none"),
+    (qs("#gb").hidden = !(snakeBoss && "exitlab" === room && "dead" !== snakeBoss.st && !cine)),
+    (qs("#gbf").style.width = Math.max(0, snakeBoss ? snakeBoss.hp : 0) + "%"));
 }
-function Fe() {
-  O &&
-    ((P = !0),
-    (H = 1),
-    (O = null),
-    (t("#cskip").hidden = !0),
-    (ct = Math.max(ct, 0.2)),
-    (it = 1),
-    (gt = () => {
-      ((R = []), (M = null), oe("exitlab", "L"), na());
+function skipCine() {
+  cine &&
+    ((bossOpen = !0),
+    (corrode = 1),
+    (cine = null),
+    (qs("#cskip").hidden = !0),
+    (fadeNow = Math.max(fadeNow, 0.2)),
+    (fadeTo = 1),
+    (onFaded = () => {
+      ((minis = []), (snakeBoss = null), enterRoom("exitlab", "L"), updateGuide());
     }));
 }
-function We() {
-  const t = B(),
-    a = M;
-  R = R.filter((e) => {
+function updateMinis() {
+  const t = floorY(),
+    a = snakeBoss;
+  minis = minis.filter((e) => {
     if ((e.t++, e.hurt > 0 && e.hurt--, e.cd > 0 && e.cd--, e.t < 34)) return !0;
     if (e.roam)
       return (
         (e.x += 0.32 * e.face),
-        (e.x < 70 || e.x > G() - 60 || r(e.t, 0 | e.x) < 0.012) && (e.face *= -1),
-        (e.x = Math.max(64, Math.min(G() - 54, e.x))),
+        (e.x < 70 || e.x > roomW() - 60 || r(e.t, 0 | e.x) < 0.012) && (e.face *= -1),
+        (e.x = Math.max(64, Math.min(roomW() - 54, e.x))),
         !0
       );
-    const o = F.x - e.x;
+    const o = player.x - e.x;
     return (
       e.kb || (e.face = o > 0 ? 1 : -1),
       e.kb
         ? ((e.x += e.kb), (e.kb *= 0.82), Math.abs(e.kb) < 0.15 && (e.kb = 0))
         : (e.x += e.face * (0.5 + (a && a.hp < 50 ? 0.18 : 0) + (Math.abs(o) < 26 ? 0.25 : 0))),
-      (e.x = Math.max(6, Math.min(G() - 6, e.x))),
+      (e.x = Math.max(6, Math.min(roomW() - 6, e.x))),
       Math.abs(o) < 7 &&
-        F.y > t - 14 &&
+        player.y > t - 14 &&
         e.cd <= 0 &&
-        !v &&
-        (Ye(1), (e.cd = 70), (e.kb = 2.6 * -e.face)),
+        !dead &&
+        (hurtPlayer(1), (e.cd = 70), (e.kb = 2.6 * -e.face)),
       !(
         e.hp <= 0 &&
-        (Ie(e.x, t - 3, 14, ["#8aff6a", "#d8ff9a", "#5a3a22"], 1.8, 0.14, 20),
-        Re({ k: "ring", x: e.x, y: t - 2, r0: 2, r1: 10, c: "#d8ff9a", life: 12 }),
-        L.push({ x: e.x, y: t - 4, vy: -1.8, t: 0 }),
+        (sparks(e.x, t - 3, 14, ["#8aff6a", "#d8ff9a", "#5a3a22"], 1.8, 0.14, 20),
+        addFx({ k: "ring", x: e.x, y: t - 2, r0: 2, r1: 10, c: "#d8ff9a", life: 12 }),
+        drops.push({ x: e.x, y: t - 4, vy: -1.8, t: 0 }),
         1)
       )
     );
   });
 }
-function ze(t, a, e, o) {
+function hitMinis(t, a, e, o) {
   let r = !1;
-  const n = B();
+  const n = floorY();
   return (
-    R.forEach((l) => {
+    minis.forEach((l) => {
       l.t < 34 ||
         l.hp <= 0 ||
         (Math.abs(t - l.x) < 8 &&
           a > n - 20 &&
-          ((l.hp -= e), (l.hurt = 8), (l.kb = 3 * o), (r = !0), Le(l.x, n - 3, 0)));
+          ((l.hp -= e), (l.hurt = 8), (l.kb = 3 * o), (r = !0), hitFx(l.x, n - 3, 0)));
     }),
     r
   );

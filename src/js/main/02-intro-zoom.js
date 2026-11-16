@@ -162,7 +162,7 @@ function $zs(e) {
 }
 function $ze() {
   (document.body.classList.add("go"),
-    (t("main").inert = !1),
+    (qs("main").inert = !1),
     x.classList.add("out", "zr"),
     setTimeout(() => x.remove(), 480));
 }

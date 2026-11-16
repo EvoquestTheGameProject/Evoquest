@@ -62,10 +62,10 @@ function $dT(a) {
     const k = "L" + i;
     L[0] === ph && L[1] === t && !d.fired[k] && ((d.fired[k] = 1), $dSay(d, L[2], L[3]));
   });
-  const dx = 185.5 - C,
-    dy = 284 - S,
-    px = F.x - C,
-    py = F.y - 22 - S,
+  const dx = 185.5 - camX,
+    dy = 284 - camY,
+    px = player.x - camX,
+    py = player.y - 22 - camY,
     rnd = Math.random;
   let tz = 1,
     tx = 96,
@@ -75,9 +75,9 @@ function $dT(a) {
     ((tz = 1.08 + 0.22 * $dk(0, 230, t)),
       (tx = 0.55 * dx + 0.45 * px),
       (ty = 0.55 * dy + 0.45 * py),
-      (d.red = 0.5 + 0.5 * Math.sin(nt / 9)),
+      (d.red = 0.5 + 0.5 * Math.sin(tick / 9)),
       ev(0, 18, () => {
-        ($sx("scratch"), (Lt = Math.max(Lt, 2)), (d.eyes = 1));
+        ($sx("scratch"), (shake = Math.max(shake, 2)), (d.eyes = 1));
       }),
       ev(0, 60, () => {
         d.eyes = 0;
@@ -94,10 +94,10 @@ function $dT(a) {
     ((tz = 1.3 + 0.25 * $dk(0, 145, t)),
       (tx = dx),
       (ty = dy),
-      (d.red = 0.4 + 0.4 * Math.sin(nt / 9)),
+      (d.red = 0.4 + 0.4 * Math.sin(tick / 9)),
       t % 14 == 0 && $sx("sizzle"),
       t % 3 == 0 &&
-        Re({
+        addFx({
           k: "smoke",
           x: 182 + 6 * rnd(),
           y: 284 + 10 * (rnd() - 0.5),
@@ -107,20 +107,20 @@ function $dT(a) {
           c: "170,255,190",
           life: 26,
         }),
-      t % 8 == 0 && Ie(185.5, 284, 2, ["#b06aff", "#e8d0ff"], 1, 0.08, 12),
+      t % 8 == 0 && sparks(185.5, 284, 2, ["#b06aff", "#e8d0ff"], 1, 0.08, 12),
       ev(1, 55, () => {
-        ($sx("creak"), (Lt = Math.max(Lt, 3)));
+        ($sx("creak"), (shake = Math.max(shake, 3)));
       }),
       ev(1, 100, () => {
-        ($sx("creak"), (Lt = Math.max(Lt, 4)));
+        ($sx("creak"), (shake = Math.max(shake, 4)));
       }),
-      t > 110 && t % 10 == 0 && (Lt = Math.max(Lt, 3)),
+      t > 110 && t % 10 == 0 && (shake = Math.max(shake, 3)),
       t % 52 == 0 && $sx("heart"));
   } else if (ph === 2) {
     ((tz = 1.15),
       (tx = 0.6 * px + 0.4 * dx),
       (ty = 0.6 * py + 0.4 * dy),
-      (d.red = 0.25 + 0.2 * Math.sin(nt / 9)));
+      (d.red = 0.25 + 0.2 * Math.sin(tick / 9)));
   } else if (ph === 3) {
     ((tz = 1.3), (tx = 0.5 * (dx + px)), (ty = 0.5 * (dy + py)), (d.red = 0.3));
     if (a.hits > d.hits) {
@@ -133,7 +133,7 @@ function $dT(a) {
         $sx("doorhit"),
         $sx("debris"));
       for (let i = 0; i < 10 + 6 * n; i++)
-        yt.push({
+        parts.push({
           x: 181 + 8 * rnd(),
           y: 270 + 30 * rnd(),
           vx: (rnd() - 0.15) * (1 + n),
@@ -143,30 +143,30 @@ function $dT(a) {
           c: i % 2 ? "#6a7884" : "#3a444c",
           s: 1.5,
         });
-      (Re({ k: "ring", x: 187, y: 285, r0: 3, r1: 14 + 10 * n, c: "#d8ffd8", life: 14 }),
+      (addFx({ k: "ring", x: 187, y: 285, r0: 3, r1: 14 + 10 * n, c: "#d8ffd8", life: 14 }),
         3 === n &&
-          ((fe = Math.max(fe, 12)),
-          (Lt = 26),
+          ((hitStop = Math.max(hitStop, 12)),
+          (shake = 26),
           (d.tz = 1),
-          Re({ k: "ring", x: 187, y: 285, r0: 4, r1: 46, c: "#ffffff", life: 20 }),
-          Re({ k: "flash", x: 187, y: 285, r: 40, c: "200,255,200", a: 0.9, life: 14 })));
+          addFx({ k: "ring", x: 187, y: 285, r0: 4, r1: 46, c: "#ffffff", life: 20 }),
+          addFx({ k: "flash", x: 187, y: 285, r: 40, c: "200,255,200", a: 0.9, life: 14 })));
     }
   } else if (ph === 4 || ph === 45) {
     ((tz = 1.05), (tx = px), (ty = py), (d.red = 0));
   } else if (ph === 5) {
     ((tz = 1.04), (tx = px), (ty = py));
     ev(5, 0, () => {
-      ((wt = 0),
+      ((roomBanner = 0),
         ($TT = { a: "EXIT LAB", b: "WHERE CONTAINMENT FAILED", t: 0, c: "#ffe070" }),
         (d.eyes2 = 1),
         $sx("title"));
     });
-    const far = Math.max(0, G() - 192),
-      fol = Math.max(0, Math.min(far, F.x - 96)),
+    const far = Math.max(0, roomW() - 192),
+      fol = Math.max(0, Math.min(far, player.x - 96)),
       bell = Math.sin(Math.PI * $dk(20, 150, t));
     d.cx = t >= 20 && t <= 150 ? fol + (far - fol) * bell : null;
   } else if (ph === 6) {
-    ((d.cx = t >= 8 ? Math.max(0, G() - 192) : null),
+    ((d.cx = t >= 8 ? Math.max(0, roomW() - 192) : null),
       (tz = 1.05 + 0.15 * $dk(0, 90, t)),
       (tx = 96),
       (ty = 70));
@@ -175,9 +175,9 @@ function $dT(a) {
     }),
       ev(6, 40, () => $sx("slither")),
       t % 4 == 0 &&
-        yt.push({
-          x: C + 192 * rnd(),
-          y: S + 2,
+        parts.push({
+          x: camX + 192 * rnd(),
+          y: camY + 2,
           vx: 0.2 * (rnd() - 0.5),
           vy: 0.4 + 0.4 * rnd(),
           g: 0.01,
@@ -185,7 +185,7 @@ function $dT(a) {
           c: "#8a8a7a",
           s: 1,
         }),
-      (Lt = Math.max(Lt, 2)),
+      (shake = Math.max(shake, 2)),
       t % 36 == 0 && $sx("heart"));
   } else if (ph === 7) {
     ((d.cx = null),
@@ -194,9 +194,9 @@ function $dT(a) {
       (ty = py),
       t % 30 == 0 && $sx("heart"),
       t % 5 == 0 &&
-        yt.push({
-          x: C + 192 * rnd(),
-          y: S + 2,
+        parts.push({
+          x: camX + 192 * rnd(),
+          y: camY + 2,
           vx: 0.2 * (rnd() - 0.5),
           vy: 0.4 + 0.4 * rnd(),
           g: 0.01,
@@ -205,8 +205,8 @@ function $dT(a) {
           s: 1,
         }));
   } else if (ph === 8) {
-    const bx = 0.6 * G() - C,
-      by = B() - 30 - S,
+    const bx = 0.6 * roomW() - camX,
+      by = floorY() - 30 - camY,
       p = $dk(110, 190, t);
     ((tz = 1.05 + 0.4 * p), (tx = px * (1 - p) + bx * p), (ty = py * (1 - p) + by * p));
     (ev(8, 100, () => $sx("rumble")),
@@ -217,11 +217,11 @@ function $dT(a) {
         ((d.fl = 0.6), (d.flc = "255,80,80"), $sx("stinger"));
       }),
       t >= 100 &&
-        ((Lt = Math.max(Lt, Math.min(10, 2 + (t - 100) / 10))),
+        ((shake = Math.max(shake, Math.min(10, 2 + (t - 100) / 10))),
         t % 3 == 0 &&
-          yt.push({
-            x: C + 192 * rnd(),
-            y: S + 2,
+          parts.push({
+            x: camX + 192 * rnd(),
+            y: camY + 2,
             vx: 0.3 * (rnd() - 0.5),
             vy: 0.5 + 0.5 * rnd(),
             g: 0.02,
@@ -231,22 +231,22 @@ function $dT(a) {
           })));
   } else if (ph === 9) {
     try {
-      M && (boss = ho(M).head);
+      snakeBoss && (boss = snakePose(snakeBoss).head);
     } catch (e) {}
-    const mt2 = M ? M.t : 0;
+    const mt2 = snakeBoss ? snakeBoss.t : 0;
     (boss
-      ? ((tx = boss.x - C),
-        (ty = boss.y - S),
+      ? ((tx = boss.x - camX),
+        (ty = boss.y - camY),
         (tz = mt2 >= 165 ? 1.05 : 1.45 + 0.35 * $dk(0, 150, mt2)))
       : ((tx = px), (ty = py), (tz = 1.2)),
       mt2 === 2 && !d.fired.b2 && ((d.fired.b2 = 1), $sx("rumble")),
       mt2 >= 20 &&
         mt2 < 150 &&
         mt2 % 6 == 0 &&
-        ((Lt = Math.max(Lt, 8)),
-        yt.push({
-          x: M.x + 30 * (rnd() - 0.5) * 2,
-          y: B() - 2,
+        ((shake = Math.max(shake, 8)),
+        parts.push({
+          x: snakeBoss.x + 30 * (rnd() - 0.5) * 2,
+          y: floorY() - 2,
           vx: 2 * (rnd() - 0.5),
           vy: -1 - 2 * rnd(),
           g: 0.1,
@@ -258,16 +258,25 @@ function $dT(a) {
         !d.fired.b60 &&
         ((d.fired.b60 = 1),
         $sx("slam"),
-        (Lt = Math.max(Lt, 14)),
+        (shake = Math.max(shake, 14)),
         boss &&
-          Re({ k: "ring", x: boss.x, y: B(), r0: 4, r1: 60, c: "#ffe0a0", life: 20, sq: 0.2 })),
+          addFx({
+            k: "ring",
+            x: boss.x,
+            y: floorY(),
+            r0: 4,
+            r1: 60,
+            c: "#ffe0a0",
+            life: 20,
+            sq: 0.2,
+          })),
       mt2 === 120 &&
         !d.fired.b120 &&
         ((d.fired.b120 = 1),
         $sx("roar"),
         $sx("slam"),
         $sx("title"),
-        (Lt = 30),
+        (shake = 30),
         (d.fl = 0.85),
         (d.flc = "255,255,255"),
         (d.imp = 0.45),
@@ -275,7 +284,7 @@ function $dT(a) {
         ($TT = { a: "MUTATED SNAKE", b: "GUARDIAN OF THE EXIT", t: 0, c: "#ff5a6a", boss: 1 }),
         boss &&
           [0, 1, 2].forEach((i) =>
-            Re({
+            addFx({
               k: "ring",
               x: boss.x,
               y: boss.y,
@@ -319,102 +328,108 @@ function $dTitle() {
   const hh = c.boss ? 30 : 24,
     fs = c.boss ? 9 : 8,
     f = fs + 'px "Press Start 2P",monospace';
-  (ft.save(),
-    (ft.globalAlpha = al),
-    Yt("rgba(0,0,0,.55)", 0, 40, 192, hh),
-    Yt(c.c, 0, 40, 192, 0.5),
-    Yt(c.c, 0, 40 + hh - 0.5, 192, 0.5));
+  (ctx.save(),
+    (ctx.globalAlpha = al),
+    fill("rgba(0,0,0,.55)", 0, 40, 192, hh),
+    fill(c.c, 0, 40, 192, 0.5),
+    fill(c.c, 0, 40 + hh - 0.5, 192, 0.5));
   const n = Math.min(c.a.length, Math.floor(u / 3)),
     s = c.a.slice(0, n),
     x = Math.round(96 - (fs * c.a.length) / 2);
-  (mt(s, x + 1, (c.boss ? 45 : 46) + 1, "#000", f),
-    mt(s, x, c.boss ? 45 : 46, c.boss ? "#ffffff" : "#fff6d0", f));
+  (text(s, x + 1, (c.boss ? 45 : 46) + 1, "#000", f),
+    text(s, x, c.boss ? 45 : 46, c.boss ? "#ffffff" : "#fff6d0", f));
   if (u > 26) {
     const b = c.b.slice(0, Math.floor((u - 26) / 2));
-    mt(b, Math.round(96 - 2 * c.b.length), c.boss ? 61 : 58, c.c, '4px "Press Start 2P",monospace');
+    text(
+      b,
+      Math.round(96 - 2 * c.b.length),
+      c.boss ? 61 : 58,
+      c.c,
+      '4px "Press Start 2P",monospace',
+    );
   }
-  ft.restore();
+  ctx.restore();
 }
 function $dCam() {
-  const d = O.d;
-  (ft.translate(d.fx, d.fy), ft.scale(d.z, d.z), ft.translate(-d.fx, -d.fy));
+  const d = cine.d;
+  (ctx.translate(d.fx, d.fy), ctx.scale(d.z, d.z), ctx.translate(-d.fx, -d.fy));
 }
 function $dOv() {
-  const a = O,
+  const a = cine,
     d = a.d;
   if (!d) {
-    (Yt("#000", 0, 0, 192, 10), Yt("#000", 0, 98, 192, 10));
+    (fill("#000", 0, 0, 192, 10), fill("#000", 0, 98, 192, 10));
     return;
   }
   const ph = a.ph,
-    T = nt;
+    T = tick;
   /* world-space effects (still inside the camera zoom) */
   if (d.eyes && ph <= 1)
     for (const [ox, sl] of [
       [182, 0],
       [187.5, 1],
     ]) {
-      const ex = ox - C,
-        ey = 274 - S,
+      const ex = ox - camX,
+        ey = 274 - camY,
         bl = (T >> 3) % 9 == 0 ? 0 : 1;
-      (Gt(ex + 1.5, ey + 1, 8, "255,190,30", 0.55),
+      (glow(ex + 1.5, ey + 1, 8, "255,190,30", 0.55),
         bl &&
-          (Yt("#ffd23a", ex, ey, 3, 2),
-          Yt("#fff2a0", ex, ey, 3, 0.5),
-          Yt("#1a0a00", ex + 1.2, ey, 0.7, 2)));
+          (fill("#ffd23a", ex, ey, 3, 2),
+          fill("#fff2a0", ex, ey, 3, 0.5),
+          fill("#1a0a00", ex + 1.2, ey, 0.7, 2)));
     }
-  if (d.eyes2 && W === "exitlab")
+  if (d.eyes2 && room === "exitlab")
     for (let i = 0; i < 14; i++) {
       const x = 24 + r(i, 81) * 400,
         y = 14 + r(i, 82) * 84,
         bl = ((T >> 3) + i * 7) % 23 == 0 ? 0 : 1,
         al = (0.25 + 0.25 * Math.sin(T / 40 + i)) * bl;
       if (al <= 0.02) continue;
-      const ex = x - C,
-        ey = y - S;
-      ((ft.globalAlpha = al),
-        Yt(i % 3 ? "#ffd23a" : "#ff4a3a", ex, ey, 1.5, 1),
-        Yt(i % 3 ? "#ffd23a" : "#ff4a3a", ex + 3.5, ey, 1.5, 1),
-        (ft.globalAlpha = 1));
+      const ex = x - camX,
+        ey = y - camY;
+      ((ctx.globalAlpha = al),
+        fill(i % 3 ? "#ffd23a" : "#ff4a3a", ex, ey, 1.5, 1),
+        fill(i % 3 ? "#ffd23a" : "#ff4a3a", ex + 3.5, ey, 1.5, 1),
+        (ctx.globalAlpha = 1));
     }
-  if (W === "exitlab" && ((ph === 8 && a.t > 110) || ph === 9)) {
+  if (room === "exitlab" && ((ph === 8 && a.t > 110) || ph === 9)) {
     const p = ph === 9 ? 1 : $dk(110, 190, a.t),
-      bx = 0.6 * G() - C,
-      y = B() - S + 1;
-    Gt(bx, y, 34, "90,255,140", 0.28 * p);
+      bx = 0.6 * roomW() - camX,
+      y = floorY() - camY + 1;
+    glow(bx, y, 34, "90,255,140", 0.28 * p);
     for (let i = 0; i < 16; i++) {
       const ox = (i - 8) * 4 + 3 * Math.sin(i * 2.3),
         len = 3 + 4 * r(i, 5) * p;
-      (Yt("#04060a", bx + ox, y, 1.5, len * p * (0.5 + r(i, 6))),
-        Yt("#04060a", bx + ox + 1, y + len * 0.5 * p, 1, len * 0.5 * p));
+      (fill("#04060a", bx + ox, y, 1.5, len * p * (0.5 + r(i, 6))),
+        fill("#04060a", bx + ox + 1, y + len * 0.5 * p, 1, len * 0.5 * p));
     }
   }
   /* undo the camera zoom for screen-space overlays */
-  (ft.save(), ft.translate(d.fx, d.fy), ft.scale(1 / d.z, 1 / d.z), ft.translate(-d.fx, -d.fy));
+  (ctx.save(), ctx.translate(d.fx, d.fy), ctx.scale(1 / d.z, 1 / d.z), ctx.translate(-d.fx, -d.fy));
   if (d.fl > 0.01)
-    ((ft.fillStyle = "rgba(" + d.flc + "," + Math.min(1, d.fl).toFixed(3) + ")"),
-      ft.fillRect(0, 0, 192, 108));
+    ((ctx.fillStyle = "rgba(" + d.flc + "," + Math.min(1, d.fl).toFixed(3) + ")"),
+      ctx.fillRect(0, 0, 192, 108));
   if (d.red > 0 && ph <= 3)
-    ((ft.fillStyle = "rgba(255,20,40," + (0.05 + 0.09 * d.red).toFixed(3) + ")"),
-      ft.fillRect(0, 0, 192, 108));
+    ((ctx.fillStyle = "rgba(255,20,40," + (0.05 + 0.09 * d.red).toFixed(3) + ")"),
+      ctx.fillRect(0, 0, 192, 108));
   {
-    const g = ft.createRadialGradient(96, 54, 34, 96, 54, 118);
+    const g = ctx.createRadialGradient(96, 54, 34, 96, 54, 118);
     (g.addColorStop(0, "rgba(0,0,0,0)"),
       g.addColorStop(1, "rgba(0,0,10," + (0.45 + 0.15 * Math.sin(T / 20)).toFixed(2) + ")"),
-      (ft.fillStyle = g),
-      ft.fillRect(0, 0, 192, 108));
+      (ctx.fillStyle = g),
+      ctx.fillRect(0, 0, 192, 108));
   }
   /* WARNING banner */
   if (d.warn > 0) {
     const w = d.warn,
       al = Math.min(1, w / 10, (70 - w) / 8),
       off = (T * 1.6) % 16;
-    ((ft.globalAlpha = Math.max(0, al) * 0.92), Yt("#1a0508", 0, 36, 192, 22));
+    ((ctx.globalAlpha = Math.max(0, al) * 0.92), fill("#1a0508", 0, 36, 192, 22));
     for (let i = -1; i < 14; i++)
-      (Yt("#ffcc20", i * 16 + off - 16, 36, 8, 2), Yt("#ffcc20", i * 16 - off + 16, 56, 8, 2));
+      (fill("#ffcc20", i * 16 + off - 16, 36, 8, 2), fill("#ffcc20", i * 16 - off + 16, 56, 8, 2));
     if ((T >> 2) % 2) {
-      mt("WARNING", 96 - 14 * 3.5, 41, "#ff3a3a", '7px "Press Start 2P",monospace');
-      mt(
+      text("WARNING", 96 - 14 * 3.5, 41, "#ff3a3a", '7px "Press Start 2P",monospace');
+      text(
         "BIOHAZARD SIGNATURE DETECTED",
         96 - 28 * 2,
         51,
@@ -422,21 +437,21 @@ function $dOv() {
         '4px "Press Start 2P",monospace',
       );
     }
-    ft.globalAlpha = 1;
+    ctx.globalAlpha = 1;
   }
   $dTitle();
   /* letterbox + dialogue */
   const Bh = Math.round(13 * Math.max(0, d.bar));
   if (Bh > 0) {
-    (Yt("#000", 0, 0, 192, Bh),
-      Yt("#000", 0, 108 - Bh, 192, Bh),
-      Yt("rgba(255,255,255,.12)", 0, 108 - Bh, 192, 0.5),
-      Yt("rgba(255,255,255,.12)", 0, Bh - 0.5, 192, 0.5));
+    (fill("#000", 0, 0, 192, Bh),
+      fill("#000", 0, 108 - Bh, 192, Bh),
+      fill("rgba(255,255,255,.12)", 0, 108 - Bh, 192, 0.5),
+      fill("rgba(255,255,255,.12)", 0, Bh - 0.5, 192, 0.5));
     if (d.txt && Bh >= 12) {
       const f = '4px "Press Start 2P",monospace',
         pl = d.who === "p",
         nm = pl
-          ? String($t || "YOU")
+          ? String(playerName || "YOU")
               .toUpperCase()
               .slice(0, 10)
           : "",
@@ -457,7 +472,7 @@ function $dOv() {
       const col = pl ? "#e8f2ff" : "#b8c8ff",
         tx0 = pl ? 0 : Math.round(96 - 2 * Math.max(rows[0].length, rows[1].length));
       const draw = (s, x, y, c) => {
-        (mt(s, x + 1, y + 1, "#000", f), mt(s, x, y, c, f));
+        (text(s, x + 1, y + 1, "#000", f), text(s, x, y, c, f));
       };
       const r0 = pre + rows[0],
         r0v = r0.slice(0, Math.max(0, n)),
@@ -469,5 +484,5 @@ function $dOv() {
       rows[1] && draw(r1v, pl ? 4 : tx0, y0 + 5, col);
     }
   }
-  ft.restore();
+  ctx.restore();
 }

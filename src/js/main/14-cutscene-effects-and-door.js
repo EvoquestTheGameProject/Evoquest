@@ -2,28 +2,30 @@ function Eo(t, a) {
   if ("street" === t) {
     vo(60, 30, "255,170,210", 0.35, 46);
     const t = a % 2300 > 140 && Math.sin(a / 70) > -0.85 ? 1 : 0.15;
-    (Gt(152, 26, 16, "255,70,190", 0.2 * t), Gt(176, 38, 10, "90,220,255", 0.16 * (1 - 0.5 * t)));
+    (glow(152, 26, 16, "255,70,190", 0.2 * t),
+      glow(176, 38, 10, "90,220,255", 0.16 * (1 - 0.5 * t)));
     const e = ((a + 1500) % 7600) / 7600;
     if (e < 0.34) {
       const t = 216 - (e / 0.34) * 262;
-      ((ft.fillStyle = "rgba(255,240,200,.09)"),
-        ft.beginPath(),
-        ft.moveTo(t - 1, 91),
-        ft.lineTo(t - 70, 84),
-        ft.lineTo(t - 70, 101),
-        ft.closePath(),
-        ft.fill(),
-        pt("#07050e", t - 3, 88, 26, 7),
-        pt("#1a1430", t + 2, 85, 15, 4),
-        pt("#2a2448", t + 3, 85.5, 6, 2),
-        pt("#2a2448", t + 10, 85.5, 5, 2),
-        pt("#05040a", t, 94, 4, 2),
-        pt("#05040a", t + 17, 94, 4, 2),
-        pt("#fff4c0", t - 3, 90, 2, 1.5),
-        Gt(t - 3, 91, 9, "255,240,200", 0.55),
-        pt("#ff3030", t + 22, 89, 1.5, 1),
-        Gt(t + 22, 89, 4, "255,40,40", 0.4));
-      for (let a = 0; a < 6; a++) pt("rgba(255,240,200,.25)", t - 6 - 9 * a, 99 + (a % 2), 4, 0.5);
+      ((ctx.fillStyle = "rgba(255,240,200,.09)"),
+        ctx.beginPath(),
+        ctx.moveTo(t - 1, 91),
+        ctx.lineTo(t - 70, 84),
+        ctx.lineTo(t - 70, 101),
+        ctx.closePath(),
+        ctx.fill(),
+        rect("#07050e", t - 3, 88, 26, 7),
+        rect("#1a1430", t + 2, 85, 15, 4),
+        rect("#2a2448", t + 3, 85.5, 6, 2),
+        rect("#2a2448", t + 10, 85.5, 5, 2),
+        rect("#05040a", t, 94, 4, 2),
+        rect("#05040a", t + 17, 94, 4, 2),
+        rect("#fff4c0", t - 3, 90, 2, 1.5),
+        glow(t - 3, 91, 9, "255,240,200", 0.55),
+        rect("#ff3030", t + 22, 89, 1.5, 1),
+        glow(t + 22, 89, 4, "255,40,40", 0.4));
+      for (let a = 0; a < 6; a++)
+        rect("rgba(255,240,200,.25)", t - 6 - 9 * a, 99 + (a % 2), 4, 0.5);
     }
     for (let t = 0; t < 22; t++) {
       const e = (a / 320 + r(t, 3)) % 1,
@@ -31,15 +33,15 @@ function Eo(t, a) {
         n = 86 + 20 * r(t, 5);
       if (e < 0.28) {
         const t = 0.55 * (1 - e / 0.28);
-        (pt("rgba(200,210,255," + t + ")", o - 7 * e, n - 3 * e, 0.5, 0.5),
-          pt("rgba(200,210,255," + t + ")", o + 7 * e, n - 3 * e, 0.5, 0.5),
-          pt("rgba(200,210,255," + 0.6 * t + ")", o - 1, n, 2, 0.5));
+        (rect("rgba(200,210,255," + t + ")", o - 7 * e, n - 3 * e, 0.5, 0.5),
+          rect("rgba(200,210,255," + t + ")", o + 7 * e, n - 3 * e, 0.5, 0.5),
+          rect("rgba(200,210,255," + 0.6 * t + ")", o - 1, n, 2, 0.5));
       }
     }
     for (let t = 0; t < 4; t++) {
       const e = 24 + 0 * t + 4 * Math.sin(a / 140 + 2 * t),
         o = 34 + 3 * Math.cos(a / 170 + t);
-      t < 2 && pt("#d8c8a8", e + (t ? 48 : 0), o, 0.5, 0.5);
+      t < 2 && rect("#d8c8a8", e + (t ? 48 : 0), o, 0.5, 0.5);
     }
     [
       [25, "255,214,140", 3],
@@ -51,7 +53,7 @@ function Eo(t, a) {
       for (let l = 91; l < 107; l += 0.5) {
         if (r(2 * l + 31 * n, (a / 110) | 0) < 0.38) continue;
         const s = 1 - (l - 91) / 16;
-        pt(
+        rect(
           "rgba(" + e + "," + 0.42 * s + ")",
           t + 1.3 * Math.sin(1.4 * l + a / 180 + n) - (o * s) / 2,
           l,
@@ -62,7 +64,7 @@ function Eo(t, a) {
     });
     for (let t = 0; t < 7; t++) {
       const e = ((a / 26 + 15 * t) % 100) / 100;
-      pt(
+      rect(
         "rgba(210,215,235," + 0.22 * (1 - e) + ")",
         102 + 3 * Math.sin(6 * e + t) - 4 * e,
         98 - 26 * e,
@@ -76,49 +78,49 @@ function Eo(t, a) {
       const e = 24 + 144 * r(t, 1),
         o = 0.004 + 0.009 * r(t, 2),
         n = ((a * o + 130 * r(t, 3)) % 130) - 12;
-      (pt("rgba(220,230,255,.18)", e, n - 9, 0.5, 9),
-        pt("rgba(240,250,255,.7)", e - 0.25, n, 1, 1.2),
-        pt("rgba(255,255,255,.9)", e, n, 0.5, 0.5));
+      (rect("rgba(220,230,255,.18)", e, n - 9, 0.5, 9),
+        rect("rgba(240,250,255,.7)", e - 0.25, n, 1, 1.2),
+        rect("rgba(255,255,255,.9)", e, n, 0.5, 0.5));
     }
     for (let t = 0; t < 30; t++) {
       const a = r(t, 11) * dt,
         e = r(t, 12) * bt;
-      pt("rgba(255,255,255,.18)", a, e, 0.5, 0.5);
+      rect("rgba(255,255,255,.18)", a, e, 0.5, 0.5);
     }
     const t = 96 + 18 * Math.sin(a / 190),
       e = 7 + 4 * Math.cos(a / 130),
       o = ((a / 50) | 0) % 2;
-    (pt("#3a2c26", t, e, 1.5, 1),
-      pt("#8a7a68", t - 1 - 0.5 * o, e - 0.5, 1, 0.5),
-      pt("#8a7a68", t + 1.5, e - 0.5, 1, 0.5),
-      a % 3400 < 110 && ((a / 40) | 0) % 2 && pt("rgba(0,0,12,.3)", 0, 0, dt, bt),
+    (rect("#3a2c26", t, e, 1.5, 1),
+      rect("#8a7a68", t - 1 - 0.5 * o, e - 0.5, 1, 0.5),
+      rect("#8a7a68", t + 1.5, e - 0.5, 1, 0.5),
+      a % 3400 < 110 && ((a / 40) | 0) % 2 && rect("rgba(0,0,12,.3)", 0, 0, dt, bt),
       vo(96, -2, "255,200,140", 0.25, 40));
   } else if ("call" === t) {
     const t = a % 6100;
     t < 160 &&
       ((t / 45) | 0) % 2 == 0 &&
-      (pt("rgba(200,215,255,.16)", 0, 0, dt, bt),
+      (rect("rgba(200,215,255,.16)", 0, 0, dt, bt),
       ko(30 + 40 * r((a / 6100) | 0, 5), 0, 3 + ((a / 6100) | 0)));
     for (let t = 0; t < 10; t++) {
       const e = 92 * r(t, 21) + 2,
         o = ((a * (0.006 + 0.008 * r(t, 22)) + 120 * r(t, 23)) % 120) - 10;
-      (pt("rgba(200,225,255,.22)", e, o - 7, 0.5, 7),
-        pt("rgba(230,245,255,.6)", e - 0.25, o, 1, 1));
+      (rect("rgba(200,225,255,.22)", e, o - 7, 0.5, 7),
+        rect("rgba(230,245,255,.6)", e - 0.25, o, 1, 1));
     }
-    (pt("rgba(120,220,255,.05)", 0, (a / 14) % bt, dt, 2), wo(5, "80,200,255", 0.05, 10, 100, a));
+    (rect("rgba(120,220,255,.05)", 0, (a / 14) % bt, dt, 2), wo(5, "80,200,255", 0.05, 10, 100, a));
   } else if ("pod" === t) {
     for (let t = 0; t < 16; t++) {
       const e = 0.012 + 0.02 * r(t, 31),
         o = 94 - ((a * e + 80 * r(t, 32)) % 74),
         n = 88 + 16 * r(t, 33) + 1.5 * Math.sin(a / 380 + t);
-      (pt("rgba(190,255,230,.55)", n, o, 1, 1), pt("rgba(255,255,255,.7)", n, o, 0.5, 0.5));
+      (rect("rgba(190,255,230,.55)", n, o, 1, 1), rect("rgba(255,255,255,.7)", n, o, 0.5, 0.5));
     }
     const t = 22 + ((a / 28) % 68);
-    (pt("rgba(120,255,210,.3)", 78, t, 36, 0.5), Gt(96, t, 10, "120,255,210", 0.12));
+    (rect("rgba(120,255,210,.3)", 78, t, 36, 0.5), glow(96, t, 10, "120,255,210", 0.12));
     for (let t = 0; t < 20; t++) {
       const e = (r(t, 41) * dt + 6 * Math.sin(a / 1600 + t) + dt) % dt,
         o = (r(t, 42) * bt - 0.004 * a * (1 + (t % 3)) + 432) % bt;
-      pt("rgba(170,255,230,.35)", e, o, 0.5, 0.5);
+      rect("rgba(170,255,230,.35)", e, o, 0.5, 0.5);
     }
     vo(96, 10, "150,255,220", 0.18, 36);
   } else if ("lab" === t) {
@@ -130,13 +132,13 @@ function Eo(t, a) {
         const n = t / 700,
           l = a + 30 * (r(o, 51) - 0.5) * n,
           s = e + n * n * 60 * (0.5 + r(o, 52)) + 4 * r(o, 53);
-        pt(o % 3 ? "#ffd060" : "#fff4c0", l, s, 0.5, 0.5 + n);
+        rect(o % 3 ? "#ffd060" : "#fff4c0", l, s, 0.5, 0.5 + n);
       }
-      Gt(a, e, 8, "255,200,100", 0.5 * (1 - t / 700));
+      glow(a, e, 8, "255,200,100", 0.5 * (1 - t / 700));
     }
     for (let t = 0; t < 5; t++) {
       const e = (a / 90 + 29 * t) % 100;
-      pt(
+      rect(
         "rgba(60,40,50," + 0.12 * (1 - e / 100) + ")",
         ((41 * t + 0.01 * a) % dt) + 4 * Math.sin(e / 10),
         8 + 0.3 * e,
@@ -148,34 +150,34 @@ function Eo(t, a) {
       if (Math.sin(a / 200 + 3 * t) > 0.92) {
         const a = r(t, 61) * dt,
           e = 88 + 14 * r(t, 62);
-        (pt("#ffffff", a, e, 0.5, 0.5), Gt(a, e, 3, "255,255,255", 0.5));
+        (rect("#ffffff", a, e, 0.5, 0.5), glow(a, e, 3, "255,255,255", 0.5));
       }
   } else if ("out" === t) {
     const t = a % 5800;
     t < 200 &&
       ((t / 50) | 0) % 2 == 0 &&
-      (pt("rgba(190,255,200,.13)", 0, 0, dt, bt),
+      (rect("rgba(190,255,200,.13)", 0, 0, dt, bt),
       ko(40 + 110 * r((a / 5800) | 0, 9), 0, 11 + ((a / 5800) | 0)));
     for (let t = 0; t < 3; t++) {
       const e = ((a / 28 + 80 * t) % 260) - 30,
         o = 14 + 7 * t + 3 * Math.sin(a / 300 + t),
         r = ((a / 110 + t) | 0) % 2;
-      (pt("#0a0612", e, o, 2, 1),
-        pt("#0a0612", e - 2 - r, o - 1 + 2 * r, 2, 1),
-        pt("#0a0612", e + 2 + r, o - 1 + 2 * r, 2, 1));
+      (rect("#0a0612", e, o, 2, 1),
+        rect("#0a0612", e - 2 - r, o - 1 + 2 * r, 2, 1),
+        rect("#0a0612", e + 2 + r, o - 1 + 2 * r, 2, 1));
     }
     for (let t = 0; t < 4; t++) {
       const e = a / 2600 + 1.7 * t;
-      (ft.save(),
-        (ft.globalCompositeOperation = "lighter"),
-        (ft.fillStyle = "rgba(170,255,200,.035)"),
-        ft.beginPath(),
-        ft.moveTo(30 + 44 * t, 92),
-        ft.lineTo(30 + 44 * t + 90 * Math.cos(e) - 12, -10),
-        ft.lineTo(30 + 44 * t + 90 * Math.cos(e) + 12, -10),
-        ft.closePath(),
-        ft.fill(),
-        ft.restore());
+      (ctx.save(),
+        (ctx.globalCompositeOperation = "lighter"),
+        (ctx.fillStyle = "rgba(170,255,200,.035)"),
+        ctx.beginPath(),
+        ctx.moveTo(30 + 44 * t, 92),
+        ctx.lineTo(30 + 44 * t + 90 * Math.cos(e) - 12, -10),
+        ctx.lineTo(30 + 44 * t + 90 * Math.cos(e) + 12, -10),
+        ctx.closePath(),
+        ctx.fill(),
+        ctx.restore());
     }
     wo(6, "150,255,120", 0.06, 70, 106, a);
   } else if ("rock" === t) {
@@ -192,9 +194,9 @@ function Eo(t, a) {
         const o = 6 + 22 * t + 10 * r(e, 81),
           n = 20 + 18 * e + 4 * Math.sin(a / 900 + e),
           l = 100 - 8 * t - 10 * r(e, 82);
-        ((ft.globalAlpha = 0.35 * t),
+        ((ctx.globalAlpha = 0.35 * t),
           ut(0 | n, 0 | l, 0 | o, e % 2 ? "#8a8494" : "#b8b0c0"),
-          (ft.globalAlpha = 1));
+          (ctx.globalAlpha = 1));
       }
       [40, 90, 140].forEach((e) =>
         vo(
@@ -215,7 +217,7 @@ function Eo(t, a) {
           o = 20 + 60 * t + 40 * a,
           r = 10 + 9 * t + 12 * a;
         for (let t = 0; t < 6; t++)
-          pt(
+          rect(
             "rgba(255,255,255," + 0.8 * (1 - a) * (1 - t / 6) + ")",
             o - 2 * t,
             r - 0.6 * t,
@@ -224,86 +226,86 @@ function Eo(t, a) {
           );
       }
     }
-    (Gt(96, 54, 58, "90,170,255", 0.1 + 0.04 * Math.sin(a / 800)),
+    (glow(96, 54, 58, "90,170,255", 0.1 + 0.04 * Math.sin(a / 800)),
       vo(150, 16, "255,240,210", 0.3, 60));
   } else if ("wake" === t) {
     for (let t = 0; t < 24; t++) {
       const e = 70 + 60 * r(t, 91) + 5 * Math.sin(a / 1100 + t),
         o = (92 * r(t, 92) + 0.004 * a * (1 + (t % 3))) % 92;
-      pt("rgba(255,250,210," + (0.25 + 0.25 * Math.sin(a / 500 + t)) + ")", e, o, 0.5, 0.5);
+      rect("rgba(255,250,210," + (0.25 + 0.25 * Math.sin(a / 500 + t)) + ")", e, o, 0.5, 0.5);
     }
     (vo(100, 2, "255,240,180", 0.3, 56), wo(4, "200,255,160", 0.05, 70, 104, a));
   }
   if ("pod" === t || "wake" === t || "lab" === t) {
-    (ft.save(), (ft.globalCompositeOperation = "lighter"));
+    (ctx.save(), (ctx.globalCompositeOperation = "lighter"));
     for (let e = 0; e < 5; e++) {
       const o = 0.035 + 0.02 * Math.sin(a / 1300 + 1.7 * e),
         r = 60 + 16 * e;
-      ((ft.fillStyle = "lab" === t ? "rgba(255,120,90," + o + ")" : "rgba(200,255,220," + o + ")"),
-        ft.beginPath(),
-        ft.moveTo(r, 0),
-        ft.lineTo(r + 8, 0),
-        ft.lineTo(r - 14 + 6 * e, bt),
-        ft.lineTo(r - 26 + 6 * e, bt),
-        ft.closePath(),
-        ft.fill());
+      ((ctx.fillStyle = "lab" === t ? "rgba(255,120,90," + o + ")" : "rgba(200,255,220," + o + ")"),
+        ctx.beginPath(),
+        ctx.moveTo(r, 0),
+        ctx.lineTo(r + 8, 0),
+        ctx.lineTo(r - 14 + 6 * e, bt),
+        ctx.lineTo(r - 26 + 6 * e, bt),
+        ctx.closePath(),
+        ctx.fill());
     }
-    ft.restore();
+    ctx.restore();
   }
   if ("out" === t || "street" === t || "rock" === t)
     for (let e = 0; e < 3; e++) {
       const o = ((0.008 * a * (e + 1) + 70 * e) % 272) - 40,
         r = 94 + 3 * e;
-      ft.globalAlpha = 0.08 + 0.03 * e;
+      ctx.globalAlpha = 0.08 + 0.03 * e;
       for (let e = 0; e < 6; e++)
-        pt(
+        rect(
           "street" === t ? "#c0a0d8" : "rock" === t ? "#d8b0a0" : "#a0d8b0",
           o + 9 * e,
           r + 1.5 * Math.sin(a / 700 + e),
           14,
           5,
         );
-      ft.globalAlpha = 1;
+      ctx.globalAlpha = 1;
     }
   {
     const t = (a % 9e3) / 9e3;
     if (t < 0.25) {
       const a = 0.12 * Math.sin((t / 0.25) * Math.PI);
-      (ft.save(), (ft.globalCompositeOperation = "lighter"));
-      const e = ft.createLinearGradient(0, 0, 60, 0);
+      (ctx.save(), (ctx.globalCompositeOperation = "lighter"));
+      const e = ctx.createLinearGradient(0, 0, 60, 0);
       (e.addColorStop(0, "rgba(255,160,90," + a + ")"),
         e.addColorStop(1, "rgba(255,160,90,0)"),
-        (ft.fillStyle = e),
-        ft.fillRect(0, 0, 60, bt),
-        ft.restore());
+        (ctx.fillStyle = e),
+        ctx.fillRect(0, 0, 60, bt),
+        ctx.restore());
     }
   }
-  (ft.save(),
-    (ft.globalCompositeOperation = "lighter"),
-    (ft.globalAlpha = 0.05),
-    (ft.fillStyle = "#ff2040"),
-    ft.fillRect(0, 0, 1, bt),
-    (ft.fillStyle = "#20e0ff"),
-    ft.fillRect(191, 0, 1, bt),
-    ft.restore(),
+  (ctx.save(),
+    (ctx.globalCompositeOperation = "lighter"),
+    (ctx.globalAlpha = 0.05),
+    (ctx.fillStyle = "#ff2040"),
+    ctx.fillRect(0, 0, 1, bt),
+    (ctx.fillStyle = "#20e0ff"),
+    ctx.fillRect(191, 0, 1, bt),
+    ctx.restore(),
     (function (t) {
       const a = Mo[t];
       if (!a) return;
-      const e = ft.createLinearGradient(0, 0, 0, bt);
+      const e = ctx.createLinearGradient(0, 0, 0, bt);
       (e.addColorStop(0, a[0]),
         e.addColorStop(1, a[1]),
-        ft.save(),
-        (ft.globalCompositeOperation = "soft-light"),
-        (ft.globalAlpha = a[2]),
-        (ft.fillStyle = e),
-        ft.fillRect(0, 0, dt, bt),
-        ft.restore());
+        ctx.save(),
+        (ctx.globalCompositeOperation = "soft-light"),
+        (ctx.globalAlpha = a[2]),
+        (ctx.fillStyle = e),
+        ctx.fillRect(0, 0, dt, bt),
+        ctx.restore());
     })(t));
 }
 async function playDoorCut() {
-  ((Xt = 0),
-    (Qt = 0),
-    (Zt = ""),
+  ((cutAbort = 0),
+    (typing = 0),
+    (speaker = ""),
     (ot.hidden = !1),
     (ot.style.zIndex = "40"),
     (it.hidden = !0),
@@ -313,45 +315,45 @@ async function playDoorCut() {
     (jt = 1),
     lo(),
     Object.assign(yo, { side: 0, flip: 0, z: 1, zx: 96, zy: 54, tz: 1, tx: 96, ty: 54 }),
-    aa("door"),
+    setScene("door"),
     requestAnimationFrame(se));
   try {
-    (await ea(0),
-      await ta(7300),
-      await ra($t, "Mmph-! What the...?"),
-      await ra($t, "It is soaked... and crumpled."),
-      await ea(1),
-      oa(),
-      aa("paper"),
-      await ea(0),
-      await ta(1200),
-      await ra($t, "A bulletin... someone printed a warning."),
+    (await fade(0),
+      await wait(7300),
+      await say(playerName, "Mmph-! What the...?"),
+      await say(playerName, "It is soaked... and crumpled."),
+      await fade(1),
+      hideDialog(),
+      setScene("paper"),
+      await fade(0),
+      await wait(1200),
+      await say(playerName, "A bulletin... someone printed a warning."),
       Object.assign(yo, { tz: 1.7, tx: 96, ty: 30 }),
-      await ta(1200),
-      await ra("", '"ANIMALS AND WILDLIFE TURNED ON US. HELP US!"'),
+      await wait(1200),
+      await say("", '"ANIMALS AND WILDLIFE TURNED ON US. HELP US!"'),
       Object.assign(yo, { tz: 2.1, tx: 96, ty: 70 }),
-      await ta(1300),
-      await ra(
+      await wait(1300),
+      await say(
         "",
         "Below it, documentation: photos, field notes, dates. Wolves in packs. Birds that attack on sight. Day by day, every species turned.",
       ),
       Object.assign(yo, { tz: 1, tx: 96, ty: 54 }),
-      await ta(900),
-      await ra($t, "There is something on the back."),
+      await wait(900),
+      await say(playerName, "There is something on the back."),
       (yo.flip = performance.now()),
-      await ta(1700),
+      await wait(1700),
       Object.assign(yo, { tz: 1.45, tx: 96, ty: 48 }),
-      await ta(900),
-      await ra("", '"THE PEOPLE HAVE LEFT EARTH. EVERYONE WENT TO MARS TO SURVIVE."'),
+      await wait(900),
+      await say("", '"THE PEOPLE HAVE LEFT EARTH. EVERYONE WENT TO MARS TO SURVIVE."'),
       Object.assign(yo, { tz: 1, tx: 96, ty: 54 }),
-      await ra($t, "Mars...? They all left?"),
-      await ra($t, "...And they left me behind."),
-      await ta(900),
-      await ea(1));
+      await say(playerName, "Mars...? They all left?"),
+      await say(playerName, "...And they left me behind."),
+      await wait(900),
+      await fade(1));
   } catch (t) {
     0 !== t && console.error(t);
   }
-  (oa(), ct.classList.remove("on"), (ot.hidden = !0), (ot.style.zIndex = ""));
+  (hideDialog(), ct.classList.remove("on"), (ot.hidden = !0), (ot.style.zIndex = ""));
 }
 function To(t) {
   (Me(t, {
@@ -562,7 +564,7 @@ function Co(t, a) {
       [52, 96, 140].forEach((a, e) => {
         let o = l + 7,
           c = 0;
-        for (; o < s - 24;) {
+        for (; o < s - 24; ) {
           const l = 18 + ((12 * r(n + 7 * e, c)) | 0),
             s = 15 + ((13 * r(n + 5 * e, c + 3)) | 0),
             i = r(n + e, c + 9) < 0.45;
@@ -670,11 +672,11 @@ function Co(t, a) {
     a &&
       (le[t] = (e) => {
         (a(e),
-          ft.save(),
-          ft.setTransform(2, 0, 0, 2, 0, 0),
-          (ft.imageSmoothingEnabled = !1),
+          ctx.save(),
+          ctx.setTransform(2, 0, 0, 2, 0, 0),
+          (ctx.imageSmoothingEnabled = !1),
           Eo(t, e),
-          ft.restore());
+          ctx.restore());
       });
   }
 })(),
@@ -685,35 +687,35 @@ function Co(t, a) {
     (wt(1.03 + 2 * o, 96 + 27 * o, 54 + 9 * o),
       t > a &&
         t < 5380 &&
-        ft.translate(((4 * Math.random()) | 0) - 2, ((3 * Math.random()) | 0) - 1),
+        ctx.translate(((4 * Math.random()) | 0) - 2, ((3 * Math.random()) | 0) - 1),
       Mt("doorCity", _e));
     for (let a = 0; a < 4; a++) {
       const e = 0.05 + 0.03 * Math.sin(t / 1100 + a);
-      ((ft.fillStyle = "rgba(255,246,200," + e + ")"),
-        ft.beginPath(),
-        ft.moveTo(40, 47),
-        ft.lineTo(52 + 30 * a, 110),
-        ft.lineTo(64 + 34 * a, 110),
-        ft.closePath(),
-        ft.fill());
+      ((ctx.fillStyle = "rgba(255,246,200," + e + ")"),
+        ctx.beginPath(),
+        ctx.moveTo(40, 47),
+        ctx.lineTo(52 + 30 * a, 110),
+        ctx.lineTo(64 + 34 * a, 110),
+        ctx.closePath(),
+        ctx.fill());
     }
     to(t, $e);
     for (let a = 0; a < 5; a++) {
       const e = ((t / (28 + 6 * a) + 61 * a) % 240) - 24,
         o = 12 + 6 * a + 3 * Math.sin(t / 300 + a),
         r = ((t / 120 + a) | 0) % 2;
-      (pt("#1a2422", e, o, 1, 1),
-        pt("#1a2422", e - 1 - r, o - 1 + r, 1, 1),
-        pt("#1a2422", e + 1 + r, o - 1 + r, 1, 1));
+      (rect("#1a2422", e, o, 1, 1),
+        rect("#1a2422", e - 1 - r, o - 1 + r, 1, 1),
+        rect("#1a2422", e + 1 + r, o - 1 + r, 1, 1));
     }
     for (let a = 0; a < 22; a++) {
       const e = 232 - ((t * (0.05 + 0.05 * r(a, 3)) + 300 * r(a, 1)) % 252),
         o = (r(a, 2) * bt + 6 * Math.sin(t / 400 + a) + 0.006 * t) % bt;
-      pt(a % 3 ? "#6ab04a" : "#c8b050", e, o, 1.5, 1);
+      rect(a % 3 ? "#6ab04a" : "#c8b050", e, o, 1.5, 1);
     }
     for (let a = 0; a < 16; a++) {
       const e = 0.3 + 0.4 * Math.sin(t / 300 + 1.7 * a);
-      pt(
+      rect(
         "rgba(255,250,200," + Math.max(0, e) + ")",
         r(a, 5) * dt + 5 * Math.sin(t / 900 + a),
         30 + 60 * r(a, 6),
@@ -728,7 +730,7 @@ function Co(t, a) {
       i = l.w / 2,
       f = l.h / 2,
       h = i * (1 - 0.82 * n);
-    if ((n > 0 && Gt(s + i / 2, c + 0.7 * f, 20, "120,200,150", 0.12 * n), h > 0.5)) {
+    if ((n > 0 && glow(s + i / 2, c + 0.7 * f, 20, "120,200,150", 0.12 * n), h > 0.5)) {
       const a = (function (t) {
         if (Xe) return Xe;
         const a = Lt();
@@ -741,14 +743,14 @@ function Co(t, a) {
         return ((o.width = t.w), (o.height = t.h), o.getContext("2d").drawImage(e, 0, 0), (Xe = o));
       })(l);
       if (
-        ((ft.imageSmoothingEnabled = !1),
-        ft.drawImage(a, 0, 0, l.w, l.h, s, c, h, f),
-        pt("rgba(0,0,0," + 0.55 * n + ")", s, c, h, f),
-        pt("rgba(10,6,4,.6)", s + h - 0.5, c, 0.5, f),
+        ((ctx.imageSmoothingEnabled = !1),
+        ctx.drawImage(a, 0, 0, l.w, l.h, s, c, h, f),
+        rect("rgba(0,0,0," + 0.55 * n + ")", s, c, h, f),
+        rect("rgba(10,6,4,.6)", s + h - 0.5, c, 0.5, f),
         n > 0 && n < 0.6)
       )
         for (let a = 0; a < 5; a++)
-          pt(
+          rect(
             "rgba(150,90,50,.8)",
             s + h - 1 + 3 * r(a, (t / 40) | 0),
             c + 0.3 * f + 7 * a + ((t / 10) % 8),
@@ -761,7 +763,7 @@ function Co(t, a) {
       b = t > 1800 && t < 3500;
     if (
       (n > 0.45 &&
-        Ma(150 - 30 * d + e, 97 + 3 * d, qt, 0, -1, {
+        Ma(150 - 30 * d + e, 97 + 3 * d, playerLook, 0, -1, {
           s: 2,
           pose:
             t > a
@@ -786,19 +788,19 @@ function Co(t, a) {
         f = l * Math.cos(15 * a) + (1 - l),
         h = 0.62 + 0.38 * Math.pow(a, 2);
       if (
-        (ft.save(),
-        ft.translate(s, c),
-        ft.rotate(i),
-        ft.scale(
+        (ctx.save(),
+        ctx.translate(s, c),
+        ctx.rotate(i),
+        ctx.scale(
           h * (Math.abs(f) < 0.18 ? 0.18 * Math.sign(f || 1) : f),
           h * (0.86 + 0.14 * Math.abs(Math.sin(31 * a))),
         ),
         mo(15, 18, t, 4, 1),
-        ft.restore(),
+        ctx.restore(),
         a > 0.78)
       )
         for (let t = 1; t < 5; t++)
-          pt(
+          rect(
             "rgba(255,255,255," + (((a - 0.78) / 0.22) * 0.3) / t + ")",
             s - 6 * t,
             c - 1.5 * t,
@@ -808,7 +810,7 @@ function Co(t, a) {
       if (a < 0.8)
         for (let a = 0; a < 3; a++) {
           const e = (t / 400 + 0.33 * a) % 1;
-          pt(
+          rect(
             "rgba(220,240,255," + 0.35 * (1 - e) + ")",
             s + 4 * Math.sin(2 * a + t / 300),
             c + 4 + 10 * e,
@@ -820,36 +822,36 @@ function Co(t, a) {
     if (t >= a) {
       const o = Math.min(1, (t - a) / 160),
         r = 1 - o;
-      (ft.save(),
-        ft.translate(123.5 + e, 63),
-        ft.rotate(0.03 * Math.sin(t / 70) * o - 0.1),
-        ft.scale(1 + 0.32 * r, 1 - 0.26 * r),
+      (ctx.save(),
+        ctx.translate(123.5 + e, 63),
+        ctx.rotate(0.03 * Math.sin(t / 70) * o - 0.1),
+        ctx.scale(1 + 0.32 * r, 1 - 0.26 * r),
         mo(17, 20, t, 7, 1),
-        ft.restore());
+        ctx.restore());
       for (let a = 0; a < 3; a++) {
         const e = ((t + 400 * a) % 1200) / 1200;
-        pt("rgba(220,240,255," + 0.8 * (1 - e) + ")", 119 + 4 * a, 73 + 30 * e, 0.5, 1.2);
+        rect("rgba(220,240,255," + 0.8 * (1 - e) + ")", 119 + 4 * a, 73 + 30 * e, 0.5, 1.2);
       }
       const n = t - a;
-      if ((n < 200 && pt("rgba(255,255,255," + 0.5 * (1 - n / 200) + ")", 0, 0, dt, bt), n < 300))
+      if ((n < 200 && rect("rgba(255,255,255," + 0.5 * (1 - n / 200) + ")", 0, 0, dt, bt), n < 300))
         for (let t = 0; t < 10; t++) {
           const a = (t / 10) * 6.28,
             e = 4 + n / 20;
-          pt("rgba(210,235,255,.8)", 123 + Math.cos(a) * e, 63 + Math.sin(a) * e * 0.8, 0.6, 0.6);
+          rect("rgba(210,235,255,.8)", 123 + Math.cos(a) * e, 63 + Math.sin(a) * e * 0.8, 0.6, 0.6);
         }
       if (n < 900) {
         const t = 1 + 0.4 * Math.min(1, n / 120);
-        (ft.save(),
-          ft.translate(91, 43),
-          ft.rotate(-0.18),
-          ft.scale(t, t),
+        (ctx.save(),
+          ctx.translate(91, 43),
+          ctx.rotate(-0.18),
+          ctx.scale(t, t),
           io("FWAP!", -4, "#1a0a04", 6),
           io("FWAP!", -5, "#ffe070", 6),
-          ft.restore());
+          ctx.restore());
         for (let t = 0; t < 8; t++) {
           const a = (t / 8) * 6.28,
             e = 6 + n / 40;
-          pt("#fff6c0", 123 + Math.cos(a) * e, 63 + Math.sin(a) * e, 1.2, 1.2);
+          rect("#fff6c0", 123 + Math.cos(a) * e, 63 + Math.sin(a) * e, 1.2, 1.2);
         }
       }
     }
@@ -858,30 +860,30 @@ function Co(t, a) {
       const e = 4 + 7 * r(a, 17),
         o = 1.4 * Math.sin(t / 600 + 0.25 * a);
       for (let t = 0; t < e; t += 1.5)
-        pt(t > 0.7 * e ? "#7ac85a" : "#1a4a22", a + o * (t / e), 106 - t, 1, 1.6);
-      r(a, 19) < 0.2 && pt("rgba(235,255,245,.8)", a + o, 106 - e, 0.5, 0.5);
+        rect(t > 0.7 * e ? "#7ac85a" : "#1a4a22", a + o * (t / e), 106 - t, 1, 1.6);
+      r(a, 19) < 0.2 && rect("rgba(235,255,245,.8)", a + o, 106 - e, 0.5, 0.5);
     }
   }),
   (le.paper = function (t) {
-    (ft.save(),
+    (ctx.save(),
       wt(1.5, 120, 56),
       Mt("doorCity", _e),
       to(t, $e),
-      ft.restore(),
-      pt("rgba(4,10,8,.55)", 0, 0, dt, bt),
+      ctx.restore(),
+      rect("rgba(4,10,8,.55)", 0, 0, dt, bt),
       re(t, 18, "255,240,190", 0.006),
       (yo.z += 0.04 * (yo.tz - yo.z)),
       (yo.zx += 0.04 * (yo.tx - yo.zx)),
       (yo.zy += 0.04 * (yo.ty - yo.zy)),
-      ft.save(),
+      ctx.save(),
       wt(yo.z, yo.zx, yo.zy));
     const a = yo.flip ? xo((performance.now() - yo.flip) / 1100) : 0,
       e = a > 0.5 ? 1 : 0,
       o = Math.max(0.03, Math.abs(Math.cos(a * Math.PI)));
-    (ft.save(),
-      ft.translate(96, 54 + 0.6 * Math.sin(t / 800)),
-      ft.rotate(0.012 * Math.sin(t / 1300) - 0.015),
-      ft.scale(o, 1),
+    (ctx.save(),
+      ctx.translate(96, 54 + 0.6 * Math.sin(t / 800)),
+      ctx.rotate(0.012 * Math.sin(t / 1300) - 0.015),
+      ctx.scale(o, 1),
       (function (t, a) {
         const e = (function () {
             const t = [],
@@ -899,29 +901,29 @@ function Co(t, a) {
             });
           })(),
           o = lo();
-        (ft.save(),
-          ft.translate(2.5, 3.5),
+        (ctx.save(),
+          ctx.translate(2.5, 3.5),
           so(e),
-          (ft.fillStyle = "rgba(0,0,0,.45)"),
-          ft.fill(),
-          ft.restore(),
-          ft.save(),
+          (ctx.fillStyle = "rgba(0,0,0,.45)"),
+          ctx.fill(),
+          ctx.restore(),
+          ctx.save(),
           so(e),
-          ft.clip(),
-          (ft.imageSmoothingEnabled = !1),
-          ft.drawImage(t ? o.b : o.f, -58, -49, 116, 98),
-          ft.save(),
-          (ft.globalAlpha = 0.09),
-          ft.scale(-1, 1),
+          ctx.clip(),
+          (ctx.imageSmoothingEnabled = !1),
+          ctx.drawImage(t ? o.b : o.f, -58, -49, 116, 98),
+          ctx.save(),
+          (ctx.globalAlpha = 0.09),
+          ctx.scale(-1, 1),
           (co = 1),
           (t ? po : uo)(a),
           (co = 0),
-          ft.restore(),
+          ctx.restore(),
           t ? uo(a) : po(a),
-          ft.save(),
-          t && ft.scale(-1, 1),
-          ft.drawImage(o.s, -58, -49, 116, 98),
-          ft.restore(),
+          ctx.save(),
+          t && ctx.scale(-1, 1),
+          ctx.drawImage(o.s, -58, -49, 116, 98),
+          ctx.restore(),
           [
             [-44, -30],
             [12, -42],
@@ -930,38 +932,38 @@ function Co(t, a) {
             [8, 20],
             [-12, -20],
           ].forEach(([t, a]) => {
-            (pt("rgba(80,60,40,.3)", t, a + 0.8, 2, 0.6),
-              pt("rgba(255,255,255,.45)", t, a, 2, 1.2),
-              pt("#ffffff", t + 0.3, a + 0.2, 0.6, 0.5));
+            (rect("rgba(80,60,40,.3)", t, a + 0.8, 2, 0.6),
+              rect("rgba(255,255,255,.45)", t, a, 2, 1.2),
+              rect("#ffffff", t + 0.3, a + 0.2, 0.6, 0.5));
           }),
-          ft.restore(),
+          ctx.restore(),
           so(e),
-          (ft.strokeStyle = "rgba(110,84,50,.7)"),
-          (ft.lineWidth = 0.45),
-          ft.stroke());
+          (ctx.strokeStyle = "rgba(110,84,50,.7)"),
+          (ctx.lineWidth = 0.45),
+          ctx.stroke());
       })(e, t));
-    const n = q.sk[qt.sk][1];
+    const n = q.sk[playerLook.sk][1];
     ([-1, 1].forEach((t) => {
       const a = 57 * t;
-      (pt("#1a0e08", a - 3.5, -9, 7, 19),
-        pt("#1a0e08", a - 4.5, -6, 9, 14),
-        pt(n, a - 3, -8.5, 6, 18),
-        pt(n, a - 4, -5.5, 8, 12.5),
-        pt("rgba(0,0,0,.3)", a + (t > 0 ? 1.5 : -4), -5.5, 2.5, 12.5),
-        pt("rgba(255,255,255,.2)", a - 2.5, -8.5, 5, 1),
-        pt("rgba(0,0,0,.22)", a - 4, -1, 8, 0.5),
-        pt("rgba(0,0,0,.22)", a - 4, 3.5, 8, 0.5),
-        pt("#f4e0d2", a - 1.5, -7.5, 3, 2.2),
-        pt("rgba(150,90,70,.5)", a - 1.5, -5.3, 3, 0.4));
+      (rect("#1a0e08", a - 3.5, -9, 7, 19),
+        rect("#1a0e08", a - 4.5, -6, 9, 14),
+        rect(n, a - 3, -8.5, 6, 18),
+        rect(n, a - 4, -5.5, 8, 12.5),
+        rect("rgba(0,0,0,.3)", a + (t > 0 ? 1.5 : -4), -5.5, 2.5, 12.5),
+        rect("rgba(255,255,255,.2)", a - 2.5, -8.5, 5, 1),
+        rect("rgba(0,0,0,.22)", a - 4, -1, 8, 0.5),
+        rect("rgba(0,0,0,.22)", a - 4, 3.5, 8, 0.5),
+        rect("#f4e0d2", a - 1.5, -7.5, 3, 2.2),
+        rect("rgba(150,90,70,.5)", a - 1.5, -5.3, 3, 0.4));
     }),
-      ft.restore(),
-      ft.restore(),
+      ctx.restore(),
+      ctx.restore(),
       eo(t, 40, 0.3));
     for (let a = 0; a < 6; a++) {
       const e = r(a, 61) * dt,
         o = r(a, 62) * bt,
         n = 0.08 + 0.05 * Math.sin(t / 700 + a);
-      Gt(e, o, 10 + 2 * a, "200,230,255", n);
+      glow(e, o, 10 + 2 * a, "200,230,255", n);
     }
   }));
 const Ro = [

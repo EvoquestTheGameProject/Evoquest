@@ -1,8 +1,8 @@
-((t("#ccBack").onclick = he),
+((qs("#ccBack").onclick = he),
   (U.onclick = (t) => {
     t.target === U && he();
   }),
-  (t("#ccRnd").onclick = () => {
+  (qs("#ccRnd").onclick = () => {
     (Y.forEach(([t]) => {
       Q[t] = (Math.random() * q[t].length) | 0;
     }),
@@ -13,119 +13,119 @@
       _(Q),
       et());
   }),
-  (t("#ccGo").onclick = () => {
-    ((X[K] = Q),
-      at(X),
+  (qs("#ccGo").onclick = () => {
+    ((looks[K] = Q),
+      at(looks),
       (U.hidden = !0),
       (async function () {
-        (($t = G[K]),
-          (qt = Q),
-          (Xt = 0),
-          (Qt = 0),
-          (Zt = ""),
+        ((playerName = players[K]),
+          (playerLook = Q),
+          (cutAbort = 0),
+          (typing = 0),
+          (speaker = ""),
           (ot.hidden = !1),
           (it.hidden = !0),
           (nt.hidden = !0),
           ct.classList.remove("on"),
           (Jt = 1),
           (jt = 1),
-          aa("street"),
+          setScene("street"),
           requestAnimationFrame(se));
         const a = async (t, a) => {
-          (await ea(1), oa(), a && (await a()), aa(t), await ea(0));
+          (await fade(1), hideDialog(), a && (await a()), setScene(t), await fade(0));
         };
         try {
-          (await ea(0),
-            await ta(5900),
+          (await fade(0),
+            await wait(5900),
             await a("poster"),
-            await ta(1800),
-            await ra($t, "One million dollars... for my family?"),
+            await wait(1800),
+            await say(playerName, "One million dollars... for my family?"),
             await a("call"),
-            await ta(1200),
-            (Zt = "p"),
-            await ra(
-              $t,
+            await wait(1200),
+            (speaker = "p"),
+            await say(
+              playerName,
               "Hello? I saw your cryofreezing advertisement. Is the one-million-dollar reward real?",
             ),
-            await ra(
-              $t,
+            await say(
+              playerName,
               "I need the money for my family. I would do almost anything to help them.",
             ),
-            (Zt = "a"),
-            await ra(
+            (speaker = "a"),
+            await say(
               "DR. VALE  /  INTAKE AGENT",
               "The reward is real. We can preserve you until medical science catches up. Your family receives the payment after enrollment.",
             ),
-            await ra(
+            await say(
               "DR. VALE  /  INTAKE AGENT",
               "I have sent you a secure consent form. Read it carefully, then confirm your details.",
             ),
-            (Zt = "p"),
-            await ra($t, "And I will wake up one day? You promise?"),
-            (Zt = "a"),
-            await ra("DR. VALE  /  INTAKE AGENT", "That is the promise. Welcome to the future."),
-            (Zt = ""),
-            await a("pod", () => na("2 DAYS LATER")),
-            await ta(6800),
-            await a("lab", () => na("2 YEARS LATER")),
-            await ra(
+            (speaker = "p"),
+            await say(playerName, "And I will wake up one day? You promise?"),
+            (speaker = "a"),
+            await say("DR. VALE  /  INTAKE AGENT", "That is the promise. Welcome to the future."),
+            (speaker = ""),
+            await a("pod", () => titleCard("2 DAYS LATER")),
+            await wait(6800),
+            await a("lab", () => titleCard("2 YEARS LATER")),
+            await say(
               "",
               "Two years after the volunteer vanished, the research facility was still racing to cure the world’s deadliest diseases.",
             ),
-            await ra(
+            await say(
               "",
               "The cryogenic program was supposed to buy humanity time. The laboratory’s secret experiment was meant to give that time back.",
             ),
-            await ra(
+            await say(
               "",
               "Then the test subject woke up screaming. Its cells rewrote themselves in seconds.",
             ),
-            await ra("", "Containment failed. The first breach was only the beginning."),
-            await ta(900),
+            await say("", "Containment failed. The first breach was only the beginning."),
+            await wait(900),
             await a("out"),
-            await ra("", "The pathogen did not kill the world. It adapted to it."),
-            await ra("", "It moved through rain, roots, rivers, and the air itself."),
-            await ra(
+            await say("", "The pathogen did not kill the world. It adapted to it."),
+            await say("", "It moved through rain, roots, rivers, and the air itself."),
+            await say(
               "",
               "Some creatures became fast enough to hunt between heartbeats. Others grew into walking fortresses.",
             ),
-            await ra("", "Cities fell silent. The survivors called the changed ones: EVOLVED."),
-            await ta(1200),
+            await say("", "Cities fell silent. The survivors called the changed ones: EVOLVED."),
+            await wait(1200),
             await a("rock"),
-            await ra(
+            await say(
               "",
               "The last governments united around one impossible plan: abandon Earth and build a refuge on Mars.",
             ),
-            await ra("", "The evacuation list was short. The launch windows were shorter."),
-            await ta(2500),
+            await say("", "The evacuation list was short. The launch windows were shorter."),
+            await wait(2500),
             await a("left"),
-            await ra("", "The evacuation ships launched under a sky filled with ash."),
-            await ra(
+            await say("", "The evacuation ships launched under a sky filled with ash."),
+            await say(
               "",
               "His name was missing from the final manifest. No one came back for the sleeping volunteer.",
             ),
-            await ta(1500),
-            await a("wake", () => na("YEAR 2119", 2600)),
-            await ta(7e3),
-            await ra($t, "...Where is everyone?"),
-            await ta(1200),
-            await ea(1));
+            await wait(1500),
+            await a("wake", () => titleCard("YEAR 2119", 2600)),
+            await wait(7e3),
+            await say(playerName, "...Where is everyone?"),
+            await wait(1200),
+            await fade(1));
         } catch (t) {
           0 !== t && console.error(t);
         }
         ($sx("stop"),
-          oa(),
+          hideDialog(),
           ct.classList.remove("on"),
           (jt = 1),
           (it.hidden = !1),
-          t("#finGo").focus());
+          qs("#finGo").focus());
       })());
   }),
-  (t("#play").onclick = () => {
-    (B(), (L.hidden = !1), N.focus());
+  (qs("#play").onclick = () => {
+    (renderSlots(), (L.hidden = !1), N.focus());
   }));
 const de = () => {
-  ((L.hidden = !0), t("#play").focus());
+  ((L.hidden = !0), qs("#play").focus());
 };
 ((N.onclick = de),
   (L.onclick = (t) => {
@@ -146,7 +146,7 @@ const be = () => {
       return !(
         ot.hidden ||
         ("Escape" === t.key
-          ? (it.hidden && ce(), 0)
+          ? (it.hidden && skipCutscene(), 0)
           : (" " !== t.key && "Enter" !== t.key) ||
             t.target.closest("button") ||
             (ie(), t.preventDefault(), 0))
@@ -155,12 +155,12 @@ const be = () => {
       ("Escape" === t.key && (P.hidden ? (U.hidden ? L.hidden || de() : he()) : be()));
   }),
   addEventListener("resize", () => {
-    (u(), A(), fe(), o && y(0));
+    (layoutMenu(), A(), fe(), o && drawMenuBg(0));
   }),
-  u(),
+  layoutMenu(),
   A(),
   requestAnimationFrame(function t(a) {
-    (y(a), o || requestAnimationFrame(t));
+    (drawMenuBg(a), o || requestAnimationFrame(t));
   }),
   requestAnimationFrame(function a() {
     const e = performance.now() - C,

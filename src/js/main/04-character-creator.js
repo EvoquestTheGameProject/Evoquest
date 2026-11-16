@@ -91,11 +91,11 @@ const F = [
     ["oc", "Outfit Color"],
     ["tc", "Trim Color"],
   ],
-  U = t("#cc"),
-  V = t("#cvs"),
+  U = qs("#cc"),
+  V = qs("#cvs"),
   j = V.getContext("2d"),
-  J = t("#copts");
-let X,
+  J = qs("#copts");
+let looks,
   Q,
   K = 0;
 const Z = [0, 1, 2, 3, 4, 5, 9],
@@ -174,14 +174,14 @@ function et() {
       j.drawImage(a, 3, 0, 34, 49.84);
     })(Q));
 }
-((X = (function () {
+((looks = (function () {
   let t;
   try {
     t = JSON.parse(localStorage.getItem("evoquest_looks") || "[]");
   } catch (a) {
     t = [];
   }
-  for (Array.isArray(t) || (t = []); t.length < 3;) t.push(null);
+  for (Array.isArray(t) || (t = []); t.length < 3; ) t.push(null);
   return t;
 })()),
   J.addEventListener("click", (t) => {

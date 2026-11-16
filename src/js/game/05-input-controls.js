@@ -1,4 +1,4 @@
-(t("#fp").addEventListener("pointerdown", function (t) {
+(qs("#fp").addEventListener("pointerdown", function (t) {
   const a = t.target.closest("[data-id],[data-drag]");
   if (!a) return;
   let e = a.dataset.id || null;
@@ -14,17 +14,17 @@
     const o = a.clientX - e.x0,
       r = a.clientY - e.y0;
     if (!e.moved && o * o + r * r > 49) {
-      ((e.moved = 1), (t("#cinv").hidden = !0));
-      const a = t("#fpGhost");
-      "@small" !== e.id && ((a.src = s(f[e.id].k, f[e.id].c)), (a.hidden = !1));
+      ((e.moved = 1), (qs("#cinv").hidden = !0));
+      const a = qs("#fpGhost");
+      "@small" !== e.id && ((a.src = s(items[e.id].k, items[e.id].c)), (a.hidden = !1));
     }
     if (e.moved) {
-      const e = t("#fp").getBoundingClientRect(),
-        o = t("#fpGhost");
+      const e = qs("#fp").getBoundingClientRect(),
+        o = qs("#fpGhost");
       ((o.style.left = a.clientX - e.left + "px"),
         (o.style.top = a.clientY - e.top + "px"),
         (va = (function (a) {
-          const e = t("#fpc").getBoundingClientRect();
+          const e = qs("#fpc").getBoundingClientRect();
           return [((a.clientX - e.left) / e.width) * 384, ((a.clientY - e.top) / e.height) * 216];
         })(a)));
     }
@@ -32,7 +32,7 @@
   window.addEventListener("pointerup", function (a) {
     const e = ka;
     if (!e) return;
-    if (((ka = null), (t("#fpGhost").hidden = !0), (va = null), !e.moved))
+    if (((ka = null), (qs("#fpGhost").hidden = !0), (va = null), !e.moved))
       return void (function (t) {
         if ("goggles" === t || "gloves" === t) return ja(t);
         if ("@small" === t)
@@ -40,7 +40,7 @@
         const a = Xt[t];
         Ya(
           "<b>" +
-            f[t].n +
+            items[t].n +
             "</b><br>" +
             (a ? a.what : "") +
             '<br><span style="color:#ffe070">Drag it onto the table to use it.</span>',
@@ -52,7 +52,7 @@
     !(function (a, e) {
       const o = (t) => Ya(t, "bad"),
         r = (t) => Ya(t, "good");
-      if (((t("#cdone").textContent = "CLOSE"), "goggles" === a || "gloves" === a)) return ja(a);
+      if (((qs("#cdone").textContent = "CLOSE"), "goggles" === a || "gloves" === a)) return ja(a);
       if (!e)
         return Ya(
           "Drop it on the table: on a beaker" + (La() ? " or on the assembly mat" : "") + ".",
@@ -74,14 +74,14 @@
         return pa
           ? o(
               "The small beaker already holds " +
-                f[pa].n.split(" (")[0] +
+                items[pa].n.split(" (")[0] +
                 ". Pour it into the big beaker first, or press EMPTY.",
             )
           : ((pa = a),
             Va("fill", Ca[a]),
             r(
               "One measured part of <b>" +
-                f[a].n.split(" (")[0] +
+                items[a].n.split(" (")[0] +
                 "</b> is in the small beaker. Now drag the small beaker onto the big beaker to pour it in.",
             ));
       }
@@ -111,7 +111,7 @@
               Qa() ||
               r(
                 "<b>" +
-                  f[a].n +
+                  items[a].n +
                   "</b> is on the mat." +
                   ("canister" === a ? " Now drop the venom vials into it." : ""),
               )
@@ -126,11 +126,11 @@
         if (!ua.c)
           return o("Put the <b>Venom Canister</b> on the mat first, then drop the vials into it.");
         if (!Xa()) return;
-        if ((X.splice(X.indexOf(a), 1), I++, Va("venom", "#b06aff"), I >= 3)) {
-          const t = X.indexOf("canister");
-          (t >= 0 && X.splice(t, 1),
-            X.push("fullcan"),
-            J.add("fullcan"),
+        if ((inv.splice(inv.indexOf(a), 1), canFill++, Va("venom", "#b06aff"), canFill >= 3)) {
+          const t = inv.indexOf("canister");
+          (t >= 0 && inv.splice(t, 1),
+            inv.push("fullcan"),
+            got.add("fullcan"),
             Qa() ||
               r(
                 "<b>FULL VENOM CANISTER!</b> All three vials are sealed inside. Now put the <b>handle</b> and the <b>barrel</b> on the mat to assemble the weapon.",
@@ -138,18 +138,18 @@
         } else
           r(
             "Venom vial " +
-              I +
+              canFill +
               " of 3 poured into the canister. The venom hisses against the steel.",
           );
-        na();
+        updateGuide();
       } else Ya("That does not belong on the bench.", "");
     })(e.id, r ? r.dataset.drop : null);
   }),
   window.addEventListener("pointercancel", () => {
-    ((ka = null), (va = null), (t("#fpGhost").hidden = !0));
+    ((ka = null), (va = null), (qs("#fpGhost").hidden = !0));
   }),
-  (t("#fpBag").onclick = () => {
-    const a = t("#cinv");
+  (qs("#fpBag").onclick = () => {
+    const a = qs("#cinv");
     a.hidden = !a.hidden;
   }));
 const $a = { ArrowLeft: "l", a: "l", A: "l", ArrowRight: "r", d: "r", D: "r" };
@@ -158,24 +158,24 @@ const $a = { ArrowLeft: "l", a: "l", A: "l", ArrowRight: "r", d: "r", D: "r" };
   function (a) {
     if (!GM.on) return;
     const e = a.key;
-    if (O) return (("Escape" !== e && "Enter" !== e) || Fe(), void a.preventDefault());
-    Pt
-      ? "Escape" === e && (2 === Pt ? Na() : t("#gkOk").click())
+    if (cine) return (("Escape" !== e && "Enter" !== e) || skipCine(), void a.preventDefault());
+    modal
+      ? "Escape" === e && (2 === modal ? Na() : qs("#gkOk").click())
       : $a[e]
-        ? ((_[$a[e]] = 1), a.preventDefault(), a.stopPropagation())
+        ? ((keys[$a[e]] = 1), a.preventDefault(), a.stopPropagation())
         : "ArrowUp" === e || "w" === e || "W" === e || " " === e
-          ? ((tt = 8), a.preventDefault(), a.stopPropagation())
+          ? ((jumpBuf = 8), a.preventDefault(), a.stopPropagation())
           : "j" === e || "J" === e || "x" === e || "X" === e || "z" === e || "Z" === e
-            ? ((at = 8), a.preventDefault(), a.stopPropagation())
+            ? ((punchBuf = 8), a.preventDefault(), a.stopPropagation())
             : "f" === e || "F" === e || "k" === e || "K" === e
-              ? ((A = 3), a.preventDefault(), a.stopPropagation())
+              ? ((shootBuf = 3), a.preventDefault(), a.stopPropagation())
               : ("e" !== e &&
                   "E" !== e &&
                   "Enter" !== e &&
                   "ArrowDown" !== e &&
                   "s" !== e &&
                   "S" !== e) ||
-                ((et = 8), a.preventDefault(), a.stopPropagation());
+                ((useBuf = 8), a.preventDefault(), a.stopPropagation());
   },
   !0,
 ),
@@ -183,13 +183,13 @@ const $a = { ArrowLeft: "l", a: "l", A: "l", ArrowRight: "r", d: "r", D: "r" };
     "keyup",
     function (t) {
       const a = $a[t.key];
-      a && GM.on && (_[a] = 0);
+      a && GM.on && (keys[a] = 0);
     },
     !0,
   ));
 const _a = {};
 function te(a, e, o) {
-  const r = t(a);
+  const r = qs(a);
   _a[a] = { b: r, down: e, up: o, on: !1 };
   const n = () => {
       const t = _a[a];
@@ -219,23 +219,23 @@ function te(a, e, o) {
 }
 (te(
   "#bL",
-  () => (_.l = 1),
-  () => (_.l = 0),
+  () => (keys.l = 1),
+  () => (keys.l = 0),
 ),
   te(
     "#bR",
-    () => (_.r = 1),
-    () => (_.r = 0),
+    () => (keys.r = 1),
+    () => (keys.r = 0),
   ),
-  te("#bJ", () => (tt = 8)),
-  te("#bP", () => (at = 8)),
-  te("#bU", () => (et = 8)),
+  te("#bJ", () => (jumpBuf = 8)),
+  te("#bP", () => (punchBuf = 8)),
+  te("#bU", () => (useBuf = 8)),
   te(
     "#bS",
     () => {
-      ((_.s = 1), (A = 3));
+      ((keys.s = 1), (shootBuf = 3));
     },
-    () => (_.s = 0),
+    () => (keys.s = 0),
   ));
 const ae = (t) => {
   t.cancelable && t.preventDefault();
@@ -248,7 +248,7 @@ const ae = (t) => {
   for (const t in _a) a[t] ? _a[t].press() : _a[t].rel();
 };
 {
-  const a = t("#gp");
+  const a = qs("#gp");
   ["touchstart", "touchmove", "touchend", "touchcancel"].forEach((t) =>
     a.addEventListener(t, ae, { passive: !1 }),
   );
@@ -258,28 +258,28 @@ function ee() {
     (GM.on = !1),
     cancelAnimationFrame(Ot),
     (e.hidden = !0),
-    (ft = ht),
+    (ctx = ht),
     (ot.hidden = !0));
   try {
     N.focus();
   } catch (t) {}
 }
-function oe(t, e) {
-  (W !== t && ($sx("door"), $.push([t, Z])),
-    (W = t),
-    (F.x = "R" === e ? (h[t].W || 192) - 14 : 14),
-    (F.y = void 0 !== h[t].sy ? h[t].sy : a),
-    (F.vx = 0),
-    (F.vy = 0),
-    (F.face = "R" === e ? -1 : 1),
-    (wt = 140),
-    (yt = []),
-    (C = Math.max(0, Math.min((h[t].W || 192) - 192, F.x - 96))),
-    (R = []),
-    (L = []),
-    Wt[t] || Ut(t),
-    "exitlab" !== t || w || O || ((F.x = 24), qe()),
-    "outside" === t && ((M = null), (E = []), (T = []), (x = [])),
-    na(),
-    Be());
+function enterRoom(t, e) {
+  (room !== t && ($sx("door"), $.push([t, runT])),
+    (room = t),
+    (player.x = "R" === e ? (rooms[t].W || 192) - 14 : 14),
+    (player.y = void 0 !== rooms[t].sy ? rooms[t].sy : a),
+    (player.vx = 0),
+    (player.vy = 0),
+    (player.face = "R" === e ? -1 : 1),
+    (roomBanner = 140),
+    (parts = []),
+    (camX = Math.max(0, Math.min((rooms[t].W || 192) - 192, player.x - 96))),
+    (minis = []),
+    (drops = []),
+    backdrops[t] || backdrop(t),
+    "exitlab" !== t || bossDone || cine || ((player.x = 24), spawnBoss()),
+    "outside" === t && ((snakeBoss = null), (venoms = []), (waves = []), (shots = [])),
+    updateGuide(),
+    updateHud());
 }

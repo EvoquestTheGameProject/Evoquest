@@ -48,8 +48,9 @@ tools/check.js                sanity checks
 * `js/main/*` all share one global scope; `js/game/*` are the *body of one function* (the build wraps them in
   `(()=>{ … })();`), so they share that scope. A file is therefore a slice of a larger program, not a module.
   Do not split a function across files, and keep every file ending on a complete statement.
-* Identifier names in `main/` and `game/` are short because the original code was minified (`t`, `a`, `e`, …).
-  The files are formatted but not renamed; use the table above and search for string literals to find your way around.
+* The original code was minified. The important shared names are now readable (`player`, `room`, `snakeBoss`, `cine`,
+  `inv`, `hp`, `ammo`, `update()`, `render()`, `enterRoom()`, `spawnBoss()`, `hurtPlayer()`, `say()`, `setScene()`, `ctx`, …);
+  local variables inside functions are still short (`t`, `a`, `e`).
 * **Do not reorder the scripts in `src/index.html`.** `save/bridge.js` rebuilds the page for "Download Game + Progress"
   and expects the game script to be the script right after it, last in the body.
 * Never put the text `</script` inside a script (the build fails if you do).

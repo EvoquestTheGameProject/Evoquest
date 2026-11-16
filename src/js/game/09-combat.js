@@ -1,33 +1,43 @@
-function qe() {
+function spawnBoss() {
   ($sx("roar"),
     fo(),
-    (R = []),
-    (L = []),
-    p && (u = 4),
-    (S = 54),
-    (M = { x: 0.6 * G(), sp: 0, hp: 100, st: "intro", t: 0, face: -1, flash: 0, last: "", hit: 0 }),
-    (E = []),
+    (minis = []),
+    (drops = []),
+    hasGun && (ammo = 4),
+    (camY = 54),
+    (snakeBoss = {
+      x: 0.6 * roomW(),
+      sp: 0,
+      hp: 100,
+      st: "intro",
+      t: 0,
+      face: -1,
+      flash: 0,
+      last: "",
+      hit: 0,
+    }),
+    (venoms = []),
     (ce = []),
-    (T = []),
-    (x = []),
-    O || Jt("<b>A GIANT MUTATED SNAKE!</b>", 2600),
-    Be());
+    (waves = []),
+    (shots = []),
+    cine || toast("<b>A GIANT MUTATED SNAKE!</b>", 2600),
+    updateHud());
 }
-function Ye(a) {
-  if (y > 0 || v || Eo.god) return;
-  ((m -= a),
-    (y = 70),
-    (he = 14),
-    (fe = 3),
+function hurtPlayer(a) {
+  if (invuln > 0 || dead || Eo.god) return;
+  ((hp -= a),
+    (invuln = 70),
+    (hurtFlash = 14),
+    (hitStop = 3),
     $sx("hurt"),
-    Re({ k: "ring", x: F.x, y: F.y - 17.4, r0: 2, r1: 14, c: "#ff6a7a", life: 12 }),
-    Ie(F.x, F.y - 17.4, 8, ["#ff4a5a", "#ffb0b8"], 1.8, 0.12, 14));
-  const e = F.x < (M ? M.x : 96) ? -1 : 1;
-  ((F.kb = 10), (F.kbv = 2.2 * e), (F.vy = -2.4), (F.on = !1), (Lt = 8));
+    addFx({ k: "ring", x: player.x, y: player.y - 17.4, r0: 2, r1: 14, c: "#ff6a7a", life: 12 }),
+    sparks(player.x, player.y - 17.4, 8, ["#ff4a5a", "#ffb0b8"], 1.8, 0.12, 14));
+  const e = player.x < (snakeBoss ? snakeBoss.x : 96) ? -1 : 1;
+  ((player.kb = 10), (player.kbv = 2.2 * e), (player.vy = -2.4), (player.on = !1), (shake = 8));
   for (let t = 0; t < 8; t++)
-    yt.push({
-      x: F.x,
-      y: F.y - 17.4,
+    parts.push({
+      x: player.x,
+      y: player.y - 17.4,
       vx: 2 * (r(t, 1) - 0.5),
       vy: 2 * -r(t, 2),
       g: 0.1,
@@ -35,17 +45,17 @@ function Ye(a) {
       c: "#ff4a5a",
       s: 1.5,
     });
-  (Be(),
-    m <= 0 &&
-      ((m = 0),
-      (v = !0),
+  (updateHud(),
+    hp <= 0 &&
+      ((hp = 0),
+      (dead = !0),
       $sx("die"),
       (Ue = "boss"),
-      (t("#gd").querySelector("h3").textContent = "YOU DIED"),
-      (t("#gd").querySelector("p").textContent =
+      (qs("#gd").querySelector("h3").textContent = "YOU DIED"),
+      (qs("#gd").querySelector("p").textContent =
         "The snake got you. Tips: jump over the ground shockwaves, dodge the venom (watch for the red circles), shoot from range, and punch it while it is stunned after a charge."),
-      Be(),
-      (t("#gd").hidden = !1)));
+      updateHud(),
+      (qs("#gd").hidden = !1)));
 }
 let Ue = "boss",
   Je = 0,
@@ -54,8 +64,8 @@ let Ue = "boss",
   Ze = 24,
   $e = [24, 40],
   _e = [24, 40];
-function oo(t) {
-  const a = M;
+function hitBoss(t) {
+  const a = snakeBoss;
   if (a && "dead" !== a.st && "intro" !== a.st) {
     ("stun" === a.st && (t *= 1.5),
       Eo.one && (t = 9999),
@@ -63,9 +73,9 @@ function oo(t) {
       (a.flash = 6),
       $sx("bosshit"));
     for (let t = 0; t < 5; t++)
-      yt.push({
+      parts.push({
         x: a.x + 10 * a.face + 20 * (r(t, a.hp) - 0.5),
-        y: B() - 40 - 30 * r(t, 2),
+        y: floorY() - 40 - 30 * r(t, 2),
         vx: 2 * (r(t, 3) - 0.5),
         vy: 1.5 * -r(t, 4),
         g: 0.08,
@@ -78,17 +88,17 @@ function oo(t) {
         (a.st = "dead"),
         (a.t = 0),
         $sx("bossdie"),
-        (Lt = 30),
-        (E = []),
-        (T = []),
-        R.forEach((t) => {
-          Ie(t.x, B() - 3, 12, ["#8aff6a", "#d8ff9a"], 1.8, 0.14, 20);
+        (shake = 30),
+        (venoms = []),
+        (waves = []),
+        minis.forEach((t) => {
+          sparks(t.x, floorY() - 3, 12, ["#8aff6a", "#d8ff9a"], 1.8, 0.14, 20);
         }),
-        (R = []),
-        (fe = 14));
-      const t = ho(a).head;
+        (minis = []),
+        (hitStop = 14));
+      const t = snakePose(a).head;
       for (let a = 0; a < 3; a++)
-        Re({
+        addFx({
           k: "ring",
           x: t.x,
           y: t.y,
@@ -97,10 +107,10 @@ function oo(t) {
           c: a ? "#8aff9a" : "#ffffff",
           life: 24 + 8 * a,
         });
-      (Re({ k: "flash", x: t.x, y: t.y, r: 60, c: "200,255,190", a: 1, life: 22 }),
-        Ie(t.x, t.y, 40, ["#8aff9a", "#c8ff70", "#ffffff", "#4ad860"], 3, 0.12, 34));
+      (addFx({ k: "flash", x: t.x, y: t.y, r: 60, c: "200,255,190", a: 1, life: 22 }),
+        sparks(t.x, t.y, 40, ["#8aff9a", "#c8ff70", "#ffffff", "#4ad860"], 3, 0.12, 34));
     }
-    Be();
+    updateHud();
   }
 }
 const ro = (t, a, e) => t + (a - t) * Math.max(0, Math.min(1, e)),

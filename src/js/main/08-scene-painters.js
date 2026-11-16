@@ -543,10 +543,10 @@ function La(t, a) {
         s = (t.base - t.top) / 2;
       for (let t = 0; t < n / 5; t++) {
         const n = s * a * (0.4 + 0.6 * r(e, t + 9));
-        (pt("#1f6a35", o + 2 + 5 * t, l - n, 1, n),
-          pt("#3fba5a", o + 1 + 5 * t, l - n, 3, 2),
-          r(e, t) < 0.35 && pt("#ff7ad0", o + 3 + 5 * t, l - n + 3, 1, 1),
-          r(e, t + 4) < 0.25 && pt("#b8ff6a", o + 2 + 5 * t, l - n + 1, 1, 1));
+        (rect("#1f6a35", o + 2 + 5 * t, l - n, 1, n),
+          rect("#3fba5a", o + 1 + 5 * t, l - n, 3, 2),
+          r(e, t) < 0.35 && rect("#ff7ad0", o + 3 + 5 * t, l - n + 3, 1, 1),
+          r(e, t + 4) < 0.25 && rect("#b8ff6a", o + 2 + 5 * t, l - n + 1, 1, 1));
       }
     });
 }
@@ -1008,7 +1008,7 @@ function za(t, a) {
         const s = 0 == l ? "#3aff9a" : 1 == l ? "#ffb03a" : "#4ac8ff";
         !(r(7 * n + l + 3 * o, (t / (260 + 37 * o + 29 * n)) | 0) > (a ? 0.9 : 0.35)) ||
           (a && r(o, n) < 0.6) ||
-          pt(s, (e + 4 + 3 * l) / 2, (68 + 16 * n + 3) / 2, 1, 1);
+          rect(s, (e + 4 + 3 * l) / 2, (68 + 16 * n + 3) / 2, 1, 1);
       }
   });
 }
@@ -1024,7 +1024,7 @@ function qa(t, a) {
         const a = r((t / 80) | 0, 7) < (t > 2600 ? 0.55 : 0.3),
           e = a ? 6 * (r((t / 60) | 0, 2) - 0.5) : 0;
         if (((t / 70) | 0) % 11 != 0) {
-          pt("rgba(0,30,26,.95)", l, s, 35, 27);
+          rect("rgba(0,30,26,.95)", l, s, 35, 27);
           const o = "#%@0&?/",
             n = (e) =>
               a
@@ -1038,30 +1038,30 @@ function qa(t, a) {
             c = n("GOOD"),
             i = n("MORNING");
           if (
-            (mt(c, l + 8 + e, s + 5, "rgba(255,60,90,.85)", "7px monospace"),
-            mt(c, l + 8.8 - 0.5 * e, s + 5, "rgba(60,255,220,.85)", "7px monospace"),
-            mt(c, l + 8.4, s + 5, "#d8fff0", "7px monospace"),
-            mt(i, l + 3 + e, s + 14, "rgba(255,60,90,.85)", "7px monospace"),
-            mt(i, l + 3.8 - 0.5 * e, s + 14, "rgba(60,255,220,.85)", "7px monospace"),
-            mt(i, l + 3.4, s + 14, "#d8fff0", "7px monospace"),
+            (text(c, l + 8 + e, s + 5, "rgba(255,60,90,.85)", "7px monospace"),
+            text(c, l + 8.8 - 0.5 * e, s + 5, "rgba(60,255,220,.85)", "7px monospace"),
+            text(c, l + 8.4, s + 5, "#d8fff0", "7px monospace"),
+            text(i, l + 3 + e, s + 14, "rgba(255,60,90,.85)", "7px monospace"),
+            text(i, l + 3.8 - 0.5 * e, s + 14, "rgba(60,255,220,.85)", "7px monospace"),
+            text(i, l + 3.4, s + 14, "#d8fff0", "7px monospace"),
             a)
           )
             for (let a = 0; a < 3; a++)
-              pt(
+              rect(
                 "rgba(120,255,220,.55)",
                 l,
                 s + 26 * r((t / 60) | 0, a + 3),
                 35,
                 1 + 2 * r((t / 60) | 0, a + 6),
               );
-          (pt("rgba(120,255,200,.08)", l, s + ((t / 30) % 27), 35, 3),
-            pt("rgba(200,255,230,.5)", l + 3 + (((t / 260) | 0) % 2) * 0, s + 23, 2, 1));
+          (rect("rgba(120,255,200,.08)", l, s + ((t / 30) % 27), 35, 3),
+            rect("rgba(200,255,230,.5)", l + 3 + (((t / 260) | 0) % 2) * 0, s + 23, 2, 1));
         }
-        Gt(l + 17, s + 14, 34, "90,255,200", 0.22);
+        glow(l + 17, s + 14, 34, "90,255,200", 0.22);
       }
       return;
     }
-    pt("rgba(0,24,20,.9)", l, s, 35, 27);
+    rect("rgba(0,24,20,.9)", l, s, 35, 27);
     const c = l + 17.5 + 0;
     for (let a = 7; a < 27; a += 1) {
       const e = 0.42 * a + (t / (n ? 260 : 340)) * (n ? -1 : 1),
@@ -1070,29 +1070,29 @@ function qa(t, a) {
         l = c - Math.sin(e) * o,
         i = Math.cos(e);
       (a % 3 == 0 &&
-        pt(
+        rect(
           n ? "rgba(255,190,90,.55)" : "rgba(90,255,200,.55)",
           Math.min(r, l),
           s + a,
           Math.abs(l - r),
           1,
         ),
-        pt(i > 0 ? (n ? "#ff6ad0" : "#4affc8") : n ? "#6ad8ff" : "#2a9aff", r, s + a, 1.5, 1.2),
-        pt(i > 0 ? (n ? "#6ad8ff" : "#2a9aff") : n ? "#ff6ad0" : "#4affc8", l, s + a, 1.5, 1.2));
+        rect(i > 0 ? (n ? "#ff6ad0" : "#4affc8") : n ? "#6ad8ff" : "#2a9aff", r, s + a, 1.5, 1.2),
+        rect(i > 0 ? (n ? "#6ad8ff" : "#2a9aff") : n ? "#ff6ad0" : "#4affc8", l, s + a, 1.5, 1.2));
     }
     for (let a = 0; a < 5; a++) {
       const e = 2 + 8 * Math.abs(Math.sin(t / 300 + 1.3 * a + n));
-      (pt(n ? "#ff9a3a" : "#3aff9a", l + 2 + 2 * a, s + 25 - e, 1, e),
-        pt(n ? "#ff9a3a" : "#3aff9a", l + 29 - 2 * a, s + 25 - 0.7 * e, 1, 0.7 * e));
+      (rect(n ? "#ff9a3a" : "#3aff9a", l + 2 + 2 * a, s + 25 - e, 1, e),
+        rect(n ? "#ff9a3a" : "#3aff9a", l + 29 - 2 * a, s + 25 - 0.7 * e, 1, 0.7 * e));
     }
-    (mt(
+    (text(
       n ? "SEQ-" + (4e3 + (((t / 70) | 0) % 900)) : "GENOME SEQ",
       l + 3,
       s + 1,
       n ? "#ffb86a" : "#8affc8",
       "5px monospace",
     ),
-      pt("rgba(120,255,200,.08)", l, s + ((t / 40) % 27), 35, 2));
+      rect("rgba(120,255,200,.08)", l, s + ((t / 40) % 27), 35, 2));
   }),
     [
       [84, 100, 26, 28, 0],
@@ -1105,25 +1105,25 @@ function qa(t, a) {
         f = n / 2,
         h = l / 2;
       if (!a || s % 2 != 0)
-        if (a) pt("rgba(80,200,150," + (0.2 + 0.1 * Math.sin(t / 200)) + ")", c, i, f, h);
+        if (a) rect("rgba(80,200,150," + (0.2 + 0.1 * Math.sin(t / 200)) + ")", c, i, f, h);
         else {
-          pt("rgba(10,70,52,.95)", c, i, f, h);
+          rect("rgba(10,70,52,.95)", c, i, f, h);
           for (let a = 0; a < h - 1; a += 2) {
             const e = 2 + r(a + ((t / (400 + 80 * s)) | 0), s) * (f - 4);
-            pt(a % 4 ? "#3aff9a" : "#7affc8", c + 1, i + a + (((t / 200) | 0) % 2) * 0, e, 1);
+            rect(a % 4 ? "#3aff9a" : "#7affc8", c + 1, i + a + (((t / 200) | 0) % 2) * 0, e, 1);
           }
-          (s % 2 && pt("#ffb03a", c + f - 3, i + 1, 2, 1),
-            Gt(c + f / 2, i + h / 2, 14, "60,255,170", 0.2));
+          (s % 2 && rect("#ffb03a", c + f - 3, i + 1, 2, 1),
+            glow(c + f / 2, i + h / 2, 14, "60,255,170", 0.2));
         }
     }));
 }
 function Ya(t, a) {
   const e = a.level,
     o = 14;
-  pt(a.over ? "rgba(6,56,40,.1)" : "#020c0b", 78, o, 36, 75);
+  rect(a.over ? "rgba(6,56,40,.1)" : "#020c0b", 78, o, 36, 75);
   const n = 89 - 73 * e;
   for (let t = Math.ceil(n); t < 89; t++)
-    pt(
+    rect(
       "rgba(" +
         (a.over ? "30,150,110" : "20,170,120") +
         "," +
@@ -1134,12 +1134,12 @@ function Ya(t, a) {
       34,
       1,
     );
-  (e > 0 && pt("rgba(190,255,225,.8)", 79, n, 34, 1),
-    Gt(96, 52, 64, a.over ? "110,255,170" : "40,255,160", 0.32 * e + 0.08));
+  (e > 0 && rect("rgba(190,255,225,.8)", 79, n, 34, 1),
+    glow(96, 52, 64, a.over ? "110,255,170" : "40,255,160", 0.32 * e + 0.08));
   for (let a = 0; a < 18; a++) {
     const e = 87 - ((t * (0.012 + 0.022 * r(a, 2)) + 74 * r(a, 1)) % 74);
     e > n &&
-      pt(
+      rect(
         a % 3 ? "rgba(190,255,225,.65)" : "rgba(255,255,255,.85)",
         81 + 30 * r(a, 3) + 1.4 * Math.sin(t / 340 + a),
         e,
@@ -1151,26 +1151,26 @@ function Ya(t, a) {
     const o = 2.2 * Math.sin(t / 760),
       r = 0.07 * Math.sin(t / 1400),
       n = (1 - Math.min(1, 1.5 * e)) * (a.sink || 0);
-    (ft.save(),
-      ft.beginPath(),
-      ft.rect(79, 15, 34, 73),
-      ft.clip(),
-      void 0 !== a.alpha && (ft.globalAlpha = a.alpha),
-      ft.translate(96, (a.stand ? 58 : 48) + o * (a.stand ? 0 : 1) + n),
-      ft.rotate(a.stand ? 0 : r),
-      ft.scale(1.45, 1.45),
-      Ma(0, 24, qt, 0, 1, { s: 1.2, closed: 1, noshd: 1, skin: a.tint }),
-      ft.restore(),
-      pt("rgba(30,170,120,.28)", 79, 15, 34, 73));
+    (ctx.save(),
+      ctx.beginPath(),
+      ctx.rect(79, 15, 34, 73),
+      ctx.clip(),
+      void 0 !== a.alpha && (ctx.globalAlpha = a.alpha),
+      ctx.translate(96, (a.stand ? 58 : 48) + o * (a.stand ? 0 : 1) + n),
+      ctx.rotate(a.stand ? 0 : r),
+      ctx.scale(1.45, 1.45),
+      Ma(0, 24, playerLook, 0, 1, { s: 1.2, closed: 1, noshd: 1, skin: a.tint }),
+      ctx.restore(),
+      rect("rgba(30,170,120,.28)", 79, 15, 34, 73));
   }
   const l = Math.round(36 * (void 0 === a.glass ? 1 : a.glass));
   if (l > 0) {
-    (pt("rgba(120,255,200,.10)", 78, o, l, 75),
-      pt("rgba(220,255,240,.38)", 80, 17, 1, 67),
-      pt("rgba(220,255,240,.2)", 82, 20, 1, 55),
-      pt("rgba(0,0,0,.35)", 78 + l - 3, o, 2, 75));
+    (rect("rgba(120,255,200,.10)", 78, o, l, 75),
+      rect("rgba(220,255,240,.38)", 80, 17, 1, 67),
+      rect("rgba(220,255,240,.2)", 82, 20, 1, 55),
+      rect("rgba(0,0,0,.35)", 78 + l - 3, o, 2, 75));
     for (let t = 0; t < 70 * (a.frost || 0); t++)
-      pt(
+      rect(
         t % 5 ? "rgba(235,250,255,.8)" : "rgba(255,255,255,.95)",
         78 + r(t, 1) * l,
         o + 75 * r(t, 2),
@@ -1178,42 +1178,44 @@ function Ya(t, a) {
         1,
       );
     a.crack &&
-      ((ft.strokeStyle = "rgba(220,255,240,.85)"),
-      (ft.lineWidth = 0.5),
+      ((ctx.strokeStyle = "rgba(220,255,240,.85)"),
+      (ctx.lineWidth = 0.5),
       [
         [84, 16, 90, 40, 86, 60],
         [108, 30, 100, 52, 104, 80],
         [96, 20, 98, 34, 92, 50],
       ].forEach((t) => {
-        (ft.beginPath(),
-          ft.moveTo(t[0], t[1]),
-          ft.lineTo(t[2], t[3]),
-          ft.lineTo(t[4], t[5]),
-          ft.stroke());
+        (ctx.beginPath(),
+          ctx.moveTo(t[0], t[1]),
+          ctx.lineTo(t[2], t[3]),
+          ctx.lineTo(t[4], t[5]),
+          ctx.stroke());
       }));
   }
-  (pt(a.over ? "rgba(11,46,38,.45)" : "#0b2e26", 74, 12, 44, 5),
-    pt("#4aa88a", 74, 12, 44, 1),
-    pt(a.over ? "rgba(11,46,38,.5)" : "#0b2e26", 74, 88, 44, 8),
-    pt("#4aa88a", 74, 88, 44, 1),
-    pt("#020a0a", 74, 95, 44, 1));
+  (rect(a.over ? "rgba(11,46,38,.45)" : "#0b2e26", 74, 12, 44, 5),
+    rect("#4aa88a", 74, 12, 44, 1),
+    rect(a.over ? "rgba(11,46,38,.5)" : "#0b2e26", 74, 88, 44, 8),
+    rect("#4aa88a", 74, 88, 44, 1),
+    rect("#020a0a", 74, 95, 44, 1));
   const s = a.over ? "rgba(18,74,58,.28)" : "#124a3a";
-  (pt(s, 74, o, 4, 75),
-    pt(s, 114, o, 4, 75),
-    pt("#3aa888", 74, o, 1, 75),
-    pt("#3aa888", 114, o, 1, 75),
-    a.over || (pt("#020a0a", 77, o, 1, 75), pt("#020a0a", 117, o, 1, 75)),
+  (rect(s, 74, o, 4, 75),
+    rect(s, 114, o, 4, 75),
+    rect("#3aa888", 74, o, 1, 75),
+    rect("#3aa888", 114, o, 1, 75),
+    a.over || (rect("#020a0a", 77, o, 1, 75), rect("#020a0a", 117, o, 1, 75)),
     a.over ||
       [28, 50, 70].forEach((t) => {
-        (pt("#0e3a2e", 75, t, 42, 3), pt("#4aa88a", 75, t, 42, 1), pt("#020a0a", 75, t + 2, 42, 1));
+        (rect("#0e3a2e", 75, t, 42, 3),
+          rect("#4aa88a", 75, t, 42, 1),
+          rect("#020a0a", 75, t + 2, 42, 1));
       }));
-  for (let t = 18; t < 87; t += 9) (pt("#6ad0a8", 75, t, 1, 1), pt("#6ad0a8", 116, t, 1, 1));
-  if ((a.over || (pt("#020a0a", 84, 7, 24, 5), pt("#0a3a2e", 85, 8, 22, 3)), a.over))
-    (pt("#1a3a2a", 85, 8, 22, 3), r((t / 200) | 0, 3) < 0.2 && pt("#3aff9a", 90, 9, 2, 1));
+  for (let t = 18; t < 87; t += 9) (rect("#6ad0a8", 75, t, 1, 1), rect("#6ad0a8", 116, t, 1, 1));
+  if ((a.over || (rect("#020a0a", 84, 7, 24, 5), rect("#0a3a2e", 85, 8, 22, 3)), a.over))
+    (rect("#1a3a2a", 85, 8, 22, 3), r((t / 200) | 0, 3) < 0.2 && rect("#3aff9a", 90, 9, 2, 1));
   else {
     for (let a = 0; a < 4; a++)
-      pt(((t / 320 + a) | 0) % 2 ? "#3aff9a" : "#1a6a4a", 87 + 5 * a, 9, 3, 1);
-    mt(a.pct || "", 88, 3, "#8affc8", "5px monospace");
+      rect(((t / 320 + a) | 0) % 2 ? "#3aff9a" : "#1a6a4a", 87 + 5 * a, 9, 3, 1);
+    text(a.pct || "", 88, 3, "#8affc8", "5px monospace");
   }
   a.over &&
     ([
@@ -1222,23 +1224,23 @@ function Ya(t, a) {
       [78, 60],
       [114, 76],
     ].forEach(([t, a], e) => {
-      ((ft.strokeStyle = "#3a8a46"),
-        (ft.lineWidth = 1.3),
-        ft.beginPath(),
-        ft.moveTo(t, a),
-        ft.quadraticCurveTo(t + (e % 2 ? -5 : 5), a + 8, t + (e % 2 ? 4 : -4), a + 16),
-        ft.stroke(),
-        pt("#7adf7a", t + (e % 2 ? -5 : 5), a + 8, 2, 1));
+      ((ctx.strokeStyle = "#3a8a46"),
+        (ctx.lineWidth = 1.3),
+        ctx.beginPath(),
+        ctx.moveTo(t, a),
+        ctx.quadraticCurveTo(t + (e % 2 ? -5 : 5), a + 8, t + (e % 2 ? 4 : -4), a + 16),
+        ctx.stroke(),
+        rect("#7adf7a", t + (e % 2 ? -5 : 5), a + 8, 2, 1));
     }),
-    pt("#4a9a56", 74, 11, 44, 2),
-    pt("#9ae88a", 80, 11, 8, 1),
-    pt("#9ae88a", 100, 11, 12, 1));
+    rect("#4a9a56", 74, 11, 44, 2),
+    rect("#9ae88a", 80, 11, 8, 1),
+    rect("#9ae88a", 100, 11, 12, 1));
 }
 function Ua(t, a) {
   for (let e = 0; e < 7; e++) {
     const o = (t / 38 + 17 * e) % 60,
       r = 62 + (e % 2) * 68 + 4 * Math.sin(o / 6 + e) + (e > 3 ? 36 : 0);
-    pt("rgba(" + a + "," + 0.16 * (1 - o / 60) + ")", r, 96 - 0.8 * o, 3 + o / 8, 2 + o / 14);
+    rect("rgba(" + a + "," + 0.16 * (1 - o / 60) + ")", r, 96 - 0.8 * o, 3 + o / 8, 2 + o / 14);
   }
 }
 const Va = [
@@ -1449,7 +1451,7 @@ function Ja() {
   });
 }
 function Xa(t, a, e, o, r) {
-  (ft.save(), ft.translate(t, a), o < 0 && ft.scale(-1, 1));
+  (ctx.save(), ctx.translate(t, a), o < 0 && ctx.scale(-1, 1));
   const n = 0.35 * Math.sin(e / 260),
     l = ((e / 700) | 0) % 5 == 0 ? 0.8 * Math.sin(e / 60) : 0,
     s = Math.sin(e / 180),
@@ -1460,73 +1462,73 @@ function Xa(t, a, e, o, r) {
       [-16.6, 1.2 * s - 5.6],
       [-19, 1.4 * s - 4.4],
     ];
-  ((ft.strokeStyle = "#e0a0a8"),
-    (ft.lineWidth = 0.9),
-    (ft.lineCap = "round"),
-    ft.beginPath(),
-    c.forEach((t, a) => (a ? ft.lineTo(t[0], t[1]) : ft.moveTo(t[0], t[1]))),
-    ft.stroke(),
-    (ft.strokeStyle = "#b87880"),
-    (ft.lineWidth = 0.4),
-    ft.beginPath(),
-    c.forEach((t, a) => (a ? ft.lineTo(t[0], t[1] + 0.3) : ft.moveTo(t[0], t[1] + 0.3))),
-    ft.stroke(),
+  ((ctx.strokeStyle = "#e0a0a8"),
+    (ctx.lineWidth = 0.9),
+    (ctx.lineCap = "round"),
+    ctx.beginPath(),
+    c.forEach((t, a) => (a ? ctx.lineTo(t[0], t[1]) : ctx.moveTo(t[0], t[1]))),
+    ctx.stroke(),
+    (ctx.strokeStyle = "#b87880"),
+    (ctx.lineWidth = 0.4),
+    ctx.beginPath(),
+    c.forEach((t, a) => (a ? ctx.lineTo(t[0], t[1] + 0.3) : ctx.moveTo(t[0], t[1] + 0.3))),
+    ctx.stroke(),
     [
       [-5, -1.2, 0],
       [3.4, -1.2, 1],
     ].forEach(([t, a, e]) => {
-      (pt("#f0b0b8", t - 1, a - 1.2, 3, 1.6),
-        pt("#d89098", t - 1, a, 0.6, 0.6),
-        pt("#d89098", t + 0.4, a, 0.6, 0.6),
-        pt("#d89098", t + 1.6, a, 0.6, 0.6));
+      (rect("#f0b0b8", t - 1, a - 1.2, 3, 1.6),
+        rect("#d89098", t - 1, a, 0.6, 0.6),
+        rect("#d89098", t + 0.4, a, 0.6, 0.6),
+        rect("#d89098", t + 1.6, a, 0.6, 0.6));
     }),
-    (ft.fillStyle = "#d8d4d0"),
-    ft.beginPath(),
-    ft.ellipse(-1, -4.4 + n, 8.4, 3.8 + 0.4 * n, 0, 0, 6.3),
-    ft.fill(),
-    (ft.fillStyle = "#f4f0ec"),
-    ft.beginPath(),
-    ft.ellipse(-0.6, -3.4 + n, 7, 2.4, 0, 0, 6.3),
-    ft.fill(),
-    (ft.fillStyle = "#9a9694"),
-    ft.beginPath(),
-    ft.ellipse(-2.4, -6.4 + n, 6, 1.6, -0.05, 0, 6.3),
-    ft.fill(),
-    (ft.fillStyle = "#e8e4e0"),
-    ft.beginPath(),
-    ft.ellipse(6.6, 0.3 * l - 5.2, 3.6, 2.6, 0.12, 0, 6.3),
-    ft.fill(),
-    (ft.fillStyle = "#f4c0c4"),
-    ft.beginPath(),
-    ft.moveTo(9.4, 0.3 * l - 6.2),
-    ft.lineTo(11.8, 0.3 * l - 5),
-    ft.lineTo(9.6, 0.3 * l - 3.8),
-    ft.closePath(),
-    ft.fill(),
-    pt("#f08898", 11.2, 0.3 * l - 5.4, 1, 0.9),
-    (ft.fillStyle = "#f0a0aa"),
-    ft.beginPath(),
-    ft.ellipse(4.6, -8, 1.5, 1.7, 0, 0, 6.3),
-    ft.fill(),
-    (ft.fillStyle = "#fcd0d4"),
-    ft.beginPath(),
-    ft.ellipse(4.6, -8, 0.8, 1, 0, 0, 6.3),
-    ft.fill(),
-    pt(r ? "#ff3a3a" : "#1a0e12", 7.4, 0.3 * l - 6.4, 1.1, 1.1),
-    pt("#fff", 7.5, 0.3 * l - 6.5, 0.4, 0.4),
-    (ft.strokeStyle = "rgba(255,255,255,.8)"),
-    (ft.lineWidth = 0.25),
+    (ctx.fillStyle = "#d8d4d0"),
+    ctx.beginPath(),
+    ctx.ellipse(-1, -4.4 + n, 8.4, 3.8 + 0.4 * n, 0, 0, 6.3),
+    ctx.fill(),
+    (ctx.fillStyle = "#f4f0ec"),
+    ctx.beginPath(),
+    ctx.ellipse(-0.6, -3.4 + n, 7, 2.4, 0, 0, 6.3),
+    ctx.fill(),
+    (ctx.fillStyle = "#9a9694"),
+    ctx.beginPath(),
+    ctx.ellipse(-2.4, -6.4 + n, 6, 1.6, -0.05, 0, 6.3),
+    ctx.fill(),
+    (ctx.fillStyle = "#e8e4e0"),
+    ctx.beginPath(),
+    ctx.ellipse(6.6, 0.3 * l - 5.2, 3.6, 2.6, 0.12, 0, 6.3),
+    ctx.fill(),
+    (ctx.fillStyle = "#f4c0c4"),
+    ctx.beginPath(),
+    ctx.moveTo(9.4, 0.3 * l - 6.2),
+    ctx.lineTo(11.8, 0.3 * l - 5),
+    ctx.lineTo(9.6, 0.3 * l - 3.8),
+    ctx.closePath(),
+    ctx.fill(),
+    rect("#f08898", 11.2, 0.3 * l - 5.4, 1, 0.9),
+    (ctx.fillStyle = "#f0a0aa"),
+    ctx.beginPath(),
+    ctx.ellipse(4.6, -8, 1.5, 1.7, 0, 0, 6.3),
+    ctx.fill(),
+    (ctx.fillStyle = "#fcd0d4"),
+    ctx.beginPath(),
+    ctx.ellipse(4.6, -8, 0.8, 1, 0, 0, 6.3),
+    ctx.fill(),
+    rect(r ? "#ff3a3a" : "#1a0e12", 7.4, 0.3 * l - 6.4, 1.1, 1.1),
+    rect("#fff", 7.5, 0.3 * l - 6.5, 0.4, 0.4),
+    (ctx.strokeStyle = "rgba(255,255,255,.8)"),
+    (ctx.lineWidth = 0.25),
     [
       [0, -0.5],
       [0.3, 0.3],
       [0, 1.1],
     ].forEach(([t, a], o) => {
-      (ft.beginPath(),
-        ft.moveTo(10, 0.3 * l - 4.6 + 0.5 * o),
-        ft.lineTo(13.4, 0.3 * l - 5.6 + a + 0.8 * o + 0.3 * Math.sin(e / 90 + o)),
-        ft.stroke());
+      (ctx.beginPath(),
+        ctx.moveTo(10, 0.3 * l - 4.6 + 0.5 * o),
+        ctx.lineTo(13.4, 0.3 * l - 5.6 + a + 0.8 * o + 0.3 * Math.sin(e / 90 + o)),
+        ctx.stroke());
     }),
-    ft.restore());
+    ctx.restore());
 }
 const Qa = {
   na: [
@@ -1880,21 +1882,21 @@ function ee(t, a, e, o, n, l) {
   for (let s = 0; s < dt; s += 2) {
     const c = o + r(s, n) * o * 1.6,
       i = Math.sin(t / (700 + 400 * r(s, n + 1)) + 0.3 * s) * l * (c / o / 2);
-    for (let t = 0; t < c; t += 1.5) pt(t > 0.7 * c ? e : a, s + i * (t / c), 106 - t, 1, 1.6);
+    for (let t = 0; t < c; t += 1.5) rect(t > 0.7 * c ? e : a, s + i * (t / c), 106 - t, 1, 1.6);
   }
 }
 function oe(t, a, e, o, r) {
   for (let n = 0; n < 5; n++) {
     const l = ((t * r + 52 * n) % 252) - 30;
-    (pt("rgba(" + a + "," + o + ")", l, e + 2 * Math.sin(t / 900 + n), 52, 4),
-      pt("rgba(" + a + "," + 0.6 * o + ")", l + 8, e - 2 + 2 * Math.sin(t / 900 + n), 36, 3));
+    (rect("rgba(" + a + "," + o + ")", l, e + 2 * Math.sin(t / 900 + n), 52, 4),
+      rect("rgba(" + a + "," + 0.6 * o + ")", l + 8, e - 2 + 2 * Math.sin(t / 900 + n), 36, 3));
   }
 }
 function re(t, a, e, o) {
   for (let n = 0; n < a; n++) {
     const a = (r(n, 5) * dt + 5 * Math.sin(t / 800 + n) + t * o * (0.3 + r(n, 6))) % dt,
       l = (r(n, 7) * bt + t * (0.004 + 0.01 * r(n, 8)) * (o > 0 ? -1 : 1) + 540) % bt;
-    pt(
+    rect(
       "rgba(" + e + "," + (0.25 + 0.5 * r(n, 9)) + ")",
       a,
       l,
@@ -1904,36 +1906,36 @@ function re(t, a, e, o) {
   }
 }
 function ne(t, a) {
-  if ((ft.save(), ft.setTransform(2, 0, 0, 2, 0, 0), "street" === t || "poster" === t)) {
+  if ((ctx.save(), ctx.setTransform(2, 0, 0, 2, 0, 0), "street" === t || "poster" === t)) {
     !(function (t) {
-      ((ft.strokeStyle = "rgba(6,4,14,.95)"),
-        (ft.lineWidth = 0.9),
+      ((ctx.strokeStyle = "rgba(6,4,14,.95)"),
+        (ctx.lineWidth = 0.9),
         [
           [-4, 10, 100, 19, 200, 8],
           [-4, 22, 70, 29, 200, 20],
           [60, 6, 150, 14, 200, 26],
         ].forEach((a, e) => {
-          (ft.beginPath(),
-            ft.moveTo(a[0], a[1]),
-            ft.quadraticCurveTo(a[2], a[3] + 0.8 * Math.sin(t / 900 + e), a[4], a[5]),
-            ft.stroke());
+          (ctx.beginPath(),
+            ctx.moveTo(a[0], a[1]),
+            ctx.quadraticCurveTo(a[2], a[3] + 0.8 * Math.sin(t / 900 + e), a[4], a[5]),
+            ctx.stroke());
         }));
     })(a);
     for (let t = 0; t < 70; t++) {
       const e = ((r(t, 1) * dt * 1.2 + 0.05 * a * (0.6 + 0.5 * r(t, 3))) % 212) - 10,
         o = (r(t, 2) * bt + a * (0.28 + 0.22 * r(t, 4))) % bt;
-      (pt("rgba(170,200,255," + (0.15 + 0.2 * r(t, 5)) + ")", e, o, 0.6, 3),
-        pt("rgba(170,200,255,.12)", e - 0.6, o - 2, 0.5, 2));
+      (rect("rgba(170,200,255," + (0.15 + 0.2 * r(t, 5)) + ")", e, o, 0.6, 3),
+        rect("rgba(170,200,255,.12)", e - 0.6, o - 2, 0.5, 2));
     }
     for (let t = 0; t < 2; t++) {
       const e = ((a / 60 + 105 * t) % 250) - 25,
         o = 13 + 9 * t + 2 * Math.sin(a / 380 + 2 * t);
-      (pt("#150f24", e, o, 6, 1.8),
-        pt("#2a2040", e + 1, o - 1, 4, 1),
-        pt("#150f24", e - 2 + (((a / 60) | 0) % 2), o - 1.6, 2, 0.6),
-        pt("#150f24", e + 6 - (((a / 60) | 0) % 2), o - 1.6, 2, 0.6),
-        ((a / 300 + t) | 0) % 2 && pt("#ff3a3a", e + 2.4, o + 1.8, 1, 1),
-        Gt(e + 3, o + 3, 7, "255,60,60", 0.22));
+      (rect("#150f24", e, o, 6, 1.8),
+        rect("#2a2040", e + 1, o - 1, 4, 1),
+        rect("#150f24", e - 2 + (((a / 60) | 0) % 2), o - 1.6, 2, 0.6),
+        rect("#150f24", e + 6 - (((a / 60) | 0) % 2), o - 1.6, 2, 0.6),
+        ((a / 300 + t) | 0) % 2 && rect("#ff3a3a", e + 2.4, o + 1.8, 1, 1),
+        glow(e + 3, o + 3, 7, "255,60,60", 0.22));
     }
     [
       [44, 97],
@@ -1942,7 +1944,7 @@ function ne(t, a) {
     ].forEach(([t, e], o) => {
       for (let r = 0; r < 7; r++) {
         const n = (a / 40 + 14 * r + 23 * o) % 90;
-        pt(
+        rect(
           "rgba(200,210,230," + 0.17 * (1 - n / 90) + ")",
           t + 2.5 * Math.sin(n / 8 + r),
           e - 0.5 * n,
@@ -1953,38 +1955,38 @@ function ne(t, a) {
     });
     for (let t = 0; t < 3; t++) {
       const e = ((a / 22 + 90 * t) % 240) - 10;
-      (pt("rgba(220,214,190,.7)", e, 97 + 1.2 * Math.sin(a / 200 + t), 2, 1.4),
-        pt("rgba(180,174,150,.7)", e + 0.6, 97.6 + 1.2 * Math.sin(a / 200 + t), 1.4, 0.6));
+      (rect("rgba(220,214,190,.7)", e, 97 + 1.2 * Math.sin(a / 200 + t), 2, 1.4),
+        rect("rgba(180,174,150,.7)", e + 0.6, 97.6 + 1.2 * Math.sin(a / 200 + t), 1.4, 0.6));
     }
-    (pt("rgba(4,3,10,.9)", 0, 100, 38, 8),
-      pt("rgba(4,3,10,.9)", 150, 102, 42, 6),
-      pt("#0a0818", 4, 96, 8, 6),
-      pt("#0a0818", 3, 95, 10, 1.5),
-      pt("#0a0818", 170, 98, 6, 5),
+    (rect("rgba(4,3,10,.9)", 0, 100, 38, 8),
+      rect("rgba(4,3,10,.9)", 150, 102, 42, 6),
+      rect("#0a0818", 4, 96, 8, 6),
+      rect("#0a0818", 3, 95, 10, 1.5),
+      rect("#0a0818", 170, 98, 6, 5),
       oe(a, "150,160,210", 99, 0.05, 0.012));
   } else if ("call" === t) {
-    (re(a, 26, "180,240,255", 0.01), pt("rgba(120,220,255,.05)", 0, (a / 30) % 108, 192, 3));
+    (re(a, 26, "180,240,255", 0.01), rect("rgba(120,220,255,.05)", 0, (a / 30) % 108, 192, 3));
     for (let t = 0; t < 18; t++) {
       const e = 104 + 40 * r(t, 1),
         o = ((70 * r(t, 2) + a * (0.06 + 0.05 * r(t, 3))) % 70) + 14;
-      pt("rgba(170,210,255,.45)", e, o, 0.5, 3);
+      rect("rgba(170,210,255,.45)", e, o, 0.5, 3);
     }
   } else if ("lab" === t) {
     for (let t = 0; t < 9; t++) {
       const e = (a / 16 + 37 * t) % 70,
         o = 20 + 150 * r(t, 1) + 3 * Math.sin(t);
-      (pt(
+      (rect(
         "rgba(255," + (150 + e) + ",70," + (1 - e / 70) + ")",
         o + 2 * Math.sin(e / 5),
         12 + 1.1 * e,
         1,
         1 + e / 40,
       ),
-        e < 4 && Gt(o, 12 + e, 6, "255,170,80", 0.4));
+        e < 4 && glow(o, 12 + e, 6, "255,170,80", 0.4));
     }
     for (let t = 0; t < 6; t++) {
       const e = (a / 50 + 19 * t) % 70;
-      pt(
+      rect(
         "rgba(60,50,70," + 0.28 * (1 - e / 70) + ")",
         18 + 30 * t + 5 * Math.sin(e / 6 + t),
         96 - e,
@@ -1992,38 +1994,38 @@ function ne(t, a) {
         3 + e / 10,
       );
     }
-    ((ft.strokeStyle = "rgba(8,6,16,.95)"), (ft.lineWidth = 1));
+    ((ctx.strokeStyle = "rgba(8,6,16,.95)"), (ctx.lineWidth = 1));
     for (let t = 0; t < 5; t++) {
       const e = 10 + 42 * t;
-      (ft.beginPath(),
-        ft.moveTo(e, 6),
-        ft.quadraticCurveTo(
+      (ctx.beginPath(),
+        ctx.moveTo(e, 6),
+        ctx.quadraticCurveTo(
           e + 4 * Math.sin(a / 300 + t),
           20,
           e + 6 * Math.sin(a / 260 + t),
           28 + 3 * t,
         ),
-        ft.stroke(),
+        ctx.stroke(),
         ((a / 110 + t) | 0) % 9 == 0 &&
-          Gt(e + 6 * Math.sin(a / 260 + t), 28 + 3 * t, 5, "255,220,120", 0.6));
+          glow(e + 6 * Math.sin(a / 260 + t), 28 + 3 * t, 5, "255,220,120", 0.6));
     }
-    (re(a, 30, "255,200,140", 0.004), pt("rgba(4,3,10,.8)", 0, 102, 192, 6));
+    (re(a, 30, "255,200,140", 0.004), rect("rgba(4,3,10,.8)", 0, 102, 192, 6));
   } else if ("out" === t) {
     (oe(a, "120,255,150", 90, 0.07, 0.01), oe(a, "80,200,120", 100, 0.05, 0.016));
     for (let t = 0; t < 22; t++) {
       const e = r(t, 1) * dt + 7 * Math.sin(a / 700 + 1.7 * t),
         o = 30 + 62 * r(t, 2) + 5 * Math.cos(a / 600 + 1.3 * t),
         n = 0.35 + 0.5 * Math.sin(a / 260 + 2.1 * t);
-      (pt("rgba(190,255,110," + Math.max(0, n) + ")", e, o, 1, 1),
-        Gt(e, o, 4, "190,255,110", 0.35 * Math.max(0, n)));
+      (rect("rgba(190,255,110," + Math.max(0, n) + ")", e, o, 1, 1),
+        glow(e, o, 4, "190,255,110", 0.35 * Math.max(0, n)));
     }
     for (let t = 0; t < 14; t++) {
       const e = ((a / 50 + 29 * t) % 210) - 12,
         o = (50 * r(t, 3) + 0.01 * a * (1 + (t % 3)) + 13 * t) % 100;
-      pt("rgba(160,255,200,.45)", e, o, 1, 1);
+      rect("rgba(160,255,200,.45)", e, o, 1, 1);
     }
     (ee(a, "#06160c", "#1d4a26", 5, 11, 2.4),
-      (ft.fillStyle = "#050d08"),
+      (ctx.fillStyle = "#050d08"),
       [
         [0, 0],
         [1, 0],
@@ -2031,16 +2033,16 @@ function ne(t, a) {
         const e = t ? 192 : 0,
           o = t ? -1 : 1;
         for (let t = 0; t < 6; t++)
-          (ft.beginPath(),
-            ft.moveTo(e, 5 * t),
-            ft.quadraticCurveTo(
+          (ctx.beginPath(),
+            ctx.moveTo(e, 5 * t),
+            ctx.quadraticCurveTo(
               e + o * (20 + 4 * t),
               5 * t + 6 + 1.5 * Math.sin(a / 800 + t),
               e + o * (8 + 7 * t),
               5 * t + 20,
             ),
-            ft.lineTo(e, 5 * t + 8),
-            ft.fill());
+            ctx.lineTo(e, 5 * t + 8),
+            ctx.fill());
       }));
   } else if ("rock" === t) {
     (re(a, 34, "255,210,150", 0.006),
@@ -2048,7 +2050,7 @@ function ne(t, a) {
       ee(a, "#08060e", "#26203a", 4, "rock" === t ? 21 : 23, 1.6));
     for (let t = 0; t < 8; t++) {
       const e = (a / 60 + 31 * t) % 90;
-      pt(
+      rect(
         "rgba(255," + (120 + 12 * t) + ",70," + 0.7 * (1 - e / 90) + ")",
         20 + 150 * r(t, 2) + 3 * Math.sin(e / 7 + t),
         100 - 0.8 * e,
@@ -2057,5 +2059,5 @@ function ne(t, a) {
       );
     }
   }
-  ft.restore();
+  ctx.restore();
 }

@@ -135,7 +135,7 @@ const Qt = (t) =>
 function Kt(t) {
   return Qt(
     (function (t) {
-      const a = f[t],
+      const a = items[t],
         e = Xt[t] || {},
         o = (t, a, e) =>
           e ? '<div class="isec ' + t + '"><b>' + a + "</b><span>" + e + "</span></div>" : "";
@@ -150,122 +150,124 @@ function Kt(t) {
     })(t),
   );
 }
-const Zt = (t) => X.includes(t),
+const Zt = (t) => inv.includes(t),
   _t = ["canister", "vial1", "vial2", "vial3", "barrel", "handle", "fullcan", "blaster"],
   ta = () =>
-    !p &&
+    !hasGun &&
     (Zt("canister") || Zt("fullcan")) &&
     Zt("barrel") &&
     Zt("handle") &&
-    (Zt("fullcan") || I + ["vial1", "vial2", "vial3"].filter(Zt).length >= 3),
+    (Zt("fullcan") || canFill + ["vial1", "vial2", "vial3"].filter(Zt).length >= 3),
   aa = () =>
-    ["canister", "vial1", "vial2", "vial3", "barrel", "handle"].filter((t) => J.has(t)).length,
-  ea = (t) => void 0 !== t.in && !K[W + t.in];
-function oa() {
-  const t = h[W],
+    ["canister", "vial1", "vial2", "vial3", "barrel", "handle"].filter((t) => got.has(t)).length,
+  ea = (t) => void 0 !== t.in && !broken[room + t.in];
+function platforms() {
+  const t = rooms[room],
     a = [];
   return (
     t.plats.forEach((t) => a.push(t)),
     t.crates.forEach((t, e) => {
-      K[W + e] || a.push({ x: t.x, y: 80 - (t.y2 ? 12 : 0), w: t.w, crate: e });
+      broken[room + e] || a.push({ x: t.x, y: 80 - (t.y2 ? 12 : 0), w: t.w, crate: e });
     }),
     a
   );
 }
 let ra = !1;
-function na() {
-  const a = t("#ggb");
+function updateGuide() {
+  const a = qs("#ggb");
   let e =
-    "exitlab" === W
-      ? M && "dead" !== M.st
+    "exitlab" === room
+      ? snakeBoss && "dead" !== snakeBoss.st
         ? "<b>Defeat the Mutant Snake!</b><br>Climb the shelves to get over it. Punch up close; the blaster has only 4 shots (hatchlings drop venom). Red circles show where it strikes!"
         : "<b>It is down.</b><br>The exit door on the right is open. Go outside!"
-      : "outside" === W
+      : "outside" === room
         ? "<b>You are outside.</b><br>Head right, to the door."
-        : "hall" === W
+        : "hall" === room
           ? ta()
             ? "<b>You have every part.</b><br>Go back up to the MIXING BENCH (LAB)."
             : "<b>A door marked STAFF ONLY.</b><br>Open it (E / USE)."
-          : "ware" === W
+          : "ware" === room
             ? ta()
               ? "<b>You have every part!</b><br>Carry them back up to the MIXING BENCH in the LAB."
               : "<b>Search the storage (" +
                 aa() +
                 "/6).</b><br>Open the HAZARDOUS crate, punch wooden crates, check the shelves."
-            : "stair" === W
-              ? O
+            : "stair" === room
+              ? cine
                 ? ""
-                : P
+                : bossOpen
                   ? "<b>The door is open.</b><br>Go right."
-                  : p
+                  : hasGun
                     ? "<b>Blast the sealed door!</b><br>Stand at the bottom and SHOOT (F / K)."
                     : ta()
                       ? "<b>Climb back up</b><br>to the MIXING BENCH in the LAB and build the weapon."
                       : "<b>The EXIT LAB door is sealed.</b><br>Explore to the LEFT at the bottom of the stairs."
-              : vt > 0 || (kt > 0 && !q)
+              : pourT > 0 || (erode > 0 && !exitOpen)
                 ? "<b>Pouring the solvent…</b>"
-                : q && p && !P
+                : exitOpen && hasGun && !bossOpen
                   ? "<b>Venom Blaster ready!</b><br>Go back down the stairs and blast the sealed door."
-                  : q && ta()
+                  : exitOpen && ta()
                     ? "<b>Build the weapon.</b><br>At the MIXING BENCH (LAB): canister on the mat, vials in, then handle and barrel."
-                    : q
+                    : exitOpen
                       ? "<b>THE FIRE EXIT IS OPEN!</b><br>Run to the right and get out of here."
-                      : 0 === z
+                      : 0 === stage
                         ? "<b>TRY TO GET OUT!</b><br>You can run, jump and punch." +
                           (ra ? "" : "<br>Arrows run · W jump · J punch · E use")
-                        : Y
+                        : hasPotion
                           ? "<b>Solvent ready!</b><br>Pour it on the barricade (POD ROOM)."
-                          : l.every((t) => J.has(t))
+                          : l.every((t) => got.has(t))
                             ? "<b>All found!</b><br>Craft at the MIXING BENCH (LAB)."
                             : "<b>Find items (" +
-                              l.filter((t) => J.has(t)).length +
+                              l.filter((t) => got.has(t)).length +
                               "/" +
                               l.length +
                               ")</b><br>Tap for where to look.";
   a.innerHTML = e;
 }
-function la() {
-  const a = X.length;
-  t("#gi").innerHTML = a
+function updateBag() {
+  const a = inv.length;
+  qs("#gi").innerHTML = a
     ? '<button class="bagb" id="bagB"><img src="' +
       s("bottle", "#e8e060") +
       '">BAG ' +
       a +
       "</button>"
     : "";
-  const e = t("#bagB");
+  const e = qs("#bagB");
   e &&
     (e.onclick = () => {
-      Pt || sa();
+      modal || sa();
     });
 }
 function sa() {
-  Pt = 1;
-  const a = t("#gk");
+  modal = 1;
+  const a = qs("#gk");
   ((a.innerHTML =
     '<div class="gcard"><h3>YOUR BAG</h3><p style="font-size:7px;color:#b8c8e8">Tap an item to read how it works.</p><div id="bagG">' +
-    X.map(
-      (t) =>
-        '<button class="bagi" data-id="' +
-        t +
-        '"><img src="' +
-        s(f[t].k, f[t].c) +
-        '"><span>' +
-        f[t].n +
-        "</span></button>",
-    ).join("") +
+    inv
+      .map(
+        (t) =>
+          '<button class="bagi" data-id="' +
+          t +
+          '"><img src="' +
+          s(items[t].k, items[t].c) +
+          '"><span>' +
+          items[t].n +
+          "</span></button>",
+      )
+      .join("") +
     '</div><div class="btns"><button class="gbtn" id="gkOk">CLOSE</button></div></div>'),
     (a.hidden = !1),
-    (t("#gkOk").onclick = () => {
-      ((a.hidden = !0), (Pt = 0));
+    (qs("#gkOk").onclick = () => {
+      ((a.hidden = !0), (modal = 0));
     }),
     a.querySelectorAll(".bagi").forEach(
       (a) =>
         (a.onclick = () =>
           (function (a) {
-            Pt = 1;
-            const e = f[a],
-              o = t("#gk");
+            modal = 1;
+            const e = items[a],
+              o = qs("#gk");
             ((o.innerHTML =
               '<div class="gcard"><h3>' +
               e.n +
@@ -276,17 +278,17 @@ function sa() {
               Kt(a) +
               '</div></div><div class="btns"><button class="gbtn" id="gkOk">OK</button></div></div>'),
               (o.hidden = !1),
-              (t("#gkOk").onclick = () => {
-                ((o.hidden = !0), (Pt = 0), sa());
+              (qs("#gkOk").onclick = () => {
+                ((o.hidden = !0), (modal = 0), sa());
               }));
           })(a.dataset.id)),
     ));
 }
 let ca = 0;
 function ia(a) {
-  Pt = 1;
-  const e = f[a],
-    o = t("#gk");
+  modal = 1;
+  const e = items[a],
+    o = qs("#gk");
   ((o.innerHTML =
     '<div class="gcard"><h3>GOT: ' +
     e.n +
@@ -298,7 +300,7 @@ function ia(a) {
     '</div></div><div class="btns"><button class="gbtn" id="gkOk" disabled>READ... 3</button></div></div>'),
     (o.hidden = !1));
   let r = Eo.nopop ? 0 : 3;
-  const n = t("#gkOk");
+  const n = qs("#gkOk");
   (clearInterval(ca),
     0 === r && ((n.disabled = !1), (n.textContent = "GOT IT")),
     (ca = setInterval(() => {
@@ -308,34 +310,34 @@ function ia(a) {
           : (clearInterval(ca), (n.disabled = !1), (n.textContent = "GOT IT")));
     }, 1e3)),
     (n.onclick = () => {
-      n.disabled || ((o.hidden = !0), (Pt = 0));
+      n.disabled || ((o.hidden = !0), (modal = 0));
     }));
 }
 function fa() {
-  Pt = 1;
-  const a = t("#gk");
+  modal = 1;
+  const a = qs("#gk");
   ((a.innerHTML =
     '<div class="gcard"><h3>GUIDE: how do we erode this?</h3><p>The exit is blocked by <b style="color:#6aff9a">vines</b> and <b style="color:#b8c8e8">metal plates</b>. Fists won’t cut it. But acid eats metal, and acid + salt wrecks plants. Find these tools and chemicals in the lab rooms, then craft an <b style="color:#ffe070">eroding solvent</b> at the mixing bench:</p>' +
     l
       .map(
         (t) =>
           '<div class="row"><img src="' +
-          s(f[t].k, f[t].c) +
+          s(items[t].k, items[t].c) +
           '"><div><b>' +
-          f[t].n +
+          items[t].n +
           "</b><i>📍 " +
-          f[t].where +
+          items[t].where +
           "</i><span>" +
-          f[t].why +
+          items[t].why +
           '</span><span style="color:#8fb8ff;margin-top:3px">' +
-          f[t].info +
+          items[t].info +
           "</span></div></div>",
       )
       .join("") +
     '<p class="warn">Not everything you find is useful (hint: some stuff cancels acid). There is no recipe card, so read the “why” on each item: the order and amounts matter. Game chemistry is simplified. Real acids need pros, gloves and ventilation. Don’t try this at home.</p><div class="btns"><button class="gbtn" id="gkOk">GOT IT</button></div></div>'),
     (a.hidden = !1),
-    (t("#gkOk").onclick = () => {
-      ((a.hidden = !0), (Pt = 0), (z = Math.max(z, 1)), (Tt = !0), na());
+    (qs("#gkOk").onclick = () => {
+      ((a.hidden = !0), (modal = 0), (stage = Math.max(stage, 1)), (Tt = !0), updateGuide());
     }));
 }
 let ha = null;

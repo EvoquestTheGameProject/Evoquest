@@ -1,7 +1,7 @@
-function Ut(t) {
+function backdrop(t) {
   return (
-    Wt[t] ||
-    (Wt[t] = (function (t) {
+    backdrops[t] ||
+    (backdrops[t] = (function (t) {
       if ("stair" === t)
         return (function () {
           const t = document.createElement("canvas");
@@ -10,8 +10,11 @@ function Ut(t) {
           for (let t = 0; t < 3; t++) {
             const e = document.createElement("canvas");
             ((e.width = 384), (e.height = 216));
-            const o = ft;
-            ((ft = e.getContext("2d")), Ht((a) => Ge(a, t)), (ft = o), a.drawImage(e, 0, 216 * t));
+            const o = ctx;
+            ((ctx = e.getContext("2d")),
+              Ht((a) => Ge(a, t)),
+              (ctx = o),
+              a.drawImage(e, 0, 216 * t));
           }
           return t;
         })();
@@ -124,12 +127,12 @@ function Ut(t) {
         const t = document.createElement("canvas");
         ((t.width = 384), (t.height = 216));
         const a = t.getContext("2d"),
-          e = ft;
+          e = ctx;
         return (
-          (ft = a),
+          (ctx = a),
           a.scale(2, 2),
           Mt("podO", () => Wa(1)),
-          (ft = e),
+          (ctx = e),
           ke(t, (t) => {
             const a = 150;
             t.rect(a + 10, 30, 234 - a - 20, 146, "#06402e", 0.26);
@@ -323,12 +326,12 @@ function Ut(t) {
         const t = document.createElement("canvas");
         ((t.width = 384), (t.height = 216));
         const a = t.getContext("2d"),
-          e = ft;
+          e = ctx;
         return (
-          (ft = a),
+          (ctx = a),
           a.scale(2, 2),
           Mt("labG", () => Ja()),
-          (ft = e),
+          (ctx = e),
           ke(t, (t) => {
             (t.rect(290, 112, 56, 74, "#0a0408"),
               xe(t, 292, 114, 52, 70, "#b8283a", "#f08a9a", "#4a0a16"),
@@ -851,8 +854,8 @@ const jt = (t, a, e) => {
     n = o(a);
   return "rgb(" + r.map((t, a) => Math.round(t + (n[a] - t) * e)).join(",") + ")";
 };
-function Jt(a, e) {
-  const o = t("#gt");
+function toast(a, e) {
+  const o = qs("#gt");
   if (!a) return (o.classList.remove("on"), void (xt = 0));
   ((o.innerHTML = a), o.classList.add("on"), (xt = e || 2600));
 }

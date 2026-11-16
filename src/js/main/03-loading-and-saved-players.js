@@ -9,31 +9,31 @@ for (let t = 0; t < 12; t++) w.append(document.createElement("i"));
 const S = w.children,
   C = performance.now();
 let R = 0;
-t("#fd");
-const P = t("#cr"),
-  I = t("#cl"),
-  O = t("#cb"),
-  L = t("#sp"),
-  H = t("#slots"),
-  N = t("#spBack");
-function D(t) {
+qs("#fd");
+const P = qs("#cr"),
+  I = qs("#cl"),
+  O = qs("#cb"),
+  L = qs("#sp"),
+  H = qs("#slots"),
+  N = qs("#spBack");
+function savePlayers(t) {
   try {
     localStorage.setItem("evoquest_players", JSON.stringify(t));
   } catch (t) {}
 }
-let G = (function () {
+let players = (function () {
   let t;
   try {
     t = JSON.parse(localStorage.getItem("evoquest_players") || "[]");
   } catch (a) {
     t = [];
   }
-  for (; t.length < 3;) t.push(null);
+  for (; t.length < 3; ) t.push(null);
   return t;
 })();
-function B() {
+function renderSlots() {
   ((H.innerHTML = ""),
-    G.slice(0, 3).forEach((t, a) => {
+    players.slice(0, 3).forEach((t, a) => {
       const e = document.createElement("div");
       var o;
       ((e.className = "slot"),
@@ -63,20 +63,20 @@ H.addEventListener("click", (a) => {
       }));
   } else if ("confirm" === r) {
     const t = (e.closest(".slot").querySelector("input").value || "").trim().slice(0, 14);
-    (t && ((G[o] = t), (X[o] = null), D(G), at(X)), B());
+    (t && ((players[o] = t), (looks[o] = null), savePlayers(players), at(looks)), renderSlots());
   } else
     "cancel" === r
-      ? B()
+      ? renderSlots()
       : "del" === r
-        ? ((G[o] = null), (X[o] = null), D(G), at(X), B())
+        ? ((players[o] = null), (looks[o] = null), savePlayers(players), at(looks), renderSlots())
         : "play" === r &&
           (function (a) {
             ((K = a),
-              (Q = tt(X[a])),
-              (t("#cname").textContent = G[a]),
+              (Q = tt(looks[a])),
+              (qs("#cname").textContent = players[a]),
               fe(),
               et(),
               (U.hidden = !1),
-              t("#ccGo").focus());
+              qs("#ccGo").focus());
           })(o);
 });

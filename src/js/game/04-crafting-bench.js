@@ -301,18 +301,18 @@ const Sa = (t) => ga.filter((a) => a === t).length,
   Ia = { handle: "sh", barrel: "sb", canister: "sc", fullcan: "sc" },
   Oa = { handle: "h", barrel: "b", canister: "c", fullcan: "c" },
   La = () =>
-    (!p && (Zt("canister") || Zt("fullcan") || Zt("barrel") || Zt("handle") || Pa.some(Zt))) ||
+    (!hasGun && (Zt("canister") || Zt("fullcan") || Zt("barrel") || Zt("handle") || Pa.some(Zt))) ||
     performance.now() - Ta < 4e3;
-function Ha() {
-  ((Pt = 2),
+function openBench() {
+  ((modal = 2),
     (ga = []),
     (pa = null),
     (Ea = 0),
     (wa = null),
     (b = g = !1),
-    (t("#gx").hidden = !1),
-    (t("#cinv").hidden = !0),
-    (t("#cdone").textContent = "CLOSE"),
+    (qs("#gx").hidden = !1),
+    (qs("#cinv").hidden = !0),
+    (qs("#cdone").textContent = "CLOSE"),
     Ya(
       "<b>Workbench.</b> Open your <b>BAG</b> and drag things onto the table. Liquids must be measured in the <b>small beaker</b> first, then poured into the big one. Safety gear first: tap your goggles and gloves." +
         (La() ? " Weapon parts go on the <b>assembly mat</b>." : ""),
@@ -322,68 +322,68 @@ function Ha() {
     (xa = requestAnimationFrame(Za)));
 }
 function Na() {
-  ((t("#gx").hidden = !0),
-    (Pt = 0),
+  ((qs("#gx").hidden = !0),
+    (modal = 0),
     (ga = []),
     (pa = null),
     (b = g = !1),
     cancelAnimationFrame(xa),
     (ka = null),
-    (t("#fpGhost").hidden = !0),
-    la(),
-    na(),
-    Be());
+    (qs("#fpGhost").hidden = !0),
+    updateBag(),
+    updateGuide(),
+    updateHud());
 }
 function Ya(a, e) {
   ((ma = a), (ya = e || ""));
-  const o = X.filter((t) => "potion" !== t && "blaster" !== t);
-  t("#cinv").innerHTML =
+  const o = inv.filter((t) => "potion" !== t && "blaster" !== t);
+  qs("#cinv").innerHTML =
     o
       .map(
         (t) =>
           '<button data-id="' +
           t +
           '" class="' +
-          (("goggles" === t && V) || ("gloves" === t && d) ? "worn" : "") +
+          (("goggles" === t && worn) || ("gloves" === t && gloved) ? "worn" : "") +
           '"><img draggable="false" src="' +
-          s(f[t].k, f[t].c) +
+          s(items[t].k, items[t].c) +
           '"><span>' +
           ((t) =>
             "goggles" === t
-              ? V
+              ? worn
                 ? "GOGGLES ✔"
                 : "GOGGLES (tap)"
               : "gloves" === t
-                ? d
+                ? gloved
                   ? "GLOVES ✔"
                   : "GLOVES (tap)"
-                : f[t].n.split(" (")[0])(t) +
+                : items[t].n.split(" (")[0])(t) +
           "</span></button>",
       )
       .join("") || "<p>Your bag is empty.</p>";
   const r = (t, a) =>
     '<span class="chip' + (a ? " on" : "") + '">' + (a ? "✔ " : "") + t + "</span>";
-  t("#cst").innerHTML =
-    r("Goggles", V) +
-    r("Gloves", d) +
+  qs("#cst").innerHTML =
+    r("Goggles", worn) +
+    r("Gloves", gloved) +
     '<span class="chip">Beaker ' +
     ga.length +
     "/6</span>" +
     r("Stirred", b) +
     r("Tested", g) +
-    (La() && !p
+    (La() && !hasGun
       ? '<br><span class="chip' +
-        (I >= 3 ? " on" : "") +
+        (canFill >= 3 ? " on" : "") +
         '">Venom ' +
-        I +
+        canFill +
         "/3</span>" +
         r("Handle", ua.h) +
         r("Barrel", ua.b)
       : "");
-  const n = t("#cmsg");
+  const n = qs("#cmsg");
   ((n.className = e || ""),
     (n.innerHTML = Qt(a)),
-    (t("#cmix").disabled = !(
+    (qs("#cmix").disabled = !(
       3 === Sa("water") &&
       1 === Sa("hcl") &&
       1 === Sa("h2o2") &&
@@ -392,8 +392,8 @@ function Ya(a, e) {
       g
     )));
   const l = La();
-  (["zTray", "zH", "zC", "zB"].forEach((a) => (t("#" + a).style.display = l ? "" : "none")),
-    (t("#fpBag").innerHTML =
+  (["zTray", "zH", "zC", "zB"].forEach((a) => (qs("#" + a).style.display = l ? "" : "none")),
+    (qs("#fpBag").innerHTML =
       '<img draggable="false" src="' + s("bottle", "#e8e060") + '">BAG ' + o.length));
 }
 function Va(t, a) {
@@ -404,20 +404,21 @@ function ja(t) {
     e = (t) => Ya(t, "good");
   if ("goggles" === t)
     return (
-      (V = !V),
+      (worn = !worn),
       e(
-        V
+        worn
           ? "Goggles on. Eyes protected."
           : "Goggles off. Put them back on before touching anything.",
       )
     );
-  if ("gloves" === t) return ((d = !d), e(d ? "Gloves on. Skin protected." : "Gloves off."));
-  if (!V || !d)
+  if ("gloves" === t)
+    return ((gloved = !gloved), e(gloved ? "Gloves on. Skin protected." : "Gloves off."));
+  if (!worn || !gloved)
     return a(
       "STOP! " +
-        (V ? "" : "<b>Goggles</b> ") +
-        (V || d ? "" : "and ") +
-        (d ? "" : "<b>gloves</b> ") +
+        (worn ? "" : "<b>Goggles</b> ") +
+        (worn || gloved ? "" : "and ") +
+        (gloved ? "" : "<b>gloves</b> ") +
         "first. Acid and peroxide can burn skin and blind you.",
     );
   if ("soda" === t)
@@ -515,12 +516,12 @@ function ja(t) {
 }
 function Xa() {
   return (
-    !(!V || !d) ||
+    !(!worn || !gloved) ||
     (Ya(
       "STOP! " +
-        (V ? "" : "<b>Goggles</b> ") +
-        (V || d ? "" : "and ") +
-        (d ? "" : "<b>gloves</b> ") +
+        (worn ? "" : "<b>Goggles</b> ") +
+        (worn || gloved ? "" : "and ") +
+        (gloved ? "" : "<b>gloves</b> ") +
         "first. Tap them in your BAG to put them on.",
       "bad",
     ),
@@ -532,25 +533,25 @@ function Qa() {
     !!(ua.h && ua.b && ua.c) &&
     (Zt("fullcan")
       ? (["fullcan", "barrel", "handle"].forEach((t) => {
-          const a = X.indexOf(t);
-          a >= 0 && X.splice(a, 1);
+          const a = inv.indexOf(t);
+          a >= 0 && inv.splice(a, 1);
         }),
-        X.push("blaster"),
-        J.add("blaster"),
-        (p = !0),
-        (u = 4),
+        inv.push("blaster"),
+        got.add("blaster"),
+        (hasGun = !0),
+        (ammo = 4),
         (ua = { h: 0, b: 0, c: 0 }),
         (Ta = performance.now()),
         Ya(
           "<b>VENOM BLASTER ASSEMBLED!</b> The canister locks onto the barrel and the handle clicks in. It only holds <b>4 shots</b>. SHOOT with F / K or the shoot button. Take it down to the sealed door.",
           "good",
         ),
-        Be(),
-        na(),
+        updateHud(),
+        updateGuide(),
         !0)
       : (Ya(
           "Handle and barrel are in place, but the canister is not full. Drop the <b>3 venom vials</b> into it (" +
-            I +
+            canFill +
             "/3).",
           "",
         ),
@@ -649,9 +650,9 @@ function Ka(t, a, e, o, n, l, s) {
   }
 }
 function Za() {
-  t("#gx").hidden ||
+  qs("#gx").hidden ||
     ((function (a) {
-      const e = t("#fpc").getContext("2d");
+      const e = qs("#fpc").getContext("2d");
       e.imageSmoothingEnabled = !1;
       const o = (t, a, o, r, n) => {
           ((e.fillStyle = t),
@@ -1174,14 +1175,14 @@ function Za() {
           e.beginPath(),
           e.ellipse(226, 189, 14, 4, 0, 0, 7),
           e.fill());
-        const t = ft;
-        ((ft = e),
+        const t = ctx;
+        ((ctx = e),
           e.save(),
           e.translate(224, 180),
           e.rotate(0.35),
           mo(24, 26, 0, 9, 0),
           e.restore(),
-          (ft = t));
+          (ctx = t));
       }
       {
         const t = a % 6100 < 70 && ((a / 35) | 0) % 2 ? 0.45 : 1;
@@ -1371,17 +1372,19 @@ function Za() {
           ua.c)
         ) {
           if (
-            (l("canister", I >= 3 ? "#b06aff" : "#3a4258", 68, 121, 28),
-            I > 0 && I < 3 && o("#b06aff", 79.7, 142 - 3.5 * I, 4.6, 3.5 * I),
-            I > 0)
+            (l("canister", canFill >= 3 ? "#b06aff" : "#3a4258", 68, 121, 28),
+            canFill > 0 &&
+              canFill < 3 &&
+              o("#b06aff", 79.7, 142 - 3.5 * canFill, 4.6, 3.5 * canFill),
+            canFill > 0)
           ) {
             const t = e.createRadialGradient(82, 136, 1, 82, 136, 16);
-            (t.addColorStop(0, "rgba(176,106,255," + 0.12 * I + ")"),
+            (t.addColorStop(0, "rgba(176,106,255," + 0.12 * canFill + ")"),
               t.addColorStop(1, "rgba(176,106,255,0)"),
               (e.fillStyle = t),
               e.fillRect(60, 114, 44, 44));
           }
-          for (let t = 0; t < 3; t++) o(t < I ? "#b06aff" : "#2a3440", 72 + 7 * t, 156, 5, 2);
+          for (let t = 0; t < 3; t++) o(t < canFill ? "#b06aff" : "#2a3440", 72 + 7 * t, 156, 5, 2);
         }
         const f = a - Ta;
         if (f < 4e3) {
@@ -1569,7 +1572,7 @@ function Za() {
         for (let t = 1; t <= 2; t++) o("#cfe8ff", 282, 158 - 11 * t, 6, 1);
       }
       (c(
-        pa ? "MEASURE: " + f[pa].n.split(" (")[0].split(" ")[0].toUpperCase() : "MEASURE",
+        pa ? "MEASURE: " + items[pa].n.split(" (")[0].split(" ")[0].toUpperCase() : "MEASURE",
         276,
         165,
         pa ? "#ffe070" : "#8fd8ff",
@@ -1691,7 +1694,7 @@ function Za() {
                 : "goggles" !== t && "gloves" !== t && e.strokeRect(160.5, 60.5, 63, 94),
           e.setLineDash([]));
       }
-      if (V) {
+      if (worn) {
         o("rgba(120,230,255,.04)", 0, 0, 384, 216);
         const t = e.createRadialGradient(192, 108, 150, 192, 108, 240);
         (t.addColorStop(0, "rgba(10,20,24,0)"),
@@ -1700,7 +1703,7 @@ function Za() {
           e.fillRect(0, 0, 384, 216),
           o("rgba(160,240,255,.18)", 60, 2, 264, 1));
       }
-      d && (o("rgba(74,154,255,.9)", 4, 4, 6, 6), o("#9ad0ff", 4, 4, 6, 1));
+      gloved && (o("rgba(74,154,255,.9)", 4, 4, 6, 6), o("#9ad0ff", 4, 4, 6, 1));
     })(performance.now()),
     (xa = requestAnimationFrame(Za)));
 }

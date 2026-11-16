@@ -1,30 +1,30 @@
-const _t = async (t) => {
-    if ((await new Promise((a) => setTimeout(a, t)), Xt)) throw 0;
+const sleep = async (t) => {
+    if ((await new Promise((a) => setTimeout(a, t)), cutAbort)) throw 0;
   },
-  ta = async (t) => {
-    if (Xt) throw 0;
+  wait = async (t) => {
+    if (cutAbort) throw 0;
     if (
       (await new Promise((a) => {
         const e = setTimeout(a, t);
-        Kt = () => {
+        skipWait = () => {
           (clearTimeout(e), a());
         };
       }),
-      Xt)
+      cutAbort)
     )
       throw 0;
   },
-  aa = (t) => {
-    ((Yt = t), (Vt = performance.now()), $sx("scene", t));
+  setScene = (t) => {
+    ((scene = t), (Vt = performance.now()), $sx("scene", t));
   },
-  ea = async (t) => {
-    ((jt = t), $sx(t ? "fadeout" : "fadein"), await _t(520));
+  fade = async (t) => {
+    ((jt = t), $sx(t ? "fadeout" : "fadein"), await sleep(520));
   },
-  oa = () => {
+  hideDialog = () => {
     nt.hidden = !0;
   };
-async function ra(t, a) {
-  if (Xt) throw 0;
+async function say(t, a) {
+  if (cutAbort) throw 0;
   ((lt.textContent = t || "NARRATION"),
     (lt.hidden = !1),
     (nt.hidden = !1),
@@ -32,19 +32,19 @@ async function ra(t, a) {
     nt.classList.add("speaker-in"),
     (st.textContent = ""));
   let e = 0;
-  for (Qt = 1; e < a.length && Qt; )
+  for (typing = 1; e < a.length && typing; )
     ((st.textContent = a.slice(0, ++e)),
-      e % 3 || !/[a-z0-9]/i.test(a[e - 1]) || $sx("blip", Zt, a[e - 1]),
-      await _t(22));
-  ((st.textContent = a), (Qt = 0), await ta(1350 + Math.min(2600, 34 * a.length)));
+      e % 3 || !/[a-z0-9]/i.test(a[e - 1]) || $sx("blip", speaker, a[e - 1]),
+      await sleep(22));
+  ((st.textContent = a), (typing = 0), await wait(1350 + Math.min(2600, 34 * a.length)));
 }
-async function na(t, a = 2300) {
+async function titleCard(t, a = 2300) {
   ((ct.textContent = t),
     ct.classList.add("on"),
     $sx("card"),
-    await ta(a),
+    await wait(a),
     ct.classList.remove("on"),
-    await _t(450));
+    await sleep(450));
 }
 const la = {};
 let sa = 0;
@@ -249,4 +249,4 @@ function ya(t, a, e, o, r, n, l) {
     s
   );
 }
-window.__evoGender = () => (qt && qt.gd ? 1 : 0);
+window.__evoGender = () => (playerLook && playerLook.gd ? 1 : 0);

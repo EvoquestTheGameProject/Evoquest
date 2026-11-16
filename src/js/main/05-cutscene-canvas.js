@@ -1,31 +1,31 @@
-const ot = t("#cut"),
-  rt = t("#cs"),
-  nt = t("#dlg"),
-  lt = t("#who"),
-  st = t("#say"),
-  ct = t("#card"),
-  it = t("#fin");
-let ft = rt.getContext("2d");
-const ht = ft,
+const ot = qs("#cut"),
+  rt = qs("#cs"),
+  nt = qs("#dlg"),
+  lt = qs("#who"),
+  st = qs("#say"),
+  ct = qs("#card"),
+  it = qs("#fin");
+let ctx = rt.getContext("2d");
+const ht = ctx,
   dt = 192,
   bt = 108,
   gt = (t) => Math.round(2 * t) / 2,
-  pt = (t, a, e, o, r) => {
+  rect = (t, a, e, o, r) => {
     o <= 0 ||
       r <= 0 ||
-      ((ft.fillStyle = t), ft.fillRect(gt(a), gt(e), Math.max(0.5, gt(o)), Math.max(0.5, gt(r))));
+      ((ctx.fillStyle = t), ctx.fillRect(gt(a), gt(e), Math.max(0.5, gt(o)), Math.max(0.5, gt(r))));
   },
   ut = (t, a, e, o) => {
     for (let r = -e; r <= e; r++) {
       const n = 0 | Math.sqrt(e * e - r * r + 0.6 * e);
-      pt(o, t - n, a + r, 2 * n + 1, 1);
+      rect(o, t - n, a + r, 2 * n + 1, 1);
     }
   },
-  mt = (t, a, e, o, r) => {
-    ((ft.font = r || '8px "Press Start 2P"'),
-      (ft.textBaseline = "top"),
-      (ft.fillStyle = o),
-      ft.fillText(t, 0 | a, 0 | e));
+  text = (t, a, e, o, r) => {
+    ((ctx.font = r || '8px "Press Start 2P"'),
+      (ctx.textBaseline = "top"),
+      (ctx.fillStyle = o),
+      ctx.fillText(t, 0 | a, 0 | e));
   },
   yt = (t, a, e, o, r) =>
     Object.assign(
@@ -37,13 +37,13 @@ function Mt(t, a) {
   let e = xt[t];
   if (!e) {
     ((e = document.createElement("canvas")), (e.width = 384), (e.height = 216));
-    const o = ft;
-    ((ft = e.getContext("2d")), ft.scale(2, 2), a(), (ft = o), (xt[t] = e));
+    const o = ctx;
+    ((ctx = e.getContext("2d")), ctx.scale(2, 2), a(), (ctx = o), (xt[t] = e));
   }
-  ft.drawImage(e, 0, 0, dt, bt);
+  ctx.drawImage(e, 0, 0, dt, bt);
 }
 const wt = (t, a, e) => {
-    (ft.translate(96, 54), ft.scale(t, t), ft.translate(-a, -e));
+    (ctx.translate(96, 54), ctx.scale(t, t), ctx.translate(-a, -e));
   },
   vt = 384,
   kt = 216,
@@ -288,7 +288,7 @@ function Lt() {
         R = [];
       let P = s,
         I = 0;
-      for (; P < c;) {
+      for (; P < c; ) {
         const t = (t) => r(7.7 * e + 3.13 * I, t + 1.7 * I),
           a = (i + t(1) * (f - i)) | 0,
           s = (h + Math.pow(t(2), 1.25) * (d - h)) | 0,
@@ -394,14 +394,14 @@ function Lt() {
   );
 }
 function Ht(t) {
-  const a = ft;
+  const a = ctx;
   (a.save(), a.setTransform(1, 0, 0, 1, 0, 0));
   const e = Lt();
   (t(e), a.putImageData(new ImageData(e.d, vt, kt), 0, 0), a.restore());
 }
 const Nt = [3, 4, 6, 8, 11, 15, 20, 27, 36, 48, 64, 90, 128],
   Dt = {},
-  Gt = (t, a, e, o, r) => {
+  glow = (t, a, e, o, r) => {
     if (r <= 0) return;
     let n = Nt[0];
     for (const t of Nt) Math.abs(t - e) < Math.abs(n - e) && (n = t);
@@ -427,11 +427,11 @@ const Nt = [3, 4, 6, 8, 11, 15, 20, 27, 36, 48, 64, 90, 128],
         }
       (e.putImageData(r, 0, 0), (s = Dt[l] = a));
     }
-    (ft.save(),
-      (ft.globalAlpha = Math.max(0, Math.min(1, r))),
-      (ft.globalCompositeOperation = "lighter"),
-      ft.drawImage(s, Math.round(2 * (t - e)) / 2, Math.round(2 * (a - e)) / 2, 2 * e, 2 * e),
-      ft.restore());
+    (ctx.save(),
+      (ctx.globalAlpha = Math.max(0, Math.min(1, r))),
+      (ctx.globalCompositeOperation = "lighter"),
+      ctx.drawImage(s, Math.round(2 * (t - e)) / 2, Math.round(2 * (a - e)) / 2, 2 * e, 2 * e),
+      ctx.restore());
   },
   Bt = {},
   Ft = (t, a, e, o = 0.4) => {
@@ -453,10 +453,10 @@ const Nt = [3, 4, 6, 8, 11, 15, 20, 27, 36, 48, 64, 90, 128],
         }
       (t.putImageData(a, 0, 0), (Bt[r] = l));
     }
-    (ft.save(),
-      (ft.globalAlpha = Math.min(1, 1.7 * o)),
-      ft.drawImage(l, t - r / 2, a - n / 4, r, n / 2),
-      ft.restore());
+    (ctx.save(),
+      (ctx.globalAlpha = Math.min(1, 1.7 * o)),
+      ctx.drawImage(l, t - r / 2, a - n / 4, r, n / 2),
+      ctx.restore());
   };
 let Wt = null;
 function zt() {
@@ -476,14 +476,14 @@ function zt() {
   }
   return Wt;
 }
-let qt,
-  Yt = "",
+let playerLook,
+  scene = "",
   Ut = 0,
   Vt = 0,
   jt = 1,
   Jt = 1,
-  Xt = 0,
-  Qt = 0,
-  Kt = null,
-  Zt = "",
-  $t = "You";
+  cutAbort = 0,
+  typing = 0,
+  skipWait = null,
+  speaker = "",
+  playerName = "You";

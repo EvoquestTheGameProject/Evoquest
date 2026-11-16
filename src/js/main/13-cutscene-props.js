@@ -71,35 +71,36 @@ function lo() {
   return (no = { s: e, f: s(31, "#ece2c4"), b: s(47, "#e4d8b8") });
 }
 const so = (t) => {
-  (ft.beginPath(),
-    t.forEach((t, a) => (a ? ft.lineTo(t[0], t[1]) : ft.moveTo(t[0], t[1]))),
-    ft.closePath());
+  (ctx.beginPath(),
+    t.forEach((t, a) => (a ? ctx.lineTo(t[0], t[1]) : ctx.moveTo(t[0], t[1]))),
+    ctx.closePath());
 };
 let co = 0;
 const io = (t, a, e, o, r, n) => {
-  ((ft.font = o + 'px "Press Start 2P"'), (ft.textBaseline = "top"));
-  const l = void 0 === r ? -ft.measureText(t).width / 2 : r;
-  (n && ((ft.fillStyle = n), ft.fillText(t, l + 0.35, a + 0.45), ft.fillText(t, l - 0.2, a + 0.2)),
-    (ft.fillStyle = e),
-    ft.fillText(t, l, a));
+  ((ctx.font = o + 'px "Press Start 2P"'), (ctx.textBaseline = "top"));
+  const l = void 0 === r ? -ctx.measureText(t).width / 2 : r;
+  (n &&
+    ((ctx.fillStyle = n), ctx.fillText(t, l + 0.35, a + 0.45), ctx.fillText(t, l - 0.2, a + 0.2)),
+    (ctx.fillStyle = e),
+    ctx.fillText(t, l, a));
 };
 function fo(t, a, e, o, r, n) {
-  (ft.save(),
-    ft.translate(t + 18, a + 14),
-    ft.rotate(e),
-    pt("rgba(40,30,20,.35)", -17, -12, 36, 30),
-    pt("#f4efe2", -18, -13, 36, 30),
-    pt("#d8d0bc", -18, 16, 36, 1),
+  (ctx.save(),
+    ctx.translate(t + 18, a + 14),
+    ctx.rotate(e),
+    rect("rgba(40,30,20,.35)", -17, -12, 36, 30),
+    rect("#f4efe2", -18, -13, 36, 30),
+    rect("#d8d0bc", -18, 16, 36, 1),
     o(-16, -11, n),
     io(r, 12.2, "#3a2e22", 2.1, -16),
-    pt("rgba(240,220,140,.55)", -6, -15, 12, 4),
-    pt("rgba(255,255,255,.25)", -6, -15, 12, 1),
-    ft.restore());
+    rect("rgba(240,220,140,.55)", -6, -15, 12, 4),
+    rect("rgba(255,255,255,.25)", -6, -15, 12, 1),
+    ctx.restore());
 }
 function ho(t, a, e) {
-  (pt("#1a221c", t, a, 32, 22),
-    pt("#2e3a2c", t, a + 15, 32, 7),
-    pt("rgba(150,190,170,.18)", t, a, 32, 8),
+  (rect("#1a221c", t, a, 32, 22),
+    rect("#2e3a2c", t, a + 15, 32, 7),
+    rect("rgba(150,190,170,.18)", t, a, 32, 8),
     [
       [4, 12, 16, 6],
       [18, 9, 7, 6],
@@ -109,22 +110,22 @@ function ho(t, a, e) {
       [9, 18, 2, 4],
       [15, 18, 2, 4],
       [19, 17, 2, 5],
-    ].forEach((e) => pt("#080a08", t + e[0], a + e[1], e[2], e[3])),
-    pt("#080a08", t + 23, a + 5, 1.5, 2),
-    pt("#080a08", t + 25, a + 11, 4, 2),
-    pt("#ff3a2a", t + 24, a + 9, 1, 1),
-    co || Gt(t + 24.5, a + 9.5, 4, "255,60,40", 0.5 + 0.3 * Math.sin(e / 200)),
+    ].forEach((e) => rect("#080a08", t + e[0], a + e[1], e[2], e[3])),
+    rect("#080a08", t + 23, a + 5, 1.5, 2),
+    rect("#080a08", t + 25, a + 11, 4, 2),
+    rect("#ff3a2a", t + 24, a + 9, 1, 1),
+    co || glow(t + 24.5, a + 9.5, 4, "255,60,40", 0.5 + 0.3 * Math.sin(e / 200)),
     [
       [30, 13],
       [29, 15],
-    ].forEach(([e, o]) => pt("#080a08", t + e - 2, a + o, 3, 1)));
-  for (let e = 0; e < 3; e++) pt("#080a08", t + 2 + 4 * e, a + 14 - e, 3, 3);
-  pt("rgba(255,255,255,.07)", t, a, 32, 22);
+    ].forEach(([e, o]) => rect("#080a08", t + e - 2, a + o, 3, 1)));
+  for (let e = 0; e < 3; e++) rect("#080a08", t + 2 + 4 * e, a + 14 - e, 3, 3);
+  rect("rgba(255,255,255,.07)", t, a, 32, 22);
 }
 function bo(t, a, e) {
-  (pt("#262e38", t, a, 32, 22),
-    pt("rgba(170,190,210,.18)", t, a, 32, 8),
-    pt("#d8d0b0", t + 25, a + 3, 5, 5));
+  (rect("#262e38", t, a, 32, 22),
+    rect("rgba(170,190,210,.18)", t, a, 32, 8),
+    rect("#d8d0b0", t + 25, a + 3, 5, 5));
   const o = co ? 0 : 2 * Math.sin(e / 160);
   ([
     [10, 10, 12, 4],
@@ -132,26 +133,26 @@ function bo(t, a, e) {
     [2, 3 - o, 6, 3],
     [20, 6 - o, 6, 4],
     [26, 3 - o, 5, 3],
-  ].forEach((e) => pt("#0a0c10", t + e[0], a + e[1], e[2], e[3])),
-    pt("#0a0c10", t + 20, a + 9, 4, 3),
-    pt("#e8b020", t + 23.5, a + 10, 2, 1),
-    pt("#ff3a2a", t + 21.5, a + 9.5, 1, 1),
-    pt("#0a0c10", t + 12, a + 14, 1, 4),
-    pt("#0a0c10", t + 16, a + 14, 1, 4),
-    pt("rgba(255,255,255,.07)", t, a, 32, 22));
+  ].forEach((e) => rect("#0a0c10", t + e[0], a + e[1], e[2], e[3])),
+    rect("#0a0c10", t + 20, a + 9, 4, 3),
+    rect("#e8b020", t + 23.5, a + 10, 2, 1),
+    rect("#ff3a2a", t + 21.5, a + 9.5, 1, 1),
+    rect("#0a0c10", t + 12, a + 14, 1, 4),
+    rect("#0a0c10", t + 16, a + 14, 1, 4),
+    rect("rgba(255,255,255,.07)", t, a, 32, 22));
 }
 function go(t, a) {
   t.forEach((t, e) => {
     const o = 6 + 14 * r(e, t);
-    (pt("rgba(255,250,232,.22)", t, a, 1.3, o),
-      pt("rgba(90,60,30,.14)", t - 0.4, a + 1, 0.4, o - 1),
-      pt("rgba(90,60,30,.14)", t + 1.3, a + 1, 0.4, o - 2));
+    (rect("rgba(255,250,232,.22)", t, a, 1.3, o),
+      rect("rgba(90,60,30,.14)", t - 0.4, a + 1, 0.4, o - 1),
+      rect("rgba(90,60,30,.14)", t + 1.3, a + 1, 0.4, o - 2));
   });
 }
 function po(t) {
   (io("EMERGENCY BULLETIN", -45, "#3e3024", 4, void 0, "rgba(62,48,36,.25)"),
-    pt("#4a3a2a", -53, -39.5, 106, 0.6),
-    pt("#4a3a2a", -53, -38.4, 106, 0.3),
+    rect("#4a3a2a", -53, -39.5, 106, 0.6),
+    rect("#4a3a2a", -53, -38.4, 106, 0.3),
     io("ISSUE 211 . CITY RELIEF NETWORK", -37.3, "#5a4a3a", 1.9),
     ["ANIMALS AND", "WILDLIFE TURNED", "ON US"].forEach((t, a) =>
       io(t, 7.2 * a - 33.5, "#8e1410", 6, void 0, "rgba(150,30,20,.3)"),
@@ -160,7 +161,8 @@ function po(t) {
   for (let t = 0; t < 8; t++) {
     const a = 9.4 * t - 35 + 3 * r(t, 3),
       e = 2 + 6 * r(t, 4);
-    (pt("rgba(160,20,14,.85)", a, -3, 1, e), pt("rgba(160,20,14,.85)", a - 0.25, -3 + e, 1.5, 1));
+    (rect("rgba(160,20,14,.85)", a, -3, 1, e),
+      rect("rgba(160,20,14,.85)", a - 0.25, -3 + e, 1.5, 1));
   }
   (fo(-54, 2, -0.06, ho, "FIG.1 WOLF PACK", t),
     fo(-16, 3, 0.05, bo, "FIG.2 RAPTOR", t),
@@ -172,46 +174,46 @@ function po(t) {
       "DAY 12 ALL",
       "OF THEM.",
     ].forEach((t, a) => io(t, 2 + 4 * a, a ? "#3a2e22" : "#7a1a12", 2.4, 23)),
-    pt("rgba(120,20,14,.7)", 22, 24.5, 30, 0.5));
-  for (let t = 0; t < 4; t++) pt("rgba(60,46,34,.5)", -53, 35 + 3.3 * t, 40 + 58 * r(t, 9), 1.1);
+    rect("rgba(120,20,14,.7)", 22, 24.5, 30, 0.5));
+  for (let t = 0; t < 4; t++) rect("rgba(60,46,34,.5)", -53, 35 + 3.3 * t, 40 + 58 * r(t, 9), 1.1);
   (go([-40, -6, 30], -36),
-    ft.save(),
-    ft.translate(36, 40),
-    ft.rotate(-0.2),
-    (ft.strokeStyle = "rgba(180,30,20,.7)"),
-    (ft.lineWidth = 0.8),
-    ft.strokeRect(-17, -5, 34, 9),
-    ft.strokeRect(-16, -4, 32, 7),
+    ctx.save(),
+    ctx.translate(36, 40),
+    ctx.rotate(-0.2),
+    (ctx.strokeStyle = "rgba(180,30,20,.7)"),
+    (ctx.lineWidth = 0.8),
+    ctx.strokeRect(-17, -5, 34, 9),
+    ctx.strokeRect(-16, -4, 32, 7),
     io("DOCUMENTED", -2.8, "rgba(180,30,20,.75)", 3.2),
-    ft.restore());
+    ctx.restore());
 }
 function uo(t) {
   (io("FINAL NOTICE", -44, "#2a2018", 6, void 0, "rgba(42,32,24,.3)"),
-    pt("#2a2018", -53, -36, 106, 0.6),
+    rect("#2a2018", -53, -36, 106, 0.6),
     ut(-40, -22, 6, "#3a7ab8"),
-    pt("#4aa850", -43, -25, 4, 3),
-    pt("#4aa850", -38, -20, 3, 2),
-    (ft.strokeStyle = "rgba(60,40,30,.7)"),
-    ft.setLineDash([1.5, 1.5]),
-    (ft.lineWidth = 0.5),
-    ft.beginPath(),
-    ft.moveTo(-33, -24),
-    ft.quadraticCurveTo(0, -38, 28, -24),
-    ft.stroke(),
-    ft.setLineDash([]),
+    rect("#4aa850", -43, -25, 4, 3),
+    rect("#4aa850", -38, -20, 3, 2),
+    (ctx.strokeStyle = "rgba(60,40,30,.7)"),
+    ctx.setLineDash([1.5, 1.5]),
+    (ctx.lineWidth = 0.5),
+    ctx.beginPath(),
+    ctx.moveTo(-33, -24),
+    ctx.quadraticCurveTo(0, -38, 28, -24),
+    ctx.stroke(),
+    ctx.setLineDash([]),
     (function () {
       for (let t = -9; t <= 9; t++) {
         const a = Math.sqrt(81 - t * t);
-        (pt("#a8401e", 38 - a, -22 + t, 2 * a, 1),
-          pt("#d8642c", 38 - a, -22 + t, 1.1 * a, 1),
-          pt("#f09048", 38 - 0.8 * a, -22 + t, 0.45 * a, 1));
+        (rect("#a8401e", 38 - a, -22 + t, 2 * a, 1),
+          rect("#d8642c", 38 - a, -22 + t, 1.1 * a, 1),
+          rect("#f09048", 38 - 0.8 * a, -22 + t, 0.45 * a, 1));
       }
-      (pt("#7a2a14", 35.3, -23.8, 4.5, 2.25),
-        pt("#7a2a14", 38.9, -18.85, 3.6, 1.8),
-        pt("#fff0e0", 36.2, -30.5, 3.6, 1));
+      (rect("#7a2a14", 35.3, -23.8, 4.5, 2.25),
+        rect("#7a2a14", 38.9, -18.85, 3.6, 1.8),
+        rect("#fff0e0", 36.2, -30.5, 3.6, 1));
     })());
   const a = co ? 30 : (t / 30) % 60;
-  (pt("#e8e0d0", -30 + a, -29 - 8 * Math.sin((a / 60) * Math.PI), 3, 1.5),
+  (rect("#e8e0d0", -30 + a, -29 - 8 * Math.sin((a / 60) * Math.PI), 3, 1.5),
     ["THE PEOPLE HAVE", "LEFT EARTH."].forEach((t, a) =>
       io(t, 7 * a - 8, "#2a2018", 5, void 0, "rgba(42,32,24,.25)"),
     ),
@@ -220,15 +222,15 @@ function uo(t) {
     ),
     io("DO NOT WAIT FOR RESCUE. NO MORE SHIPS.", 28, "#3a2e22", 2.2),
     go([-20, 14, 40], -6),
-    ft.save(),
-    ft.translate(28, 40),
-    ft.rotate(0.18),
-    (ft.strokeStyle = "rgba(180,30,20,.7)"),
-    (ft.lineWidth = 0.8),
-    ft.strokeRect(-18, -5, 36, 9),
-    ft.strokeRect(-17, -4, 34, 7),
+    ctx.save(),
+    ctx.translate(28, 40),
+    ctx.rotate(0.18),
+    (ctx.strokeStyle = "rgba(180,30,20,.7)"),
+    (ctx.lineWidth = 0.8),
+    ctx.strokeRect(-18, -5, 36, 9),
+    ctx.strokeRect(-17, -4, 34, 7),
     io("EVACUATED", -2.8, "rgba(180,30,20,.75)", 3.4),
-    ft.restore());
+    ctx.restore());
 }
 function mo(t, a, e, o, n) {
   const l = lo(),
@@ -247,47 +249,47 @@ function mo(t, a, e, o, n) {
   (n &&
     ((s[11] = [s[11][0] + 1.5 * c, s[11][1] - 1.5 - 2 * c]),
     (s[0] = [s[0][0] + 1 + c, s[0][1] - c])),
-    ft.save(),
-    ft.translate(1, 1.5),
+    ctx.save(),
+    ctx.translate(1, 1.5),
     so(s),
-    (ft.fillStyle = "rgba(0,0,0,.4)"),
-    ft.fill(),
-    ft.restore(),
-    ft.save(),
+    (ctx.fillStyle = "rgba(0,0,0,.4)"),
+    ctx.fill(),
+    ctx.restore(),
+    ctx.save(),
     so(s),
-    ft.clip(),
-    (ft.imageSmoothingEnabled = !1),
-    ft.drawImage(l.f, 0, 0, oo, 117.6, -t / 2, -a / 2, t, a),
-    pt("rgba(142,20,16,.8)", 0.36 * -t, 0.36 * -a, 0.72 * t, 1.3),
-    pt("rgba(142,20,16,.8)", 0.28 * -t, 0.36 * -a + 2.2, 0.56 * t, 1),
-    pt("rgba(184,24,16,.85)", 0.3 * -t, 0.1 * -a, 0.6 * t, 1.6));
+    ctx.clip(),
+    (ctx.imageSmoothingEnabled = !1),
+    ctx.drawImage(l.f, 0, 0, oo, 117.6, -t / 2, -a / 2, t, a),
+    rect("rgba(142,20,16,.8)", 0.36 * -t, 0.36 * -a, 0.72 * t, 1.3),
+    rect("rgba(142,20,16,.8)", 0.28 * -t, 0.36 * -a + 2.2, 0.56 * t, 1),
+    rect("rgba(184,24,16,.85)", 0.3 * -t, 0.1 * -a, 0.6 * t, 1.6));
   for (let e = 0; e < 3; e++)
-    pt("rgba(60,46,34,.55)", 0.36 * -t, 0.12 * a + 1.8 * e, t * (0.4 + 0.3 * r(e, o)), 0.6);
+    rect("rgba(60,46,34,.55)", 0.36 * -t, 0.12 * a + 1.8 * e, t * (0.4 + 0.3 * r(e, o)), 0.6);
   if (
-    (ft.drawImage(l.s, (37 * o) % 120, (23 * o) % 90, 69.6, 58.8, -t / 2, -a / 2, t, a),
-    (ft.globalAlpha = 0.6),
-    ft.drawImage(l.s, (37 * o) % 120, (23 * o) % 90, 69.6, 58.8, -t / 2, -a / 2, t, a),
-    (ft.globalAlpha = 1),
-    pt("rgba(40,24,10,.28)", -t / 2, -a / 2, 0.16 * t, a),
-    pt("rgba(40,24,10,.22)", t / 2 - 0.14 * t, -a / 2, 0.14 * t, a),
-    pt("rgba(255,255,240,.25)", -t / 2 + 0.18 * t, -a / 2, 0.08 * t, a),
-    ft.restore(),
+    (ctx.drawImage(l.s, (37 * o) % 120, (23 * o) % 90, 69.6, 58.8, -t / 2, -a / 2, t, a),
+    (ctx.globalAlpha = 0.6),
+    ctx.drawImage(l.s, (37 * o) % 120, (23 * o) % 90, 69.6, 58.8, -t / 2, -a / 2, t, a),
+    (ctx.globalAlpha = 1),
+    rect("rgba(40,24,10,.28)", -t / 2, -a / 2, 0.16 * t, a),
+    rect("rgba(40,24,10,.22)", t / 2 - 0.14 * t, -a / 2, 0.14 * t, a),
+    rect("rgba(255,255,240,.25)", -t / 2 + 0.18 * t, -a / 2, 0.08 * t, a),
+    ctx.restore(),
     n)
   ) {
     const t = s[11],
       a = s[0];
-    (ft.beginPath(),
-      ft.moveTo(t[0], t[1]),
-      ft.lineTo(a[0], a[1]),
-      ft.lineTo(a[0] - 2.5 - c, a[1] + 3.5),
-      ft.closePath(),
-      (ft.fillStyle = "#d2c6a2"),
-      ft.fill(),
-      (ft.strokeStyle = "rgba(90,70,40,.6)"),
-      (ft.lineWidth = 0.3),
-      ft.stroke());
+    (ctx.beginPath(),
+      ctx.moveTo(t[0], t[1]),
+      ctx.lineTo(a[0], a[1]),
+      ctx.lineTo(a[0] - 2.5 - c, a[1] + 3.5),
+      ctx.closePath(),
+      (ctx.fillStyle = "#d2c6a2"),
+      ctx.fill(),
+      (ctx.strokeStyle = "rgba(90,70,40,.6)"),
+      (ctx.lineWidth = 0.3),
+      ctx.stroke());
   }
-  (so(s), (ft.strokeStyle = "rgba(110,84,50,.6)"), (ft.lineWidth = 0.3), ft.stroke());
+  (so(s), (ctx.strokeStyle = "rgba(110,84,50,.6)"), (ctx.lineWidth = 0.3), ctx.stroke());
 }
 const yo = { side: 0, flip: 0, z: 1, zx: 96, zy: 54, tz: 1, tx: 96, ty: 54 },
   xo = (t) => (t < 0 ? 0 : t > 1 ? 1 : t * t * (3 - 2 * t)),
@@ -306,46 +308,46 @@ const yo = { side: 0, flip: 0, z: 1, zx: 96, zy: 54, tz: 1, tx: 96, ty: 54 },
     for (let s = 0; s < t; s++) {
       const t = (r(s, 77) * dt + 0.004 * l * (s % 2 ? 1 : -1) + dt) % dt,
         c = o + r(s, 78) * (n - o) + 2 * Math.sin(l / 1500 + s);
-      Gt(t, c, 5 + (s % 4) * 2, a, e * (0.6 + 0.4 * Math.sin(l / 900 + 2 * s)));
+      glow(t, c, 5 + (s % 4) * 2, a, e * (0.6 + 0.4 * Math.sin(l / 900 + 2 * s)));
     }
   },
   vo = (t, a, e, o, r) => {
-    (Gt(t, a, 0.35 * r, e, o),
-      ft.save(),
-      (ft.globalCompositeOperation = "lighter"),
-      (ft.globalAlpha = 0.5 * o),
-      (ft.fillStyle = "rgba(" + e + ",.5)"),
-      ft.fillRect(t - r, a - 0.25, 2 * r, 0.5),
-      (ft.globalAlpha = 0.22 * o),
-      ft.fillRect(t - 0.6 * r, a - 1, 1.2 * r, 2),
-      ft.restore());
+    (glow(t, a, 0.35 * r, e, o),
+      ctx.save(),
+      (ctx.globalCompositeOperation = "lighter"),
+      (ctx.globalAlpha = 0.5 * o),
+      (ctx.fillStyle = "rgba(" + e + ",.5)"),
+      ctx.fillRect(t - r, a - 0.25, 2 * r, 0.5),
+      (ctx.globalAlpha = 0.22 * o),
+      ctx.fillRect(t - 0.6 * r, a - 1, 1.2 * r, 2),
+      ctx.restore());
   },
   ko = (t, a, e) => {
     let o = 0,
       n = t;
-    (ft.save(), (ft.globalCompositeOperation = "lighter"));
+    (ctx.save(), (ctx.globalCompositeOperation = "lighter"));
     for (let t = 0; t < 9; t++) {
       const a = n + 9 * (r(e, t) - 0.5),
         l = o + 5 + 4 * r(e, t + 20);
-      ((ft.strokeStyle = "rgba(220,235,255,.9)"),
-        (ft.lineWidth = 0.8),
-        ft.beginPath(),
-        ft.moveTo(n, o),
-        ft.lineTo(a, l),
-        ft.stroke(),
+      ((ctx.strokeStyle = "rgba(220,235,255,.9)"),
+        (ctx.lineWidth = 0.8),
+        ctx.beginPath(),
+        ctx.moveTo(n, o),
+        ctx.lineTo(a, l),
+        ctx.stroke(),
         4 === t &&
-          ((ft.lineWidth = 0.4),
-          ft.beginPath(),
-          ft.moveTo(a, l),
-          ft.lineTo(a + 8, l + 6),
-          ft.stroke()),
+          ((ctx.lineWidth = 0.4),
+          ctx.beginPath(),
+          ctx.moveTo(a, l),
+          ctx.lineTo(a + 8, l + 6),
+          ctx.stroke()),
         (n = a),
         (o = l));
     }
-    ft.restore();
+    ctx.restore();
   },
   Ao = (t, a, e) => {
-    (pt("#120c18", t, a, 1, 1),
-      pt("#120c18", t - 1 - e, a - 1 + e, 1, 1),
-      pt("#120c18", t + 1 + e, a - 1 + e, 1, 1));
+    (rect("#120c18", t, a, 1, 1),
+      rect("#120c18", t - 1 - e, a - 1 + e, 1, 1),
+      rect("#120c18", t + 1 + e, a - 1 + e, 1, 1));
   };

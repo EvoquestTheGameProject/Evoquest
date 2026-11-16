@@ -371,16 +371,16 @@ function ve(t, a, e, o, n, l, s, c, i) {
 function ke(t, a) {
   const e = document.createElement("canvas");
   ((e.width = 384), (e.height = 216));
-  const o = ft;
-  ((ft = e.getContext("2d")), Ht(a), (ft = o));
+  const o = ctx;
+  ((ctx = e.getContext("2d")), Ht(a), (ctx = o));
   const r = t.getContext("2d");
   (r.setTransform(1, 0, 0, 1, 0, 0), r.drawImage(e, 0, 0));
 }
 function Ae(t) {
   const a = document.createElement("canvas");
   ((a.width = 384), (a.height = 216));
-  const e = ft;
-  return ((ft = a.getContext("2d")), Ht(t), (ft = e), a);
+  const e = ctx;
+  return ((ctx = a.getContext("2d")), Ht(t), (ctx = e), a);
 }
 const Ee = (t, a, e, o, n, l) => {
     const s = ["#58d878", "#d85a8a", "#58a8e8", "#a858d8", "#e8c858", "#58e8c8", "#e85858"];
