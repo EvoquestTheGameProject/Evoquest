@@ -1048,12 +1048,11 @@ var World=(function(){
       if(Q.x<-20||Q.x>W+20||Q.y<-20||Q.y>H+20) continue;
       var sz=Math.max(.7,.09*hh/Q.z*2.6), al=PB[i]*fog(Q.z)*dim*.9*(.72+.28*Math.sin(t*1.3+PT[i]));
       if(al<.015) continue;
-      if(wm>0){var lk=wm*(60+sz*40),sxx=Q.x-W/2,syy=Q.y-H/2,ex=-wv.x*lk-sxx*wm*.22*wv.r,ey=-wv.y*lk-syy*wm*.22*wv.r;Q.x+=wv.x*wm*sz*6;Q.y+=wv.y*wm*sz*6;STR[PCo[i]].push(Q.x,Q.y,Q.x+ex,Q.y+ey)}
+      if(wm>0){Q.x+=wv.x*wm*sz*6;Q.y+=wv.y*wm*sz*6}
       if(sz<1.9){var ab=al>.75?3:al>.5?2:al>.28?1:0,bk=TB[PCo[i]*4+ab];bk.push(Q.x-sz,Q.y-sz,sz*2);continue}
       ctx.globalAlpha=al>1?1:al; ctx.drawImage(SP[PCo[i]],Q.x-sz,Q.y-sz,sz*2,sz*2);
     }
     for(var tb=0;tb<12;tb++){var ta=TB[tb];if(!ta.length)continue;ctx.globalAlpha=[.18,.4,.62,.85][tb&3];ctx.fillStyle=SCOL[(tb>>2)];ctx.beginPath();for(var tq=0;tq<ta.length;tq+=3)ctx.rect(ta[tq],ta[tq+1],ta[tq+2],ta[tq+2]);ctx.fill();ta.length=0}
-    if(wm>0){ctx.lineWidth=1.3;for(var sc2=0;sc2<3;sc2++){var sa2=STR[sc2];if(!sa2.length)continue;ctx.strokeStyle=SCOL[sc2];ctx.globalAlpha=Math.min(1,.5*dim+.1);ctx.beginPath();for(var q2=0;q2<sa2.length;q2+=4){ctx.moveTo(sa2[q2],sa2[q2+1]);ctx.lineTo(sa2[q2+2],sa2[q2+3])}ctx.stroke()}}
 
     /* floor grid (quantised alpha buckets for speed) */
     for(var b=0;b<NB;b++) BK[b].length=0;
