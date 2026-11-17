@@ -660,7 +660,7 @@ function c2WinReset() {
   qs("#c2t").hidden = true;
   qs("#c2t").classList.remove("on");
 }
-function c2WinFade() {
+function c2WinFade(d) {
   clearTimeout(c2wT);
   c2wT = setTimeout(() => {
     const w = qs("#gw");
@@ -676,8 +676,9 @@ function c2WinFade() {
       c.classList.add("on");
       qs("#c2Go").focus();
     }, 950);
-  }, 9000);
+  }, d === undefined ? 7000 : d);
 }
+qs("#wNext").onclick = () => c2WinFade(0);
 qs("#c2Go").onclick = () => (c2WinReset(), c2Start("street"));
 qs("#c2Again").onclick = () => ((qs("#c2w").hidden = !0), (won = 0), c2Retry());
 qs("#c2Menu").onclick = () => ((qs("#c2w").hidden = !0), ee());
