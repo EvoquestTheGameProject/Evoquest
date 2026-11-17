@@ -653,7 +653,32 @@ function c2Retry() {
 }
 
 /* chapter buttons */
-qs("#wNext").onclick = () => c2Start("street");
+let c2wT = 0;
+function c2WinReset() {
+  clearTimeout(c2wT);
+  qs("#gw").classList.remove("out");
+  qs("#c2t").hidden = true;
+  qs("#c2t").classList.remove("on");
+}
+function c2WinFade() {
+  clearTimeout(c2wT);
+  c2wT = setTimeout(() => {
+    const w = qs("#gw");
+    if (w.hidden || won !== 1) return;
+    w.classList.add("out");
+    c2wT = setTimeout(() => {
+      if (w.hidden) return;
+      w.hidden = true;
+      w.classList.remove("out");
+      const c = qs("#c2t");
+      c.hidden = false;
+      void c.offsetWidth;
+      c.classList.add("on");
+      qs("#c2Go").focus();
+    }, 950);
+  }, 9000);
+}
+qs("#c2Go").onclick = () => (c2WinReset(), c2Start("street"));
 qs("#c2Again").onclick = () => ((qs("#c2w").hidden = !0), (won = 0), c2Retry());
 qs("#c2Menu").onclick = () => ((qs("#c2w").hidden = !0), ee());
 window.__evoChase = () => !!(ch2 && ch2.sp && !ch2.end && !dead && !won);

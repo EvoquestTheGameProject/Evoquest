@@ -989,6 +989,7 @@ function ne() {
             (won = 1),
             c2Save("street"),
             (qs("#gw").hidden = !1),
+            c2WinFade(),
             (fadeNow = 1),
             (fadeTo = 1),
             (lt = 0),

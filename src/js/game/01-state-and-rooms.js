@@ -408,6 +408,7 @@ function resetGame() {
     updateHud(),
     (qs("#gd").hidden = !0),
     (qs("#gw").hidden = !0),
+    c2WinReset(),
     (qs("#gx").hidden = !0),
     (qs("#gk").hidden = !0),
     toast(""));

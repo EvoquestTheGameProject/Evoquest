@@ -364,7 +364,7 @@ function or() {
                       "exitlab" === room
                         ? spawnBoss()
                         : toast("Boss resets on entering the boss room.", 2200));
-                  else if ("win" === a) ((bossDone = !0), (won = 1), (qs("#gw").hidden = !1));
+                  else if ("win" === a) ((bossDone = !0), (won = 1), (qs("#gw").hidden = !1), c2WinFade());
                   else {
                     if ("restart" === a) return (or(), resetGame(), void $o());
                     if ("cpsave" === a)

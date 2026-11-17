@@ -686,6 +686,18 @@
 #fin {
   z-index: 4;
 }
+#c2t {
+  z-index: 9;
+  opacity: 0;
+  transition: opacity 0.9s;
+}
+#c2t.on {
+  opacity: 1;
+}
+.gov.out {
+  opacity: 0;
+  transition: opacity 0.9s;
+}
 #skip {
   z-index: 5;
 }
