@@ -132,18 +132,18 @@ body.dark #bg{opacity:.28} body.dark #grid{opacity:.15}
 
 /* ===== reveal system ===== */
 /* words / letters rise through a mask with a 3D tilt */
-.mask{display:inline-block;overflow:hidden;vertical-align:top;padding:.1em .04em .18em;margin:-.1em -.04em -.18em;perspective:900px}
-.mask>span{display:inline-block;transform:translate3d(0,108%,0) rotateX(-58deg);transform-origin:50% 100%;opacity:0;
+.mask{display:inline-block;overflow:hidden;vertical-align:top;padding:.1em .04em .18em;margin:-.1em -.04em -.18em}
+.mask>span{display:inline-block;transform:translateY(108%) skewY(4deg);transform-origin:0 100%;opacity:0;
   transition:transform 1.25s var(--out),opacity .9s var(--soft-out);transition-delay:calc(var(--i,0)*80ms + var(--d,0ms) + 450ms)}
-.rev .mask>span{transform:translate3d(0,-108%,0) rotateX(58deg);transform-origin:50% 0}
+.rev .mask>span{transform:translateY(-108%) skewY(-4deg);transform-origin:0 0}
 .slide.active .mask>span{transform:none;opacity:1}
-.slide.leaving .mask>span{transform:translate3d(0,-108%,0) rotateX(50deg);opacity:0;transition:transform .6s var(--in),opacity .5s var(--in);transition-delay:calc(var(--i,0)*22ms)}
-.rev .slide.leaving .mask>span{transform:translate3d(0,108%,0) rotateX(-50deg)}
+.slide.leaving .mask>span{transform:translateY(-108%) skewY(-3deg);opacity:0;transition:transform .6s var(--in),opacity .5s var(--in);transition-delay:calc(var(--i,0)*22ms)}
+.rev .slide.leaving .mask>span{transform:translateY(108%) skewY(3deg)}
 
 /* generic fade-rise with focus pull */
-.rv{opacity:0;transform:translateY(34px);filter:blur(8px);transition:opacity .9s var(--soft-out),transform 1.2s var(--out),filter .9s var(--soft-out);transition-delay:calc(var(--i,0)*90ms + var(--d,0ms) + 450ms)}
-.slide.active .rv{opacity:1;transform:none;filter:none}
-.slide.leaving .rv{opacity:0;transform:translateY(-28px);filter:blur(6px);transition-duration:.5s;transition-delay:calc(var(--i,0)*24ms)}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s var(--soft-out),transform 1.2s var(--out);transition-delay:calc(var(--i,0)*90ms + var(--d,0ms) + 450ms)}
+.slide.active .rv{opacity:1;transform:none}
+.slide.leaving .rv{opacity:0;transform:translateY(-28px);transition-duration:.5s;transition-delay:calc(var(--i,0)*24ms)}
 .rev .slide.leaving .rv{transform:translateY(28px)}
 
 /* word cascade for body copy */
@@ -346,8 +346,8 @@ body.dark #bg{opacity:.28} body.dark #grid{opacity:.15}
 .s6-panel .foot{font-size:23px;line-height:1.45;color:var(--ice);margin:20px 0 0}
 .s6-panel .note{font-size:17px;line-height:1.5;color:var(--mute);margin:12px 0 0;max-width:740px}
 /* panel only plays on the second build */
-.s6:not(.b1) .s6-panel .mask>span{transform:translate3d(0,108%,0) rotateX(-58deg);opacity:0}
-.s6:not(.b1) .s6-panel .rv{opacity:0;transform:translateY(34px);filter:blur(8px)}
+.s6:not(.b1) .s6-panel .mask>span{transform:translateY(108%) skewY(4deg);opacity:0}
+.s6:not(.b1) .s6-panel .rv{opacity:0;transform:translateY(34px)}
 .s6:not(.b1) .s6-panel .wc .w{opacity:0;transform:translateY(.6em)}
 .s6:not(.b1) .s6-panel .ln::before{transform:scaleX(0)}
 .s6:not(.b1) .s6-panel .mask>span,.s6:not(.b1) .s6-panel .rv,.s6:not(.b1) .s6-panel .wc .w,.s6:not(.b1) .s6-panel .ln::before{transition-delay:0s!important;transition-duration:.35s!important}
@@ -849,21 +849,7 @@ function split(el,mode){
   el.textContent='';el.appendChild(out);
   $$('.mask',el).forEach(function(m){m.setAttribute('aria-hidden','true')});
 }
-function cascade(el){
-  var w=0, out=document.createDocumentFragment();
-  (function walk(node,dst){
-    Array.prototype.slice.call(node.childNodes).forEach(function(n){
-      if(n.nodeType===3){
-        n.textContent.split(/(\s+)/).forEach(function(tok){
-          if(!tok) return;
-          if(/^\s+$/.test(tok)){dst.appendChild(document.createTextNode(' '));return}
-          var s=document.createElement('span');s.className='w';s.style.setProperty('--w',w++);s.textContent=tok;dst.appendChild(s);
-        });
-      }else if(n.nodeType===1){var c=n.cloneNode(false);dst.appendChild(c);walk(n,c)}
-    });
-  })(el,out);
-  el.textContent='';el.appendChild(out);el.classList.remove('rv');el.classList.add('wc');
-}
+function cascade(el){el.classList.add('rv')}
 $$('[data-split]').forEach(function(e){split(e,'word')});
 $$('[data-letters]').forEach(function(e){split(e,'char')});
 $$('.lede.rv,.foot.rv,.two p.rv,.row3 p,.aud p,.tl p,.vs .side p,.tdef,.btr span').forEach(cascade);
@@ -1199,7 +1185,7 @@ var PXL=[], PXD={title:22,big:22,finale:20,h2:14,tree:10,eyebrow:9,'s6-panel':7,
 function pxCollect(sl){PXL=$$('.h2,.title,.eyebrow,.lede,.foot,.tree,.finale,.s6-panel,.ghost',sl).map(function(el){var d=6;for(var k in PXD)if(el.classList.contains(k)){d=PXD[k];break}return[el,d]});parallax()}
 function parallax(){var x=-pmx,y=-pmy;for(var i=0;i<PXL.length;i++){var e=PXL[i];e[0].style.translate=(x*e[1]).toFixed(2)+'px '+(y*e[1]*.6).toFixed(2)+'px'}}
 function loop(now){
-  requestAnimationFrame(loop);
+  if(!loop.g) requestAnimationFrame(loop);
   if(document.hidden){lastF=0;return}
   pmx+=(ptx-pmx)*.05; pmy+=(pty-pmy)*.05;
   if(!reduced&&QL>0&&phase==='show'&&(Math.abs(pmx-lastPX)>.002||Math.abs(pmy-lastPY)>.002)){
@@ -1211,7 +1197,8 @@ function loop(now){
   PERF.ms+=performance.now()-t1;PERF.n++;
 }
 var PERF={ms:0,n:0};
-requestAnimationFrame(loop);
+if(typeof gsap!=='undefined'){loop.g=1;gsap.ticker.lagSmoothing(500,33);gsap.ticker.add(function(){loop(performance.now())})}
+else requestAnimationFrame(loop);
 
 /* =========================================================
    SOUND: synthesised sci-fi score + effects (Web Audio, no files)
