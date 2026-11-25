@@ -1200,7 +1200,7 @@ function auInit(){
     for(var ch=0;ch<2;ch++){var d=ir.getChannelData(ch);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.4)}
     var cv=c.createConvolver(); cv.buffer=ir; AU.rv=c.createGain(); AU.rv.gain.value=.55; AU.rv.connect(cv); cv.connect(m);
     var nl=c.sampleRate*2, nb=AU.nb=c.createBuffer(1,nl,c.sampleRate), nd=nb.getChannelData(0); for(i=0;i<nl;i++) nd[i]=Math.random()*2-1;
-    AU.ok=true; drone();
+    AU.ok=true; if(!SONG) drone();
     if(c.state==='suspended') c.resume();
   }catch(e){AU.ok=false}
 }
@@ -1306,6 +1306,17 @@ function powerUp(at,G){
 function setSound(on){
   AU.on=on; $('#snd').classList.toggle('muted',!on); $('#snd').setAttribute('aria-pressed',String(!on));
   if(AU.ok) AU.m.gain.setTargetAtTime(on?.85:0,AU.c.currentTime,.08);
+  if(AU.songG) AU.songG.gain.setTargetAtTime(on?SONG_VOL:0,AU.c.currentTime,.08);
+}
+/* background track: embedded clip (source 0:04 -> 1:18, fade-out baked in), played at 15% volume */
+var SONG="", SONG_VOL=.15;
+function playSong(){
+  if(!AU.ok||!SONG||AU.songStarted) return; AU.songStarted=true;
+  try{
+    var bin=atob(SONG), u8=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) u8[i]=bin.charCodeAt(i);
+    var c=AU.c, ok=function(buf){var src=c.createBufferSource(); src.buffer=buf; var g=AU.songG=c.createGain(); g.gain.value=AU.on?SONG_VOL:0; src.connect(g); g.connect(c.destination); src.start()};
+    var pr=c.decodeAudioData(u8.buffer,ok,function(){}); if(pr&&pr.catch) pr.catch(function(){});
+  }catch(e){}
 }
 var PENT=[392,440,523.25,587.33,659.25,783.99,880,1046.5], treeG=null, credG=null;
 function sfxTree(){
@@ -1467,15 +1478,15 @@ var phase='title', started=false;
 function start(){if(started) return; started=true; phase='show'; fit(); $('#intro').classList.add('go'); go(0,1)}
 function begin(){
   if(phase!=='title') return; phase='starting';
-  auInit();
+  auInit(); playSong();
   if(reduced){$('#intro').style.display='none';start();return}
-  if(AU.ok){impact(.7,0); chord([261.63,329.63,392,493.88],0,4.5,.04); ping(1046.5,0,.05,.07,2.6); riser(1.1,.25,.14); impact(.9,1.4); chord([65.41,98,130.81,196],1.4,5,.045)}
+  if(AU.ok){impact(.7,0); riser(1.1,.25,.14); impact(.9,1.4); if(!SONG){chord([261.63,329.63,392,493.88],0,4.5,.04); ping(1046.5,0,.05,.07,2.6); chord([65.41,98,130.81,196],1.4,5,.045)}}
   $('#tc').classList.replace('show','hide');
   setTimeout(start,700);
 }
 $('#intro').addEventListener('click',function(e){e.stopPropagation();begin()});
 $('#intro').addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();begin()},{passive:false});
-window.__deck={perf:function(){var r=PERF.ms/Math.max(1,PERF.n);PERF.ms=0;PERF.n=0;return r},begin:begin,phase:function(){return phase},go:go,next:next,prev:prevSlide,state:function(){return{cur:cur,b1:slides[TREE].classList.contains('b1'),phase2:slides[9].classList.contains('phase2')}}};
+window.__deck={audio:function(){return{ctx:AU.c?AU.c.state:null,song:!!AU.songG,vol:AU.songG?AU.songG.gain.value:null,on:AU.on}},perf:function(){var r=PERF.ms/Math.max(1,PERF.n);PERF.ms=0;PERF.n=0;return r},begin:begin,phase:function(){return phase},go:go,next:next,prev:prevSlide,state:function(){return{cur:cur,b1:slides[TREE].classList.contains('b1'),phase2:slides[9].classList.contains('phase2')}}};
 })();
 </script>
 </body>
