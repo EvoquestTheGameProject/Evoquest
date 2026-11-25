@@ -1308,8 +1308,8 @@ function setSound(on){
   if(AU.ok) AU.m.gain.setTargetAtTime(on?.85:0,AU.c.currentTime,.08);
   if(AU.songG) AU.songG.gain.setTargetAtTime(on?SONG_VOL:0,AU.c.currentTime,.08);
 }
-/* background track: embedded clip (source 0:04 -> 1:25, fades out from 1:23), volume baked in at 10% */
-var SONG="", SONG_VOL=1;  /* the clip itself is already mixed down to 10% (-20 dB) */
+/* background track: embedded clip (source 0:04 -> 1:25, fades out from 1:23), volume baked in at 5% */
+var SONG="", SONG_VOL=1;  /* the clip itself is already mixed down to 5% (-26 dB) */
 function playSong(){
   if(!AU.ok||!SONG||AU.songStarted) return; AU.songStarted=true;
   try{
