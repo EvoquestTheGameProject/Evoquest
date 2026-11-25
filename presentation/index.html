@@ -1308,8 +1308,8 @@ function setSound(on){
   if(AU.ok) AU.m.gain.setTargetAtTime(on?.85:0,AU.c.currentTime,.08);
   if(AU.songG) AU.songG.gain.setTargetAtTime(on?SONG_VOL:0,AU.c.currentTime,.08);
 }
-/* background track: embedded clip (source 0:04 -> 1:25, fades out from 1:23), played at 10% volume */
-var SONG="", SONG_VOL=.10;
+/* background track: embedded clip (source 0:04 -> 1:25, fades out from 1:23), volume baked in at 10% */
+var SONG="", SONG_VOL=1;  /* the clip itself is already mixed down to 10% (-20 dB) */
 function playSong(){
   if(!AU.ok||!SONG||AU.songStarted) return; AU.songStarted=true;
   try{
@@ -1486,7 +1486,7 @@ function begin(){
 }
 $('#intro').addEventListener('click',function(e){e.stopPropagation();begin()});
 $('#intro').addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();begin()},{passive:false});
-window.__deck={audio:function(){return{ctx:AU.c?AU.c.state:null,song:!!AU.songG,vol:AU.songG?AU.songG.gain.value:null,on:AU.on}},perf:function(){var r=PERF.ms/Math.max(1,PERF.n);PERF.ms=0;PERF.n=0;return r},begin:begin,phase:function(){return phase},go:go,next:next,prev:prevSlide,state:function(){return{cur:cur,b1:slides[TREE].classList.contains('b1'),phase2:slides[9].classList.contains('phase2')}}};
+window.__deck={meter:function(ms){return new Promise(function(res){if(!AU.songG)return res(null);var an=AU.c.createAnalyser();an.fftSize=2048;AU.songG.connect(an);var buf=new Float32Array(2048),sum=0,n=0,t0=performance.now();(function f(){an.getFloatTimeDomainData(buf);for(var i=0;i<buf.length;i++){sum+=buf[i]*buf[i];n++}if(performance.now()-t0<ms)setTimeout(f,40);else{an.disconnect();res(10*Math.log10(sum/n))}})()})},audio:function(){return{ctx:AU.c?AU.c.state:null,song:!!AU.songG,vol:AU.songG?AU.songG.gain.value:null,on:AU.on}},perf:function(){var r=PERF.ms/Math.max(1,PERF.n);PERF.ms=0;PERF.n=0;return r},begin:begin,phase:function(){return phase},go:go,next:next,prev:prevSlide,state:function(){return{cur:cur,b1:slides[TREE].classList.contains('b1'),phase2:slides[9].classList.contains('phase2')}}};
 })();
 </script>
 </body>
