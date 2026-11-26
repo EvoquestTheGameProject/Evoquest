@@ -12,6 +12,6 @@ for(const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)){
   try{new vm.Script(m[2],{filename:"inline-script-"+(++n)})}catch(e){console.error("SYNTAX ERROR in inline script",n,e.message);process.exit(1)}
 }
 if(/@@(B64|DATAURI)/.test(html)){console.error("unresolved asset placeholder in output");process.exit(1)}
-const shipped=path.join(root,"EvoQuest_Cinematic_Edition_v48 2.html");
+const shipped=path.join(root,"EvoQuest_Cinematic_Edition_v51_0_0.html");
 if(!fs.existsSync(shipped)||fs.readFileSync(shipped,"utf8")!==html){console.error("The committed HTML is out of date. Run: node build.js");process.exit(1)}
 fs.unlinkSync(tmp);console.log("OK: "+n+" scripts compile, build is up to date");

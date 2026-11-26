@@ -1,9 +1,9 @@
 # EvoQuest
 
-A browser game that ships as **one self-contained HTML file**: `EvoQuest_Cinematic_Edition_v48 2.html`
+A browser game that ships as **one self-contained HTML file**: `EvoQuest_Cinematic_Edition_v51_0_0.html`
 (works offline, in artifact viewers, from `file://`, anywhere an HTML file opens).
 
-The source lives in `src/` as many small files. `build.js` stitches them back into that single file.
+The source lives in `src/` as many files. `build.js` stitches them back into that single file.
 
 ```
 npm run build      # node build.js  -> rewrites the single HTML file (no dependencies needed)
@@ -13,50 +13,71 @@ npm run format     # prettier over src/ (optional, needs `npm install`)
 
 Always commit the rebuilt HTML together with your `src/` change (`npm run check` fails if they differ).
 
+## What's in v51.0.0
+
+This replaces the old v48 copy. Since v48 the game gained:
+
+* **Chapter 2, part 3:** the wiring puzzle, the burning road chase, the forest camp, the dream and the river valley.
+* **Chapter 3:** the cargo port and ship (crowbar crafting, radar steering through a storm, the propeller and generator
+  repairs), Ridge Tower Island, the tower's control and generator rooms, the dead satellites, the trapdoor and the hidden
+  lab with its archive.
+* **The time-machine memory:** a cinematic with its own effects compositor (bloom, light trails, colour split, flashes,
+  screen shake), played on the opening cutscene's engine.
+* **The scientist's hypothesis:** after the memory, a lamp comes on in the lab's corner. Dr. Morrow's notebook holds a
+  hypothesis (the Evolution sends its monsters to guard the time machine parts), followed by an interactive lesson on what a
+  hypothesis is: IF/THEN/BECAUSE, putting the scientific method in order, and a three-question quiz.
+* The journal, quality-of-life, no-zoom and controller (gamepad) scripts, and a new menu track.
+
 ## Layout
 
 ```
 src/
   index.html                  page markup + the order of everything ({{css:..}}, {{js:..}}, {{main}} includes)
-  css/base.css, overrides.css the two <style> blocks
+  css/base.css, overrides.css, extra.css   the <style> blocks
   assets/                     binary files, inlined at build time as base64 (menu-music.mp3, boss PNGs)
   js/
+    diag.js                   on-screen error reporting for restricted viewers
     audio/music.js            menu music: seamless loop, fades, mute button, iOS audio unlock/fallbacks
     audio/sfx.js              procedural sound-effect engine (no audio files) + `SFX.p(name)`
     save/bridge.js            save/load transfer: backups, repair, export/import, save codes, "Download Game + Progress"
-    main/*.js                 game script, part 1: global scope (menu, intro, character creator, cutscenes)
-    game/*.js                 game script, part 2: the in-game closure (rooms, input, update loop, combat, boss, render)
+    main/00-global.js         game script, part 1: global scope (menu, intro, character creator, cutscene engine)
+    game/00-core.js           game script, part 2: the in-game closure (rooms, input, update loop, combat, boss, chapter 2)
+    game/20-NN-*.js           the chapter modules, in load order (see below)
+    game/90-core-tail.js      the end of the in-game closure
+    journal.js                the NOTES journal: achievements and key ideas
+    qol.js, nozoom.js, pad.js quality-of-life tweaks, pinch/zoom blocking, gamepad support
 build.js                      assembler
 tools/check.js                sanity checks
 ```
 
-### Where things are
+### Chapter modules (`src/js/game/20-NN-*.js`)
 
-| Feature | File |
+| Files | What they hold |
 | --- | --- |
-| Lab home screen + holographic PLAY NOW projector | `js/main/01-menu-background.js` |
-| DNA -> dividing-cells zoom intro | `js/main/02-intro-zoom.js` |
-| Saved players, character creator | `js/main/03-…`, `04-…` |
-| Cutscene canvas / sequencer / scene painters / timelines | `js/main/05-…` to `14-…` |
-| Rooms, items, crafting bench, input, update loop | `js/game/01-…` to `06-…` |
-| Boss-room opening cinematic ("director") | `js/game/08-boss-opening-director.js` |
-| Combat, snake boss, game render, dev tools | `js/game/09-…` to `12-…` |
+| `c3_1` to `c3_8` | Chapter 2 part 3: the wiring puzzle, burning road chase, forest camp, dream, dev tools |
+| `c4_1` to `c4_13` | The river valley, water filtering, crowbar crafting, the cargo port |
+| `c5_1` to `c5_5` | Chapter 3: the ship, radar, propeller and generator repairs |
+| `c6_1` | Art pass: painted forests, trees, roads, ship grime |
+| `c7_1` to `c7_4` | Ridge Tower Island, the tower control room and the generator repair |
+| `c9_1` | The dead satellites, the trapdoor under the rug and the hidden lab's archive |
+| `c9_2` | The time-machine memory cinematic and its effects compositor |
+| `c9_3` | The scientist in the corner, his notebook's hypothesis and the hypothesis lesson |
 
 ## Rules that keep the single file working
 
-* **Files are concatenated in filename order** (`01-`, `02-`, …). Add a new file by choosing a number.
+* **Files are concatenated in filename order** (`00-`, `20-NN-`, `90-`). Add a new file by choosing a number.
 * `js/main/*` all share one global scope; `js/game/*` are the *body of one function* (the build wraps them in
   `(()=>{ … })();`), so they share that scope. A file is therefore a slice of a larger program, not a module.
   Do not split a function across files, and keep every file ending on a complete statement.
-* Identifier names in `main/` and `game/` are short because the original code was minified (`t`, `a`, `e`, …).
-  The files are formatted but not renamed; use the table above and search for string literals to find your way around.
+* The chapter modules wrap earlier hooks (`{const _a=fn;fn=function(){…;return _a();};}`), so their order matters.
+* Identifier names in `00-global.js` and `00-core.js` are short because the original code was minified.
 * **Do not reorder the scripts in `src/index.html`.** `save/bridge.js` rebuilds the page for "Download Game + Progress"
-  and expects the game script to be the script right after it, last in the body.
+  and expects the game script to be the script right after it.
 * Never put the text `</script` inside a script (the build fails if you do).
 * Assets: write `"@@B64:file.ext@@"` (base64 text) or `"@@DATAURI:png:file.png@@"` in a JS string and drop the file in `src/assets/`.
 
-## Verification of the split
+## Verification
 
-The first build from `src/` was byte-identical to the original single file. After formatting, every JS file was checked to
-have an identical syntax tree, and the original and rebuilt games were rendered side by side with seeded randomness and a
-manual clock: all intro frames and all boss-cutscene frames were pixel-identical.
+The build from `src/` is byte-identical to the tested single file. Before release it was played through in a headless
+browser at desktop and phone sizes: every room, saving and continuing in every chapter 3 room, the full memory cinematic,
+and the whole scientist and hypothesis flow, with no script errors.
