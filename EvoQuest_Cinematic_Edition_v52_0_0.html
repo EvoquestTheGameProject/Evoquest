@@ -127,7 +127,7 @@ function stop(){sceneWanted="";sceneNow="";talkerEnd(talker,0.05);stopAmb(0.5);c
 function p(name,a1,a2){try{const now=performance.now();if(now-(last[name]||-1e9)<(MI[name]||25))return;last[name]=now;if(name==="stop"){stop();return;}
 LOG.length<400&&LOG.push(name);if(name==="scene"){sceneWanted=a1||"";sceneNow=sceneWanted;if(SCENES[a1])startAmb("scene","scene:"+a1,SCENES[a1]);else if(cur&&cur.kind==="scene")stopAmb(0.8);return;}
 const c=ready();if(!c)return;const f=S[name];MUL=LV[name]||1;try{f&&f(c,a1,a2);}finally{MUL=1;}}catch(e){}}
-ROOMS.tunnel=(a)=>{a.noise({f:300,v:0.1,brown:1,lfoV:[0.06,0.03]});a.noise({f:900,type:"bandpass",q:0.6,v:0.02,lfoV:[0.13,0.012]});a.osc({f:48,v:0.035,lfoV:[0.05,0.012]});};ROOMS.tunnel_exit=(a)=>ROOMS.tunnel(a);ROOMS.beyond=(a)=>ROOMS.road(a);ROOMS.wroad=(a)=>ROOMS.highway(a);ROOMS["wroad:fire"]=(a)=>(ROOMS["highway:chase"]||ROOMS.highway)(a);ROOMS.forest=(a)=>{a.noise({f:2400,type:"bandpass",q:0.5,v:0.014,lfoV:[0.07,0.008]});a.noise({f:160,v:0.04,brown:1});a.ev(1.8,4.5,D.chirp);a.ev(6,12,D.rustle);a.ev(9,18,D.drip);a.ev(20,36,D.howl);};ROOMS.dream=(a)=>{a.noise({f:420,v:0.13,brown:1,lfoV:[0.11,0.09]});a.noise({f:3200,type:"highpass",v:0.012,lfoV:[0.11,0.01]});a.noise({f:900,type:"bandpass",q:0.8,v:0.018});a.ev(2,5,D.chirp);};ROOMS.dream_storm=(a)=>{a.noise({f:210,v:0.15,brown:1,lfoV:[0.2,0.08]});a.noise({f:1100,type:"bandpass",q:0.6,v:0.05,lfoV:[0.3,0.03]});a.osc({f:52,type:"triangle",lp:200,v:0.05,lfoV:[0.3,0.03]});a.ev(2,5,D.thunder);};ROOMS.deck_storm=(a)=>{a.noise({f:900,type:"bandpass",q:0.4,v:0.1,lfoV:[0.2,0.03]});a.noise({f:200,v:0.12,brown:1,lfoV:[0.12,0.05]});a.noise({f:4200,type:"highpass",v:0.03});a.osc({f:48,type:"triangle",lp:180,v:0.04,lfoV:[0.1,0.02]});a.ev(5,11,D.thunder);a.ev(9,16,D.creak||D.rustle);};ROOMS.motor_ship=(a)=>{a.noise({f:140,v:0.12,brown:1,lfoV:[0.5,0.03]});a.osc({f:55,type:"sawtooth",lp:240,v:0.035,lfoV:[3,0.01]});a.noise({f:1800,type:"bandpass",q:1,v:0.012});a.ev(6,13,D.drip);a.ev(10,20,D.creak||D.rustle);};ROOMS.isle_wind=(a)=>{a.noise({f:700,type:"bandpass",q:0.3,v:0.07,lfoV:[0.14,0.03]});a.noise({f:170,v:0.09,brown:1,lfoV:[0.1,0.04]});a.noise({f:3600,type:"highpass",v:0.012});a.ev(7,15,D.creak||D.rustle);a.ev(9,18,D.drip||D.rustle);};ROOMS.tower_hum=(a)=>{a.osc({f:100,type:"sine",v:0.02,lfoV:[0.3,0.005]});a.noise({f:2400,type:"bandpass",q:2,v:0.01});a.noise({f:140,v:0.06,brown:1,lfoV:[0.2,0.02]});a.ev(8,16,D.drip||D.rustle);};ROOMS.gen_room=(a)=>{a.noise({f:130,v:0.15,brown:1,lfoV:[0.9,0.03]});a.osc({f:48,type:"sawtooth",lp:200,v:0.04,lfoV:[5,0.01]});a.noise({f:2200,type:"bandpass",q:1,v:0.012});a.ev(5,11,D.drip||D.rustle);a.ev(10,20,D.creak||D.rustle);};ROOMS.river=(a)=>{a.noise({f:620,type:"bandpass",q:0.4,v:0.08,lfoV:[0.13,0.025]});a.noise({f:180,v:0.07,brown:1});a.noise({f:3400,type:"highpass",v:0.01});a.ev(2,5,D.chirp);a.ev(7,14,D.rustle);};ROOMS.river_flood=(a)=>{a.noise({f:260,v:0.2,brown:1,lfoV:[0.3,0.06]});a.noise({f:900,type:"bandpass",q:0.5,v:0.12,lfoV:[0.4,0.04]});a.osc({f:44,type:"triangle",lp:160,v:0.06});};ROOMS.rroad=(a)=>{a.noise({f:900,type:"bandpass",q:0.5,v:0.03,lfoV:[0.08,0.015]});a.noise({f:240,v:0.035,brown:1});a.ev(2.5,6,D.chirp);a.ev(8,16,D.rustle);};ROOMS.port=(a)=>{a.noise({f:520,type:"bandpass",q:0.5,v:0.05,lfoV:[0.12,0.02]});a.noise({f:140,v:0.05,brown:1});a.noise({f:2600,type:"highpass",v:0.008});a.ev(3,7,D.chirp);a.ev(5,11,D.drip);a.ev(14,26,D.creak||D.rustle);};ROOMS.cbridge=(a)=>{a.noise({f:700,type:"bandpass",q:0.6,v:0.045,lfoV:[0.1,0.015]});a.noise({f:150,v:0.04,brown:1});a.ev(3,7,D.drip);a.ev(4,9,D.chirp);};ROOMS.dream_hush=(a)=>{a.noise({f:90,v:0.012,brown:1});};ROOMS.sewer=(a)=>{a.noise({f:520,v:0.16,brown:1,lfoV:[0.2,0.04]});a.noise({f:1800,type:"bandpass",q:1.2,v:0.03,lfoV:[0.31,0.02]});a.osc({f:62,type:"triangle",lp:300,v:0.03,lfoV:[0.04,0.01]});};function ambTick(){try{chaseSet(!document.hidden&&
+ROOMS.tunnel=(a)=>{a.noise({f:300,v:0.1,brown:1,lfoV:[0.06,0.03]});a.noise({f:900,type:"bandpass",q:0.6,v:0.02,lfoV:[0.13,0.012]});a.osc({f:48,v:0.035,lfoV:[0.05,0.012]});};ROOMS.tunnel_exit=(a)=>ROOMS.tunnel(a);ROOMS.beyond=(a)=>ROOMS.road(a);ROOMS.wroad=(a)=>ROOMS.highway(a);ROOMS["wroad:fire"]=(a)=>(ROOMS["highway:chase"]||ROOMS.highway)(a);ROOMS.forest=(a)=>{a.noise({f:2400,type:"bandpass",q:0.5,v:0.014,lfoV:[0.07,0.008]});a.noise({f:160,v:0.04,brown:1});a.ev(1.8,4.5,D.chirp);a.ev(6,12,D.rustle);a.ev(9,18,D.drip);a.ev(20,36,D.howl);};ROOMS.dream=(a)=>{a.noise({f:420,v:0.13,brown:1,lfoV:[0.11,0.09]});a.noise({f:3200,type:"highpass",v:0.012,lfoV:[0.11,0.01]});a.noise({f:900,type:"bandpass",q:0.8,v:0.018});a.ev(2,5,D.chirp);};ROOMS.dream_storm=(a)=>{a.noise({f:210,v:0.15,brown:1,lfoV:[0.2,0.08]});a.noise({f:1100,type:"bandpass",q:0.6,v:0.05,lfoV:[0.3,0.03]});a.osc({f:52,type:"triangle",lp:200,v:0.05,lfoV:[0.3,0.03]});a.ev(2,5,D.thunder);};ROOMS.deck_storm=(a)=>{a.noise({f:900,type:"bandpass",q:0.4,v:0.1,lfoV:[0.2,0.03]});a.noise({f:200,v:0.12,brown:1,lfoV:[0.12,0.05]});a.noise({f:4200,type:"highpass",v:0.03});a.osc({f:48,type:"triangle",lp:180,v:0.04,lfoV:[0.1,0.02]});a.ev(5,11,D.thunder);a.ev(9,16,D.creak||D.rustle);};ROOMS.motor_ship=(a)=>{a.noise({f:140,v:0.12,brown:1,lfoV:[0.5,0.03]});a.osc({f:55,type:"sawtooth",lp:240,v:0.035,lfoV:[3,0.01]});a.noise({f:1800,type:"bandpass",q:1,v:0.012});a.ev(6,13,D.drip);a.ev(10,20,D.creak||D.rustle);};ROOMS.isle_wind=(a)=>{a.noise({f:700,type:"bandpass",q:0.3,v:0.07,lfoV:[0.14,0.03]});a.noise({f:170,v:0.09,brown:1,lfoV:[0.1,0.04]});a.noise({f:3600,type:"highpass",v:0.012});a.ev(7,15,D.creak||D.rustle);a.ev(9,18,D.drip||D.rustle);};ROOMS.tower_hum=(a)=>{a.osc({f:100,type:"sine",v:0.02,lfoV:[0.3,0.005]});a.noise({f:2400,type:"bandpass",q:2,v:0.01});a.noise({f:140,v:0.06,brown:1,lfoV:[0.2,0.02]});a.ev(8,16,D.drip||D.rustle);};ROOMS.gen_room=(a)=>{a.noise({f:130,v:0.15,brown:1,lfoV:[0.9,0.03]});a.osc({f:48,type:"sawtooth",lp:200,v:0.04,lfoV:[5,0.01]});a.noise({f:2200,type:"bandpass",q:1,v:0.012});a.ev(5,11,D.drip||D.rustle);a.ev(10,20,D.creak||D.rustle);};ROOMS.city_ruin=(a)=>{a.noise({f:180,v:0.1,brown:1,lfoV:[0.08,0.04]});a.noise({f:900,type:"bandpass",q:0.4,v:0.04,lfoV:[0.2,0.02]});a.noise({f:5200,type:"highpass",v:0.016,lfoV:[3.1,0.012]});a.osc({f:46,type:"triangle",lp:160,v:0.04,lfoV:[0.15,0.02]});a.ev(5,11,D.howl||D.rustle);a.ev(7,14,D.growl||D.creak);a.ev(9,18,D.creak||D.rustle);};ROOMS.river=(a)=>{a.noise({f:620,type:"bandpass",q:0.4,v:0.08,lfoV:[0.13,0.025]});a.noise({f:180,v:0.07,brown:1});a.noise({f:3400,type:"highpass",v:0.01});a.ev(2,5,D.chirp);a.ev(7,14,D.rustle);};ROOMS.river_flood=(a)=>{a.noise({f:260,v:0.2,brown:1,lfoV:[0.3,0.06]});a.noise({f:900,type:"bandpass",q:0.5,v:0.12,lfoV:[0.4,0.04]});a.osc({f:44,type:"triangle",lp:160,v:0.06});};ROOMS.rroad=(a)=>{a.noise({f:900,type:"bandpass",q:0.5,v:0.03,lfoV:[0.08,0.015]});a.noise({f:240,v:0.035,brown:1});a.ev(2.5,6,D.chirp);a.ev(8,16,D.rustle);};ROOMS.port=(a)=>{a.noise({f:520,type:"bandpass",q:0.5,v:0.05,lfoV:[0.12,0.02]});a.noise({f:140,v:0.05,brown:1});a.noise({f:2600,type:"highpass",v:0.008});a.ev(3,7,D.chirp);a.ev(5,11,D.drip);a.ev(14,26,D.creak||D.rustle);};ROOMS.cbridge=(a)=>{a.noise({f:700,type:"bandpass",q:0.6,v:0.045,lfoV:[0.1,0.015]});a.noise({f:150,v:0.04,brown:1});a.ev(3,7,D.drip);a.ev(4,9,D.chirp);};ROOMS.dream_hush=(a)=>{a.noise({f:90,v:0.012,brown:1});};ROOMS.sewer=(a)=>{a.noise({f:520,v:0.16,brown:1,lfoV:[0.2,0.04]});a.noise({f:1800,type:"bandpass",q:1.2,v:0.03,lfoV:[0.31,0.02]});a.osc({f:62,type:"triangle",lp:300,v:0.03,lfoV:[0.04,0.01]});};function ambTick(){try{chaseSet(!document.hidden&&
 typeof GM!=="undefined"&&
 GM.on&&
 !!(window.__evoChase&&window.__evoChase()),);const c=ready();if(!c){if(cur&&A&&A.muted())stopAmb(0.4);return;}
@@ -1729,7 +1729,7 @@ function frameLoop(t){if(GM.on){for(ar&&(tr=0.9*tr+(1e3/Math.max(1,t-ar))*0.1),a
 function qo(){"712411"===Io?((Eo.on=!0),(No.hidden=!0),er()):((qs("#dvm").textContent="INVALID CODE"),(Io=""),zo(),No.classList.add("bad"),setTimeout(()=>No.classList.remove("bad"),400));}
 function Yo(t){if("C"===t)Io=Io.slice(0,-1);else{if("OK"===t)return void qo();Io.length<6&&(Io+=t);}
 (zo(),6===Io.length&&setTimeout(qo,140));}
-const Uo=[["god","INVULNERABLE"],["ammo","INFINITE AMMO"],["speed","PLAYER SPEED x2"],["jump","HIGH JUMP"],["fly","AIR JUMP"],["one","BOSS ONE-HIT"],["nopop","SKIP ITEM READ-LOCK"],],Vo=[["dbg","INFO HUD"],["box","HITBOXES"],["tmr","RUN TIMER"],],jo=[[0.5,"0.5x"],[1,"1x"],[2,"2x"],[4,"4x"],],Jo=[["pod","POD"],["lab","LAB"],["store","STORAGE"],["med","MED BAY"],["cafe","CAFE"],["stair","STAIRWELL"],["hall","BASEMENT"],["ware","STAFF STORAGE"],["exitlab","BOSS ROOM"],["outside","OUTSIDE"],["street","CH2 STREET"],["road","CH2 ROAD"],["highway","CH2 HIGHWAY"],["wroad","CH2 CRACKED ROAD"],["forest","CH2 OLD FOREST"],["river","CH2 RIVER CROSSING"],["rroad","CH2 RIVER ROAD"],["cbridge","CH2 BROKEN BRIDGE"],["port","CH2 BRIDGE PORT"],["deck","CH3 SHIP DECK"],["helm","CH3 CONTROL ROOM"],["motor","CH3 MOTOR ROOM"],["isle","CH3 ISLAND"],["tctl","CH3 TOWER CONTROL"],["tgen","CH3 TOWER GENERATOR"],["tlab","CH3 HIDDEN LAB"],];function Xo(){for(const t in items)
+const Uo=[["god","INVULNERABLE"],["ammo","INFINITE AMMO"],["speed","PLAYER SPEED x2"],["jump","HIGH JUMP"],["fly","AIR JUMP"],["one","BOSS ONE-HIT"],["nopop","SKIP ITEM READ-LOCK"],],Vo=[["dbg","INFO HUD"],["box","HITBOXES"],["tmr","RUN TIMER"],],jo=[[0.5,"0.5x"],[1,"1x"],[2,"2x"],[4,"4x"],],Jo=[["pod","POD"],["lab","LAB"],["store","STORAGE"],["med","MED BAY"],["cafe","CAFE"],["stair","STAIRWELL"],["hall","BASEMENT"],["ware","STAFF STORAGE"],["exitlab","BOSS ROOM"],["outside","OUTSIDE"],["street","CH2 STREET"],["road","CH2 ROAD"],["highway","CH2 HIGHWAY"],["wroad","CH2 CRACKED ROAD"],["forest","CH2 OLD FOREST"],["river","CH2 RIVER CROSSING"],["rroad","CH2 RIVER ROAD"],["cbridge","CH2 BROKEN BRIDGE"],["port","CH2 BRIDGE PORT"],["deck","CH3 SHIP DECK"],["helm","CH3 CONTROL ROOM"],["motor","CH3 MOTOR ROOM"],["isle","CH3 ISLAND"],["tctl","CH3 TOWER CONTROL"],["tgen","CH3 TOWER GENERATOR"],["tlab","CH3 HIDDEN LAB"],["crt","CH3 CITY HARBOR"],];function Xo(){for(const t in items)
 "potion"===t||_t.includes(t)||(inv.includes(t)||inv.push(t),got.add(t));for(const t in rooms)(rooms[t].items||[]).forEach((t)=>(taken[t.id]=1));((hasGun=!0),(ammo=4),inv.includes("blaster")||inv.push("blaster"),(hasPotion=!0),inv.includes("potion")||inv.push("potion"),0===stage&&(stage=1),(Tt=!0),updateBag(),updateGuide(),updateHud());}
 function Qo(){((hasGun=!0),(ammo=4),got.add("blaster"),inv.includes("blaster")||inv.push("blaster"),updateBag(),updateHud());}
 function Ko(){((exitOpen=!0),(stage=2),(erode=260),(pourT=0),(potionUsed=!0),(hasPotion=!1),(inv=inv.filter((t)=>"potion"!==t)),updateBag(),updateGuide());}
@@ -7469,7 +7469,7 @@ function c9LampOn(){const S=c7S();return!!(S.tm||C9.lampT>0);}
 function c9Lamp(){const S=c7S();if(!c9LampOn())return 0;const t=tick;if(C9.lampT>0&&C9.lampT<90)return(C9.lampT%9<4||C9.lampT>70)?1:0.15;const f=Math.sin(t/31)*Math.sin(t/7.3);return f>0.92?0.35:0.9+0.1*Math.sin(t/5);}
 function c9Corner(){const S=c7S(),g=C2_FLOOR,x=C9S_X;if(x<camX-40||x>camX+232)return;
   /* the dark alcove */
-  fill("rgba(0,0,0,.55)",x-26,0,48,g);
+  fill("rgba(0,0,0,.3)",x-26,0,48,g);
   const L=c9Lamp();
   /* the hanging lamp */
   fill("#06080a",x-0.5,0,1,16);fill("#2a2e32",x-4,16,8,3);fill(L>0.5?"#fff0c0":"#3a3428",x-2.5,19,5,1.6);
@@ -7483,22 +7483,21 @@ function c9Corner(){const S=c7S(),g=C2_FLOOR,x=C9S_X;if(x<camX-40||x>camX+232)re
     if(k==="clock"){ctx.strokeStyle="#3a4a6a";ctx.lineWidth=0.6;ctx.beginPath();ctx.arc(px+5,py+6,3.2,0,7);ctx.stroke();fill("#3a4a6a",px+4.7,py+3.6,0.6,2.6);}
     fill("#c83a2a",px+1,py+9.5,3,0.7);fill("#c83a2a",px+6,py+9.5,3,0.7);});
   ctx.strokeStyle="rgba(200,58,42,.7)";ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(x-10,40);ctx.lineTo(x-8,40);ctx.moveTo(x+2,42);ctx.lineTo(x+4,42);ctx.stroke();
-  /* the scientist, sitting against the racks with his head bowed, as if asleep (drawn 1.5x around his seat) */
+  /* the scientist: the game's own character sprite (lab coat, grey hair and beard, round glasses), sitting against the
+     racks with his eyes closed, as if he just fell asleep there; legs and notebook painted around him */
+  const SL=C9.sciLook||(C9.sciLook={gd:0,hs:2,hc:7,sk:1,fc:6,ey:3,gl:1,bs:2,bc:7,mo:0,cl:0,oc:0,tc:2});
   ctx.save();ctx.translate(x+4,g);ctx.scale(1.5,1.5);
-  fill("rgba(0,0,0,.45)",-15,-0.3,28,1.4);
-  fill("#262a36",-11,-2.6,12,2.6);fill("#323646",-11,-2.6,12,0.7);fill("#1a1410",-13.6,-3.2,2.8,3.2);fill("#3a2a1e",-13.6,-0.6,3.2,0.6);
+  fill("rgba(0,0,0,.45)",-16,-0.3,30,1.4);
+  fill("#262a36",-12,-2.6,13,2.6);fill("#323646",-12,-2.6,13,0.7);fill("#1a1410",-14.6,-3.2,2.8,3.2);fill("#3a2a1e",-14.6,-0.6,3.2,0.6);
   ctx.strokeStyle="#2c3040";ctx.lineWidth=2.6;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(0,-3);ctx.lineTo(-5,-8.4);ctx.lineTo(-8.4,-1.6);ctx.stroke();fill("#1a1410",-10.6,-2.4,3,2.4);
-  ctx.fillStyle="#d4d8dc";ctx.beginPath();ctx.moveTo(-2,0);ctx.lineTo(9,0);ctx.lineTo(9,-15);ctx.lineTo(4.5,-16.8);ctx.lineTo(1,-13.4);ctx.lineTo(-1,-4.4);ctx.closePath();ctx.fill();
-  fill("#a8aeb6",7,-15,2,15);fill("#bcc2c8",-2,-1.2,4,1.2);ctx.strokeStyle="#9aa0a8";ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(4.4,-16.4);ctx.lineTo(2.4,-9);ctx.moveTo(5.6,-8);ctx.lineTo(5.6,-2);ctx.stroke();
-  fill("#e8ecef",3,-16.4,3,1);fill("#3a5a7a",3.6,-15.6,1.2,5.2);fill("#e0e8f0",5.6,-12.6,2.2,2.8);fill("#c83a2a",5.6,-12.6,2.2,0.7);fill("#3a4a6a",6,-11.2,1.4,0.4);
-  ctx.strokeStyle="#c4c8ce";ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(3.4,-14);ctx.lineTo(0,-8.6);ctx.lineTo(-3.2,-6.6);ctx.stroke();fill("#d0a080",-4.8,-7.4,1.8,1.8);
-  fill("#5a3020",-9,-7.4,5.6,3.8);fill("#e8dcb8",-8.4,-7,4.6,0.9);fill("#8a4a30",-9,-7.4,0.8,3.8);
-  ctx.fillStyle="#d0a080";ctx.beginPath();ctx.ellipse(2.6,-18.4,2.4,2.6,0.5,0,7);ctx.fill();
-  ctx.fillStyle="#9a9aa0";ctx.beginPath();ctx.ellipse(3.8,-19.6,2.6,2,0.5,0,7);ctx.fill();fill("#b8b8be",3.2,-21.2,2.4,0.8);fill("#b88a68",4.6,-18.4,0.9,1.3);fill("#7a5a48",0.8,-17.4,1.6,0.5);
+  fill("#e4e8ec",-2,-2.4,8,2.4);fill("#c4c8ce",-2,-0.8,8,0.8);
+  ctx.restore();
+  {const E={c:"255,214,160",l:"255,236,190",a:0.04+0.07*L,dk:0.46-0.2*L};ctx.save();ctx.beginPath();ctx.rect(x-30,g-70,60,66.4);ctx.clip();ctx.translate(x+6,g-3.6);ctx.rotate(0.14);
+    Ma(0,15,SL,0,-1,{s:Po,closed:1,tired:1,noshd:1,env:E});ctx.restore();}
+  ctx.save();ctx.translate(x+4,g);ctx.scale(1.5,1.5);
+  fill("#5a3020",-9,-7.4,5.6,3.8);fill("#e8dcb8",-8.4,-7,4.6,0.9);fill("#8a4a30",-9,-7.4,0.8,3.8);fill("#d0a080",-4,-6.6,1.8,1.6);
   ctx.restore();
   const nb=S.hyp?0:0.5+0.5*Math.sin(tick/9);nb>0.55&&glow(x-5,g-8,9,"255,240,190",0.3*nb*a);
-  /* his glasses on the floor */
-  ctx.strokeStyle="#aab4bc";ctx.lineWidth=0.5;ctx.beginPath();ctx.arc(x-24,g-0.9,0.9,0,7);ctx.moveTo(x-20.7,g-0.9);ctx.arc(x-21.6,g-0.9,0.9,0,7);ctx.stroke();
   /* dust and a cobweb */
   ctx.strokeStyle="rgba(220,225,230,.35)";ctx.lineWidth=0.3;ctx.beginPath();ctx.moveTo(x+18,0);ctx.lineTo(x+8,8);ctx.moveTo(x+18,4);ctx.lineTo(x+11,4);ctx.moveTo(x+18,8);ctx.lineTo(x+14,1);ctx.stroke();
   ctx.restore();}
@@ -7609,6 +7608,365 @@ C3_DEVBTN.push(["CHAPTER 3: THE SCIENTIST AND THE HYPOTHESIS",[["c3_wlamp","HIDD
 {const _d=c3Dev;c3Dev=function(a){if(a==="c3_vreset")Object.assign(c7S(),{tm:0,sci:0,think:0,hyp:0});return _d(a);};}
 GM.c3.c9h=()=>{const S=c7S();return{tm:S.tm,sci:S.sci,think:S.think,hyp:S.hyp,done:S.done,q:C9_HQ&&{pg:C9_HQ.pg,ord:C9_HQ.ord.length,right:C9_HQ.right}};};GM.c3.c9hAct=(a)=>c9HypAct(a);GM.c3.c9hSh=()=>C9_HQ&&C9_HQ.sh;
 
+/* ---------------- real lighting in the hidden lab ---------------- */
+function c9LabLights(){const g=C2_FLOOR,T=tick,L=[];
+  [70,190,290].forEach((lx,q)=>{const a=0.5+0.5*Math.sin(T/14+q*2);L.push({x:lx,y:13,r:30,i:0.35+0.4*a,c:"255,60,40"});});
+  !C9.doc&&L.push({x:170,y:41,r:46,i:0.7,c:"90,255,150"});
+  const lp=c9Lamp();lp>0&&L.push({x:C9S_X,y:20,r:56,i:0.95*lp,c:"255,230,170",cone:1});
+  L.push({x:262,y:g-17,r:14,i:0.35+0.1*Math.sin(T/9),c:"255,240,190"});L.push({x:30,y:2,r:30,i:0.45,c:"200,225,240"});
+  return L;}
+{const _t=c7Tint;c7Tint=function(){_t();if(room!=="tlab")return;const L=c9LabLights();ctx.save();ctx.setTransform(ctx.canvas.width/192,0,0,ctx.canvas.height/108,0,0);ctx.drawImage(c10LM(L,0.5,"4,8,16"),0,0,192,108);
+  for(const q of L){const x=q.x-camX;if(x<-q.r||x>192+q.r)continue;glow(x,q.y,q.r*(q.cone?0.3:0.5),q.c,0.12*q.i);}ctx.restore();};}
+/* ======================= CHAPTER 3, PART 5: THE WAY BACK =======================
+   After the hypothesis lesson: climb back up out of the lab, leave the tower, walk back to the ship at the pier and
+   sail home. A cinematic shows the city from the water, burning, then a quarantine wall bursting open. The player
+   lands in the city harbor (a new room) and walks into a city where far more of the Evolved have broken out. */
+var C10={t:0,ash:[],deb:[],dust:[],run:[],bar:null,flash:0,dark:0.6,warm:0},C10V={P:[],burst:0,last:0,bang:0},C10_W=640,C10_BOAT=70;
+function c10Rooms(){if(C2.crt)return;
+  C2.crt={name:"THE CITY HARBOR",L:null,R:null,W:C10_W,cars:[],seeds:[131,132,133,134],c3:1,c4:1,c5:1,c7:1};rooms.crt={name:"THE CITY HARBOR",L:null,R:null,W:C10_W,crates:[],items:[],ints:[],plats:[]};C2_F.crt={trees:[],vines:[],branches:[],gantries:[],smoke:[]};
+  De.crt={c:"120,90,110",l:"255,150,90",a:0.16,dk:0.55};
+  rooms.isle.ints.push({id:"c5_boat",x:C10_BOAT,r:0,label:"BOARD THE SHIP"});}
+c10Rooms();
+/* ---------------- routing: the way back up, out and to the ship ---------------- */
+{const _s=c7Step;c7Step=function(){const S=c7S();if(room==="crt"){C5.t++;C7.t++;c10Tick();if(dead)return;if(C3.cut)return;if(c3TaskStep())return;c5Pick(()=>null);c10Triggers();return;}
+  _s();if(room==="isle"&&S.hyp&&!S.back&&!C3.cut&&!C3.task&&!C7G){c5Pick((it)=>{const k=it.id.slice(3);if(k==="boat")return{r:22,label:"BOARD THE SHIP"};if(k==="tdoor")return{r:22,label:"ENTER THE TOWER"};return null;});
+    if(!C10.warm&&C7.t%40===0){/* paint the city ahead of time, a tile at a time */const n=C10.warmN||0;if(n<4){c5Tile("crt",n,C2.crt.seeds[n]);C10.warmN=n+1;}else C10.warm=1;}}};}
+{const _u=c7Use;c7Use=function(e){const k=e.id.slice(3),S=c7S();if(room==="isle"&&k==="boat"){if(C3.cut||C3.task)return!0;if(!S.hyp)return!0;if(!S.back)c10Board();return!0;}if(room==="crt")return!0;return _u(e);};}
+{const _e=c7Enter;c7Enter=function(t){const S=c7S();if(t!=="crt")return _e(t);C3.lie=0;C7G=null;C5GN=null;C5PR=null;C5TR=null;C5CK=null;player.y=C2_FLOOR;player.x=S.ce2?(S.cend?C10_SIGNX+44:C10_BAR-40):S.ce1?470:C10_W-56;player.face=-1;camX=c3Clamp(player.x-96,0,C10_W-192);S.from="";
+  if(!S.city){S.city=1;c2Save("crt");c3CutStart("c5arrive");}updateGuide();};}
+{const _b=c7Back;c7Back=function(){if(room==="crt")return c10Back();return _b();};}
+{const _f=c7Front;c7Front=function(){if(room==="crt")return c10Front();return _f();};}
+{const _t=c7Tint;c7Tint=function(){if(room==="crt")return c10Tint();return _t();};}
+{const _a=window.__evoRoom;window.__evoRoom=()=>{if(room==="crt"&&C3&&!C3.dreamOn)return"city_ruin";return _a();};}
+{const _g=c7Guide;c7Guide=function(){const S=c7S(),g=qs("#ggb"),Q=(h)=>{qs("#gg h4 span").textContent="QUEST";g.innerHTML=h;return!0;};
+  if(S.hyp&&!S.back){if(room==="tlab")return Q("<b>Head back to the ship.</b><br>Climb back <b>UP</b> the ladder.");if(room==="tctl")return Q("<b>Head back to the ship.</b><br>Go back <b>OUTSIDE</b>.");if(room==="isle")return Q("<b>Head back to the ship.</b><br>It's tied up at the pier, far to the <b>LEFT</b>. Board it and sail home.");}
+  if(room==="crt")return Q(S.cend?"<b>Find the time machine parts.</b>":"<b>Head into the city.</b><br>Walk <b>LEFT</b>. Keep away from the Evolved.");
+  return _g();};}
+{const _a=c7Arrow;c7Arrow=function(){const S=c7S();const go=(t)=>{if(modal||won||dead||C3.cut||C3.busy||C9.doc)return;if(Math.abs(t-player.x)<22)return;const d=t>player.x?1:-1;vo(player.x+d*16,player.y-44,d);};
+  if(S.hyp&&!S.back){if(room==="tlab")return go(30);if(room==="tctl")return go(262);if(room==="isle")return go(C10_BOAT);}
+  if(room==="crt"){if(!S.cend)go(100);return;}return _a();};}
+/* after the lesson: no end card yet; the quest sends you back to the ship */
+c9CutHypEnd=function(c){const t=c.t,S=c7S();c.cx=null;
+  if(t===2)tnCap("Okay. Then here's MY hypothesis:");
+  if(t===170){$sx("success");tnCap("IF I find the parts the Evolved are guarding, THEN I can build a real time machine… and go back to save the past.");}
+  if(t===460)tnCap("Time to test it. The parts are back in the city, so that's where I'm going.");
+  if(t>=640){tnCap("");c3CutEnd();c2Save("tlab");updateGuide();toast("<b>BACK TO THE SHIP</b><br>Climb up the ladder, leave the tower and walk back to the pier.",5200);}};
+c9CutAfter=function(c){const t=c.t,S=c7S();c.cx=null;
+  if(t===2)tnCap("So that's what happened while I slept. Sample 07… the Evolved… all of it.");
+  if(t===230)tnCap("And the satellites went dark only thirty minutes ago. That was no accident.");
+  if(t===450){$sx("stinger");tnCap("…Hold on. That old movie…");}
+  if(t===600){tnCap("");c.wait=1;c9Mem(()=>{C3.cut=null;tnBars(0);qs("#cskip").hidden=!0;const first=!S.tm;S.tm=1;c2Save("tlab");fadeNow=1;updateGuide();if(first&&!S.hyp){C9.lampT=1;c3CutStart("c5lamp");}});}};
+/* ---------------- boarding, and the voyage home (opening-cutscene engine + the memory's effects) ---------------- */
+function c10Board(){const S=c7S();$sx("door");S.back=1;c2Save("isle");c10Sail(()=>{C10.run=[];C10.deb=[];C10.dust=[];C10.bar=null;backdrops.crt||backdrop("crt");fadeNow=1;enterRoom("crt","R");});}
+/* ---------------- in the city: scripted moments ---------------- */
+function c10Triggers(){const S=c7S();if(modal||won)return;
+  if(!S.ce1&&player.x<500)return c3CutStart("c5pack");
+  if(S.ce1&&!S.ce2&&player.x<C10_BAR+70)return c3CutStart("c5burst");
+  if(S.ce2&&!S.cend&&player.x<C10_SIGNX+34)return c3CutStart("c5cityend");}
+{const _w=c7Walls;c7Walls=function(){const S=c7S();if(room==="crt"&&!S.ce2&&player.x<C10_BAR+48){player.x=C10_BAR+48;player.vx=0;}return _w();};}
+const C10_LOOKS=[[2,5,9,3,{hs:4,gd:0}],[6,4,11,6,{hs:7,gd:1}],[9,6,3,10,{hs:1,gd:0}],[4,7,13,2,{hs:9,gd:1}],[11,5,6,8,{hs:3,gd:0}]];
+function c10Man(i,x,vx,lane,o){const L=C10_LOOKS[i%C10_LOOKS.length];return Object.assign({kind:"man",look:yt(L[0],L[1],L[2],L[3],L[4]),x,vx,f:vx<0?-1:1,lane,ph:i*13,s:0.92},o||{});}
+function c10Stop(){player.vx=0;player.walk=0;keys.l=keys.r=0;}
+function c10CutArrive(c){const t=c.t;c10Tick();const home=c3Clamp(player.x-96,0,C10_W-192);c.cx=t<80?home:t<380?home-Math.min(150,(t-80)*0.6):home-Math.max(0,150-(t-380)*1.2);
+  if(t===2){c10Stop();$sx("siren");tnCap("The city harbor. I'm home…");}
+  if(t===220){$sx("growl");tnCap("…No. This isn't the city I left. It's so much worse.");}
+  if(t===430)tnCap("Everything is burning, and there's nobody left to put it out.");
+  if(t>=640){tnCap("");c3CutEnd();updateGuide();toast("<b>INTO THE CITY</b><br>Walk LEFT. Keep away from the Evolved.",4600);}}
+function c10CutPack(c){const t=c.t,S=c7S();c10Tick();c.cx=c3Clamp(player.x-140,0,C10_W-192);
+  if(t===1){c10Stop();$sx("growl");tnCap("Shh! Something's coming. Stay still…");}
+  if(t===50){C10.run=[c10Man(0,player.x-34,-0.36,7),c10Man(1,player.x-58,-0.42,5,{d:30}),c10Man(2,player.x-20,-0.3,9,{d:70})];$sx("breath");}
+  if(t===210){$sx("howl");C10.run.push({kind:0,x:camX+215,vx:-2.3,f:-1,lane:11,k:0.55,ph:5});}
+  if(t===320)tnCap("Those were people once. Sample 07 changed them too.");
+  if(t===560)tnCap("There are so many more of them than before.");
+  if(t===790)tnCap("Fire needs heat, fuel and oxygen. With no one left to fight them, these fires just keep spreading.");
+  if(t>=1040){tnCap("");S.ce1=1;c2Save("crt");c3CutEnd();updateGuide();}}
+function c10CutBurst(c){const t=c.t,S=c7S(),g=C2_FLOOR;c10Tick();c.cx=c3Clamp(C10_BAR-104,0,C10_W-192);
+  if(t===1){c10Stop();C10.bar={jit:0,go:0,k:0};tnCap("The evacuation barricade. The army built it to keep the road to the harbor open while everyone escaped.");}
+  if(t===250||t===330||t===395){$sx("doorhit");C10.bar.jit=t===395?6:4;shake=Math.max(shake,t===395?5:3);for(let q=0;q<4;q++)C10.dust.push({x:C10_BAR-10+Math.random()*20,y:g-34+Math.random()*10,vx:(Math.random()-0.5)*0.6,vy:0.2,s:6,a:0.5});}
+  if(t===260)tnCap("…What was that?");
+  if(t===340)$sx("growl");
+  if(t===440){tnCap("");$sx("crash");$sx("roar");$sx("debris");shake=Math.max(shake,10);C10.flash=0.45;C10.bar.go=1;c10Boom(C10_BAR,g,44);
+    C10.run.push({kind:2,x:C10_BAR-4,vx:0,f:1,lane:0,k:0.95,ph:0,stop:190,next:{vx:-0.75,f:-1}});}
+  if(t===470)$sx("flutter");
+  if(t===520)tnCap("It smashed straight through!");
+  if(t===600){$sx("roar");shake=Math.max(shake,4);}
+  if(t===660){C10.run.push(c10Man(3,C10_BAR-8,-0.4,6,{d:20}),c10Man(4,C10_BAR+2,-0.46,4,{d:70}),c10Man(1,C10_BAR-2,-0.38,8,{d:130}));tnCap("It didn't see me. It's heading deeper into the city… and they're following it.");}
+  if(t===900)tnCap("Nothing is holding them back any more. While I was gone, more and more of them broke out.");
+  if(t>=1140){tnCap("");S.ce2=1;c2Save("crt");c3CutEnd();updateGuide();}}
+function c10CutEnd(c){const t=c.t,S=c7S();c10Tick();const h=c3Clamp(player.x-96,0,C10_W-192);c.cx=t<220?h:Math.max(0,h-(t-220)*0.15);
+  if(t===2){c10Stop();tnCap("The evacuation route. Everyone got out this way… everyone except the people still asleep in the pods.");}
+  if(t===260)tnCap("The power plant. The shipyard. The observatory. They're all out there, somewhere in this.");
+  if(t===500)tnCap("If Dr. Morrow's hypothesis is right, the most Evolved will be wherever the parts are.");
+  if(t===740){$sx("stinger");tnCap("Then that's exactly where I'm going.");}
+  if(t>=940){tnCap("");S.cend=1;S.done=1;c2Save("crt");c3CutEnd();updateGuide();fadeNow=1;c7End();}}
+{const _c=c5Cut;c5Cut=function(c){if(c.k==="c5arrive")return c10CutArrive(c);if(c.k==="c5pack")return c10CutPack(c);if(c.k==="c5burst")return c10CutBurst(c);if(c.k==="c5cityend")return c10CutEnd(c);if(c.k==="c5hypend")return c9CutHypEnd(c);if(c.k==="c5after")return c9CutAfter(c);return _c(c);};}
+{const _s=c5Skip;c5Skip=function(c){if(c.k==="c5arrive"){c.t=Math.max(c.t,639);return;}if(c.k==="c5pack"){c.t=Math.max(c.t,1039);return;}if(c.k==="c5burst"){if(c.t<440)c.t=439;else c.t=Math.max(c.t,1139);return;}if(c.k==="c5cityend"){c.t=Math.max(c.t,939);return;}if(c.k==="c5hypend"){c.t=Math.max(c.t,639);return;}return _s(c);};}
+/* ---------------- the end card: the voyage home ---------------- */
+{const _e=c7End;c7End=function(){_e();const el=qs("#c5End"),S=c7S();if(!el||!S.cend)return;const h=el.querySelector("h3");h&&(h.textContent="BACK TO THE CITY");
+  const uls=el.querySelectorAll(".c5cols ul");if(uls.length>=2&&!el.querySelector(".c10li")){const li=(u,x)=>{const n=document.createElement("li");n.className="c10li";n.innerHTML=x;u.appendChild(n);};
+    li(uls[0],"Climbed back out of the lab, sailed home on the ship and found the city overrun: far more of the Evolved had broken out while you were away.");
+    li(uls[1],"<b>The fire triangle:</b> a fire needs heat, fuel and oxygen. Take away any one of them and it goes out. With no one left to fight them, the city's fires keep spreading.");}};}
+/* ---------------- developer tools ---------------- */
+C3_DEVBTN.push(["CHAPTER 3: THE WAY BACK",[["c3_uback","HIDDEN LAB: LESSON DONE, HEAD BACK"],["c3_uboat","ISLAND: AT THE SHIP"],["c3_usail","PLAY THE VOYAGE HOME"],["c3_ucity","CITY HARBOR (ARRIVE)"],["c3_upack","CITY: THE PACK"],["c3_uburst","CITY: THE WAREHOUSE BURSTS"],["c3_uend","CITY: THE OVERLOOK AND END CARD"]]]);
+{const _d=c3Dev;c3Dev=function(a){if(a.slice(0,4)!=="c3_u")return _d(a);const I=c7S();modal=0;Oo=0;Do.hidden=!0;
+  const base={lab:1,doc:1,tm:1,sci:1,think:1,hyp:1,done:0,back:0,city:0,ce1:0,ce2:0,cend:0};
+  if(a==="c3_uback"){Object.assign(I,base);c7DevGo("tlab",120);Object.assign(I,base);updateGuide();return;}
+  if(a==="c3_uboat"){Object.assign(I,base,{land:1,look:1,door:1});c7DevGo("isle",C10_BOAT+30);Object.assign(I,base,{land:1,look:1,door:1});updateGuide();return;}
+  if(a==="c3_usail"){Object.assign(I,base);c10Board();return;}
+  const city=(o,x)=>{c3DevPre("tlab");Object.assign(I,base,{back:1,city:1},o);C10.run=[];C10.deb=[];C10.dust=[];C10.bar=o.ce2?{go:1,k:1}:null;c7DevGo("crt",x);};
+  if(a==="c3_ucity"){c3DevPre("tlab");Object.assign(I,base,{back:1});C10.run=[];C10.deb=[];C10.dust=[];C10.bar=null;c7DevGo("crt");return;}
+  if(a==="c3_upack"){city({},490);return;}
+  if(a==="c3_uburst"){city({ce1:1},C10_BAR+86);return;}
+  if(a==="c3_uend"){city({ce1:1,ce2:1},C10_SIGNX+60);return;}};}
+GM.c3.c10=()=>{const S=c7S();return{hyp:S.hyp,back:S.back,city:S.city,ce1:S.ce1,ce2:S.ce2,cend:S.cend,done:S.done,run:(C10.run||[]).length,bar:C10.bar&&C10.bar.go};};GM.c3.c10show=(n,t)=>{c10Reg();GM.c3.c9show(n,t);};
+/* ======================= CHAPTER 3, PART 5 (ART): THE CITY AFTER DARK =======================
+   Painted with the game's own city painters (Ye skyline, qe buildings, c2Apoc/c2Ground/c2Broken streets, the port's quay
+   and containers, Ma people, Ea creatures), then graded to night. A screen-space light map gives real dynamic lighting:
+   fires and lamps cut light into the darkness, and the player and the Evolved are lit by whatever is burning near them. */
+var C10A={spr:{},L:null,lights:[],I:0};
+const C10_PAL=[["#2a3434","#4a5856","#7a8a84"],["#33302c","#58524a","#8a8274"],["#26323a","#44545c","#748890"]];
+/* near ruined buildings: [world x of left edge, width, height (world units), seed, palette, extras] */
+const C10_BLD=[[-6,62,74,401,0,{fire:[[18,30],[40,46]],top:28}],[64,44,58,402,1,{fire:[[22,40]],coll:1}],[150,70,82,403,2,{nest:1}],[300,52,66,404,0,{fire:[[14,22],[36,38]],top:20,coll:1}],[372,60,78,405,1,{fire:[[30,30]]}],[452,46,52,406,2,{coll:1,top:26}]];
+const C10_BAR=262,C10_SIGNX=96;
+/* ---------------- night grading for a painted canvas ---------------- */
+function c10Grade(cv,o){o=o||{};const g=cv.getContext("2d"),H=cv.height,W=cv.width;g.save();
+  g.globalCompositeOperation="multiply";const q=g.createLinearGradient(0,0,0,H);q.addColorStop(0,o.top||"#2a2856");q.addColorStop(0.5,o.mid||"#4a3c6c");q.addColorStop(0.82,o.low||"#a0706a");q.addColorStop(1,o.bot||"#6a5466");g.fillStyle=q;g.fillRect(0,0,W,H);
+  g.globalCompositeOperation="lighter";const h=g.createLinearGradient(0,H*0.55,0,H*0.86);h.addColorStop(0,"rgba(255,90,30,0)");h.addColorStop(1,"rgba(255,90,30,"+(o.fire==null?0.16:o.fire)+")");g.fillStyle=h;g.fillRect(0,0,W,H);
+  g.restore();return cv;}
+/* ---------------- the background tiles: the same city as chapter 2, months later and at night ---------------- */
+{const _t=c5Tile;c5Tile=function(id,i,seed){if(id!=="crt")return _t(id,i,seed);const k=id+i;return C5.tiles[k]||(C5.tiles[k]=c10Tile(i,seed));};}
+function c10Tile(i,seed){const harbor=i===3;
+  const cv=Ae((t)=>{Ye(t,0,184,{hs:1.12,seed,grassH:14,sun:-600,bh:1.08,puddles:harbor?[]:[[70+70*i,204,26,3]],cars:[],haze:0.75});c2Apoc(t,i);
+    if(harbor){c4PaintWide(t,i);c4PaintQuay(t,i);}else{t.fog(0,150,384,216,"#d8f0c0",0.16,seed,34,8,0.2);c2Ground(t,i);c2Broken(t,i,"road");}});
+  c10Grade(cv,{fire:harbor?0.1:0.18});const g=cv.getContext("2d");
+  /* a pale moon over the middle of the city, its light catching the smoke */
+  if(i===1){g.save();g.globalCompositeOperation="lighter";const m=g.createRadialGradient(250,46,4,250,46,70);m.addColorStop(0,"rgba(255,220,230,.5)");m.addColorStop(1,"rgba(255,220,230,0)");g.fillStyle=m;g.fillRect(150,0,200,130);g.restore();
+    g.fillStyle="#f4dce4";g.beginPath();g.arc(250,46,15,0,7);g.fill();g.fillStyle="#dcbcc8";[[244,40,4],[256,52,3],[252,38,2]].forEach(([x,y,r2])=>{g.beginPath();g.arc(x,y,r2,0,7);g.fill();});}
+  /* soot streaks over windows that burned */
+  g.save();g.globalCompositeOperation="multiply";for(let k=0;k<9;k++){const x=384*r(k,700+i*9),y=70+80*r(k,710+i*9),w=8+12*r(k,720+i),h2=20+30*r(k,730+i);const s=g.createLinearGradient(0,y,0,y-h2);s.addColorStop(0,"rgba(20,10,14,.55)");s.addColorStop(1,"rgba(20,10,14,0)");g.fillStyle=s;g.fillRect(x,y-h2,w,h2);}g.restore();
+  return cv;}
+/* ---------------- painted sprites ---------------- */
+function c10Spr(key,fn){return C10A.spr[key]||(C10A.spr[key]=fn());}
+/* a ruined building from the game's own painter (qe), graded to night, with a collapsed corner and exposed rebar */
+function c10Bld(b){return c10Spr("b"+b[3],()=>{const [x,w,h,seed,pi,o]=b,W=w*2,H=h*2;
+  const cv=Ae((t)=>{qe(t,8,216,W,H,seed,C10_PAL[pi],["#b8d0b0",0.2]);
+    if(o.nest){/* the Evolution's growth: thick green roots climbing the walls, pink and lime pustules */
+      for(let k=0;k<7;k++){let px=8+W*(0.08+0.84*r(k,900+seed)),py=216;const L=70+H*0.8*r(k,910+seed);for(let s=0;s<L;s+=2){const th=Math.max(1.5,7*(1-s/L));px+=(r(s+k*31,920)-0.5)*3+Math.sin(s/14+k)*0.8;py-=2;if(py<216-H+10)break;
+        t.disc(px|0,py|0,th|0,(dx,dy)=>{const v=(-0.6*dx-0.8*dy)/Math.max(1,th)+0.6*(Et(px+dx,py+dy)-0.5);return v>0.45?[58,150,82]:v>0?[34,110,62]:[20,72,46];});
+        if(r(s+k*7,930)<0.06)t.disc(px+((r(s,931)-0.5)*th*2|0),py|0,2,r(s,932)<0.5?[255,122,208]:[184,255,106]);}}
+      for(let k=0;k<26;k++){const px=8+W*r(k,940+seed),py=216-H*0.9*r(k,941+seed);t.disc(px|0,py|0,1+(r(k,942)*2|0),[24,86,52]);t.px(px,py-1,r(k,943)<0.5?[255,150,220]:[200,255,140]);}}});
+  const g=cv.getContext("2d");c10Grade(cv,{top:"#3a3466",mid:"#544470",low:"#8a6470",bot:"#5a4a5a",fire:0.2});
+  if(o.coll){/* a corner has come down */g.save();g.globalCompositeOperation="destination-out";g.beginPath();g.moveTo(8+W*0.55,216-H-4);g.lineTo(8+W+2,216-H-4);g.lineTo(8+W+2,216-H+H*0.42);g.lineTo(8+W*0.82,216-H+H*0.3);g.lineTo(8+W*0.7,216-H+H*0.14);g.closePath();g.fill();g.restore();
+    g.strokeStyle="#7a6a5a";g.lineWidth=1;for(let q=0;q<6;q++){const x0=8+W*(0.6+q*0.06),y0=216-H+H*(0.08+q*0.05);g.beginPath();g.moveTo(x0,y0);g.lineTo(x0+4+q,y0-6+(q%2)*3);g.stroke();}}
+  if(o.fire)for(const [fx,fy] of o.fire){/* scorched, burnt-out windows */const s=g.createRadialGradient(8+fx*2,216-H+fy*2,2,8+fx*2,216-H+fy*2,26);s.addColorStop(0,"rgba(8,4,6,.85)");s.addColorStop(1,"rgba(8,4,6,0)");g.save();g.globalCompositeOperation="multiply";g.fillStyle=s;g.fillRect(0,0,384,216);g.restore();g.fillStyle="#140806";g.fillRect(8+fx*2-6,216-H+fy*2-8,12,16);}
+  return cv;});}
+function c10DrawBld(b){const [x,w,h]=b;if(x+w<camX-20||x>camX+212)return;ctx.drawImage(c10Bld(b),0,0,384,216,x-4,C2_FLOOR-108,192,108);}
+/* the evacuation barricade: concrete barriers, two containers from the port, and the route sign */
+function c10Jersey(){return c10Spr("jersey",()=>{const cv=document.createElement("canvas");cv.width=48;cv.height=28;const g=cv.getContext("2d");
+  for(let y=0;y<28;y++)for(let x=0;x<48;x++){const inset=y<10?(10-y)*0.9:0;if(x<inset||x>=48-inset)continue;const n=Pt(x/5,y/4,77),v=0.45+0.3*(n-0.5)-(y>24?0.2:0)+(x<inset+2?0.15:0);const P=[[70,70,72],[104,104,104],[140,138,132],[176,172,164]];const c=c6Ramp(P,v,x,y);g.fillStyle="rgb("+c+")";g.fillRect(x,y,1,1);}
+  for(let k=0;k<5;k++){g.fillStyle=k%2?"#e8e4d8":"#c83a2a";g.beginPath();g.moveTo(6+k*8,26);g.lineTo(12+k*8,26);g.lineTo(18+k*8,14);g.lineTo(12+k*8,14);g.fill();}
+  g.fillStyle="rgba(40,110,50,.7)";for(let k=0;k<14;k++)g.fillRect((k*13)%46,24+(k%3),1,2+(k%2));g.fillStyle="#1a1a1a";g.fillRect(14,6,1,6);g.fillRect(15,11,3,1);return cv;});}
+function c10SignSpr(){return c10Spr("sign",()=>{const cv=document.createElement("canvas");cv.width=96;cv.height=44;const g=cv.getContext("2d");
+  for(let y=0;y<34;y++)for(let x=0;x<96;x++){const n=Pt(x/6,y/3,88),v=0.55+0.3*(n-0.5)-(y<2||y>31?0.3:0);g.fillStyle="rgb("+c6Ramp([[150,138,96],[196,180,120],[226,210,150],[240,228,180]],v,x,y)+")";g.fillRect(x,y,1,1);}
+  g.fillStyle="#2a2018";g.fillRect(0,0,96,2);g.fillRect(0,32,96,2);g.fillRect(10,34,3,10);g.fillRect(83,34,3,10);
+  g.font='8px "Press Start 2P",monospace';g.textBaseline="top";g.fillStyle="#1a1410";g.fillText("EVACUATION",8,4);g.fillText("ROUTE",8,15);g.fillStyle="#c82a1a";g.fillText("→",70,14);
+  g.fillStyle="#c82a1a";g.font='6px "Press Start 2P",monospace';g.fillText("HARBOR",48,25);
+  g.fillStyle="rgba(40,20,10,.5)";for(let k=0;k<30;k++)g.fillRect((k*29)%96,(k*11)%34,2,1);return cv;});}
+function c10Barricade(){const S=c7S(),g=C2_FLOOR,x=C10_BAR,B=C10.bar||{};if(x<camX-80||x>camX+272)return;const broke=S.ce2||B.go;
+  const J=c10Jersey(),jit=B.jit?(Math.random()-0.5)*B.jit:0;
+  const jersey=(cx,ang,dy)=>{ctx.save();ctx.translate(cx,g-(dy||0));ctx.rotate(ang||0);ctx.drawImage(J,-12,-14,24,14);ctx.restore();};
+  if(!broke){c4BoxArt(x-4+jit,g,0,"",5);c4BoxArt(x+3+jit*1.5,g-18,4,"",6);ctx.drawImage(c10SignSpr(),x-24+jit,g-59,48,22);jersey(x-30,0);jersey(x+30,0);
+    /* razor wire along the top */ctx.strokeStyle="#8a8e90";ctx.lineWidth=0.4;for(let q=0;q<9;q++){ctx.beginPath();ctx.arc(x-18+q*4.4+jit,g-37,2,0,7);ctx.stroke();}}
+  else{const k=Math.min(1,B.k||1);
+    /* the top container tumbled toward the harbor, the lower one was shoved sideways */
+    ctx.save();ctx.translate(x-30-22*k,g-9-8*Math.sin(k*3.14));ctx.rotate(-1.4*k);c4BoxArt(0,9,4,"crushed",6);ctx.restore();
+    ctx.save();ctx.translate(x-10-8*k,g);ctx.rotate(-0.1*k);c4BoxArt(0,0,0,"crushed",5);ctx.restore();
+    jersey(x-52-10*k,-0.45*k,0);jersey(x+30,0.08*k,0);
+    ctx.save();ctx.translate(x-70-6*k,g-3);ctx.rotate(-1.45*k);ctx.drawImage(c10SignSpr(),-24,-10,48,22);ctx.restore();}}
+/* a wrecked bus, a burnt car, lamp posts, oil drums with fires */
+const C10_CARS=[[118,"sedan",1],[196,"hatch",4],[352,"van",2],[430,"sedan",9],[506,"hatch",7]],C10_LAMPS=[[226,1],[410,0],[560,2]],C10_DRUMS=[[170],[338],[476]];
+function c10Lamp(x,mode){const g=C2_FLOOR;if(x<camX-30||x>camX+222)return;fill("#1e2226",x-0.8,g-40,1.6,40);fill("#3a4046",x-0.8,g-40,0.6,40);fill("#1e2226",x-0.8,g-41,8,1.4);fill("#2a3036",x+4,g-41,5,2.4);
+  const on=c10LampOn(x,mode);fill(on>0.5?"#fff2c8":"#4a4438",x+4.6,g-38.8,3.8,0.8);}
+function c10LampOn(x,mode){if(mode===0)return 0;const T=C10.t;if(mode===2)return 0.9;const f=Math.sin(T/3.1+x)*Math.sin(T/17+x*0.3);return f>0.55?0.1:f>0.3?0.5:1;}
+function c10Drum(x){const g=C2_FLOOR;if(x<camX-20||x>camX+212)return;fill("#2a1a14",x-3,g-8,6,8);fill("#4a2a1c",x-3,g-8,1.4,8);fill("#1a100c",x+2,g-8,1,8);fill("#6a3a24",x-3,g-6,6,0.6);fill("#6a3a24",x-3,g-2.6,6,0.6);c10Flame(x,g-8,5,3.2);}
+function c10Flame(x,y,h,w){const T=C10.t;for(let k=0;k<3;k++){const ph=T/3.2+k*1.7+x,hh=h*(0.7+0.3*Math.sin(ph)+0.15*Math.sin(ph*2.3+1)),xx=x+(k-1)*w*0.35;fill("#d8421c",xx-w*0.25,y-hh,w*0.5,hh+0.6);fill("#ff8a30",xx-w*0.18,y-hh*0.72,w*0.36,hh*0.72);fill("#ffd868",xx-w*0.08,y-hh*0.4,w*0.16,hh*0.4);}}
+/* soft dithered smoke puffs (cached per size) */
+function c10Puff(n,col){const key="pf"+n+col;return c10Spr(key,()=>{const cv=document.createElement("canvas");cv.width=cv.height=n*2;const g=cv.getContext("2d"),im=g.createImageData(n*2,n*2),d=im.data,c=col.split(",").map(Number);
+  for(let y=0;y<n*2;y++)for(let x=0;x<n*2;x++){const dd=Math.hypot(x-n+0.5,y-n+0.5)/n;if(dd>=1)continue;const v=4*Math.pow(1-dd,1.3)*(0.75+0.5*Pt(x/4,y/4,n)),l=Math.floor(v)+(v%1>Et(x,y)?1:0);if(l<=0)continue;const i=4*(y*n*2+x);d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2];d[i+3]=Math.min(255,46*l);}
+  g.putImageData(im,0,0);return cv;});}
+function c10Smoke(x,y,s,T,col){for(let q=0;q<6;q++){const k=((T*0.5+q*42+x*3)%250)/250,px=x+Math.sin(k*5+q)*4*s-k*18*s,py=y-k*70*s,sz=(6+k*22)*s;ctx.globalAlpha=0.8*(1-k)*Math.min(1,k*6);ctx.drawImage(c10Puff(24,col||"30,22,30"),px-sz/2,py-sz/2,sz,sz);}ctx.globalAlpha=1;}
+/* ---------------- the Evolved ---------------- */
+const C10_MUTE={skin:"#7fcf5a",main:"#4a3a5a",glow:1};
+function c10Light(x,y){let I=0;for(const L of C10A.lights){const d=Math.hypot(L.x-x,(L.y-y)*1.4);if(d<L.r)I+=L.i*(1-d/L.r);}return Math.min(1,I);}
+function c10Env(x,y,base){const I=c10Light(x,y);return{c:base?base.c:"44,30,60",l:I>0.25?"255,150,80":"150,160,230",a:0.2+0.18*I,dk:0.62-0.32*I};}
+function c10Mutant(m){const g=C2_FLOOR,y=g-(m.lane||0);if(m.x<camX-30||m.x>camX+222)return;const fr=((C10.t+m.ph)/(m.run?4:9))|0;
+  Ma(m.x,y,m.look,0,m.f,Object.assign({s:Po*(m.s||1),pose:c3Pose(m.run?"run":"walk",fr%8),env:c10Env(m.x,y-14)},C10_MUTE));
+  const ex=m.x+m.f*2*(m.s||1),ey=y-30*(m.s||1);glow(ex,ey,3,"160,255,120",0.35);}
+function c10Beast(m){const g=C2_FLOOR,y=g-(m.lane||0);if(m.x<camX-60||m.x>camX+252)return;const k=m.k||0.6;
+  if(m.al!=null&&m.al<1)ctx.globalAlpha=m.al;c3Ea(m.x-m.f*33*k,y,m.f,m.kind,(C10.t+(m.ph||0))*(m.kind===2?1.2:1.8),k);ctx.globalAlpha=1;
+  glow(m.x+m.f*1.5*k/0.6,y-15*k/0.62,m.kind===2?7:4,"255,50,30",0.55);}
+function c10Actor(m){m.kind==="man"?c10Mutant(m):c10Beast(m);}
+/* ---------------- light map ---------------- */
+function c10Lights(){const T=C10.t,g=C2_FLOOR,L=[];const fl=(s)=>0.82+0.18*Math.sin(T/4+s)*Math.sin(T/11+s*2);
+  for(const b of C10_BLD){const o=b[5];if(o.fire)for(const [fx,fy] of o.fire)L.push({x:b[0]+fx,y:g-b[2]+fy,r:34,i:0.9*fl(fx+b[3]),c:"255,120,40"});if(o.nest)L.push({x:b[0]+b[1]/2,y:g-20,r:46,i:0.4+0.15*Math.sin(T/30),c:"120,255,140"});if(o.top)L.push({x:b[0]+o.top,y:g-b[2]-2,r:40,i:fl(b[3])*0.9,c:"255,120,40"});}
+  for(const [x,k,i] of C10_CARS)if(i%2===1)L.push({x:x+16,y:g-14,r:44,i:fl(i),c:"255,130,50"});
+  for(const [x] of C10_DRUMS)L.push({x,y:g-12,r:36,i:fl(x),c:"255,140,60"});
+  for(const [x,m] of C10_LAMPS){const on=c10LampOn(x,m);on>0&&L.push({x:x+6.5,y:g-38,r:34,i:0.8*on,c:"255,236,190",cone:1});}
+  for(const m of C10.run||[])m.kind!=="man"&&L.push({x:m.x,y:g-12,r:10,i:0.25,c:"255,60,40"});
+  C10A.lights=L;}
+function c10LightMap(){return c10LM(C10A.lights,C10.dark==null?0.6:C10.dark,"10,6,26");}
+/* a screen-space light map: darkness with soft holes cut by each light (cones for lamps) */
+function c10LM(lights,dark,col){const W=384,H=216;if(!C10A.L){C10A.L=document.createElement("canvas");C10A.L.width=W;C10A.L.height=H;}const lg=C10A.L.getContext("2d");
+  lg.globalCompositeOperation="source-over";lg.clearRect(0,0,W,H);lg.fillStyle="rgba("+(col||"10,6,26")+","+dark+")";lg.fillRect(0,0,W,H);
+  lg.globalCompositeOperation="destination-out";for(const L of lights){const x=(L.x-camX)*2,y=L.y*2,R=L.r*2;if(x<-R||x>W+R)continue;
+    const q=lg.createRadialGradient(x,y,0,x,y,R);q.addColorStop(0,"rgba(0,0,0,"+Math.min(1,L.i)+")");q.addColorStop(0.45,"rgba(0,0,0,"+Math.min(1,L.i*0.6)+")");q.addColorStop(1,"rgba(0,0,0,0)");lg.fillStyle=q;
+    if(L.cone){lg.beginPath();lg.moveTo(x-3,y-4);lg.lineTo(x+3,y-4);lg.lineTo(x+R*0.5,y+R*1.3);lg.lineTo(x-R*0.5,y+R*1.3);lg.closePath();lg.fill();lg.beginPath();lg.arc(x,y,R*0.16,0,7);lg.fill();}else{lg.beginPath();lg.arc(x,y,R,0,7);lg.fill();}}
+  return C10A.L;}
+/* ---------------- the drawing passes for the room ---------------- */
+function c10Back(){const S=c7S(),g=C2_FLOOR,T=C10.t;
+  /* smoke from fires far off in the city */
+  for(const [x,y,s] of [[40,30,1],[210,22,1.3],[330,34,0.9],[470,26,1.2]]){const fx=x+camX*0.3;if(fx<camX-60||fx>camX+252)continue;c10Smoke(fx,y,s,T,"26,18,26");glow(fx,y+4,10,"255,110,40",0.25+0.1*Math.sin(T/7+x));}
+  /* distant glow of the Evolution's growth, over the heart of the city */
+  {const gx=60+camX*0.55;if(gx>camX-60&&gx<camX+252){glow(gx,40,40,"110,255,140",0.08+0.04*Math.sin(T/40));}}
+  for(const b of C10_BLD)c10DrawBld(b);
+  /* fires in the burnt-out windows and on the roofs, with their smoke */
+  for(const b of C10_BLD){const o=b[5];if(b[0]+b[1]<camX-30||b[0]>camX+222)continue;const top=g-b[2];
+    if(o.fire)for(const [fx,fy] of o.fire){c10Flame(b[0]+fx,top+fy+3,5,4);glow(b[0]+fx,top+fy,14,"255,120,40",0.3);c10Smoke(b[0]+fx,top+fy-4,0.5,T+fx*9);}
+    if(o.top){c10Flame(b[0]+o.top,top+1,7,6);c10Smoke(b[0]+o.top,top-6,0.8,T+b[3]);}
+    if(o.nest){for(let q=0;q<10;q++){const px=b[0]+4+((q*37)%b[1]),py=g-6-((q*23)%(b[2]-12)),a=0.5+0.5*Math.sin(T/(14+q*2)+q);a>0.7&&fill(q%2?"#ff86d0":"#c8ff7a",px,py,1,1);glow(px,py,4,q%2?"255,120,200":"160,255,120",0.18*a);}}}
+  for(const [x,m] of C10_LAMPS)c10Lamp(x,m);
+  /* red eyes in dark windows */
+  for(let q=0;q<22;q++){const x=(q*61+13)%C10_W,y=20+((q*37)%46);if(x<camX-10||x>camX+202)continue;const on=Math.sin(T/(40+q*3)+q*1.7)>0.6;on&&(fill("#ff3a2a",x,y,1,0.8),fill("#ff3a2a",x+2,y,1,0.8),glow(x+1,y,4,"255,40,30",0.28));}
+  /* crows over the rooftops */
+  for(let q=0;q<5;q++){const cx=120+q*110+Math.sin(T/60+q)*30,cy=16+((q*13)%14)+Math.sin(T/23+q*2)*4;if(cx<camX-10||cx>camX+202)continue;c3Crow(cx,cy,T/8+q,Math.cos(T/60+q)>0?1:-1,0.5);}
+  /* the actors that walk in the far lane go behind the street props */
+  for(const m of C10.run||[])(m.lane||0)>2&&c10Actor(m);
+  for(const [x,k,i] of C10_CARS){const c=c2NewCar(x,k,i);c.burn=i%2===1;c2Car(c);}
+  for(const [x] of C10_DRUMS)c10Drum(x);
+  c10Barricade();
+  if(camX<C10_SIGNX+60){ctx.drawImage(c10SignSpr(),C10_SIGNX-24,g-30,48,22);}
+  /* the ship tied up at the far right of the pier */
+  if(camX>C10_W-330){const h=c7HullSpr();ctx.save();ctx.translate(C10_W+104,0);ctx.scale(-1,1);ctx.drawImage(h,0,g-98,150,118);ctx.restore();}
+  for(const m of C10.run||[])(m.lane||0)<=2&&c10Actor(m);
+  for(const d of C10.deb){ctx.save();ctx.translate(d.x,d.y);ctx.rotate(d.r||0);fill(d.c,-d.s/2,-d.s/2,d.s,d.s);ctx.restore();}
+  for(const p of C10.dust){ctx.globalAlpha=Math.max(0,p.a);ctx.drawImage(c10Puff(24,"120,104,96"),p.x-p.s/2,p.y-p.s/2,p.s,p.s);}ctx.globalAlpha=1;
+  /* the player is lit by whatever is burning nearby */
+  const e=c10Env(player.x,player.y-14);De.crt=Object.assign(De.crt||{},{c:"70,50,80",l:e.l,a:e.a*0.8,dk:e.dk});}
+function c10Front(){for(const a of C10.ash){ctx.globalAlpha=a.a;fill(a.hot?"#ffb060":"#b8b0b0",a.x,a.y,a.hot?0.6:0.7,a.hot?0.6:0.7);a.hot&&glow(a.x,a.y,2,"255,150,60",0.2*a.a);}ctx.globalAlpha=1;}
+function c10Tint(){c10Lights();const T=C10.t;
+  ctx.save();ctx.setTransform(ctx.canvas.width/192,0,0,ctx.canvas.height/108,0,0);ctx.drawImage(c10LightMap(),0,0,192,108);
+  for(const L of C10A.lights){const x=L.x-camX;if(x<-L.r||x>192+L.r)continue;glow(x,L.y,L.r*(L.cone?0.3:0.6),L.c,(L.cone?0.1:0.14)*L.i);}
+  const vg=C3.cache.c10vg2||(C3.cache.c10vg2=(()=>{const q=ctx.createRadialGradient(96,54,36,96,54,118);q.addColorStop(0,"rgba(0,0,0,0)");q.addColorStop(1,"rgba(6,2,10,.5)");return q;})());ctx.fillStyle=vg;ctx.fillRect(0,0,192,108);
+  if(C10.flash>0){ctx.fillStyle="rgba(255,240,220,"+C10.flash+")";ctx.fillRect(0,0,192,108);}
+  if(C3.dark>0){ctx.fillStyle="rgba(0,0,4,"+C3.dark+")";ctx.fillRect(0,0,192,108);}ctx.restore();}
+function c10Tick(){C10.t++;C10.flash>0&&(C10.flash=Math.max(0,C10.flash-0.05));const B=C10.bar;B&&(B.jit=Math.max(0,(B.jit||0)*0.88),B.go&&B.k<1&&(B.k=Math.min(1,B.k+0.05)));
+  if(C10.t%3===0&&C10.ash.length<70)C10.ash.push({x:camX+Math.random()*210,y:-2,vx:-0.12-Math.random()*0.2,vy:0.12+Math.random()*0.2,a:0.3+Math.random()*0.5,hot:Math.random()<0.3});
+  for(const [x] of C10_DRUMS)if(C10.t%9===0&&Math.abs(x-camX-96)<140&&C10.ash.length<90)C10.ash.push({x,y:C2_FLOOR-12,vx:(Math.random()-0.5)*0.3,vy:-0.4-Math.random()*0.4,a:0.9,hot:1});
+  C10.ash=C10.ash.filter((a)=>{a.x+=a.vx+Math.sin((C10.t+a.y)/20)*0.1;a.y+=a.vy;a.hot&&a.vy<0&&(a.a-=0.008);return a.y<110&&a.y>-5&&a.a>0;});
+  C10.deb=C10.deb.filter((d)=>{d.x+=d.vx;d.y+=d.vy;d.vy+=0.14;d.r=(d.r||0)+d.vx*0.2;if(d.y>C2_FLOOR){d.y=C2_FLOOR;d.vx*=0.5;d.vy*=-0.25;d.life-=6;}d.life--;return d.life>0;});
+  C10.dust=C10.dust.filter((p)=>{p.x+=p.vx;p.y+=p.vy;p.vx*=0.97;p.s+=0.35;p.a-=0.01;return p.a>0;});
+  C10.run=(C10.run||[]).filter((m)=>{if(m.d>0){m.d--;return!0;}if(m.stop>0){m.stop--;if(!m.stop&&m.next){Object.assign(m,m.next);m.next=null;}return!0;}m.x+=m.vx;if(m.turn&&m.x<=m.turn.x&&m.vx<0){m.vx=m.turn.vx;m.f=m.turn.f;m.turn=null;}return m.x>-80&&m.x<C10_W+80;});}
+function c10Boom(x,y,n){for(let q=0;q<n;q++)C10.deb.push({x:x+(Math.random()-0.5)*16,y:y-Math.random()*20,vx:(Math.random()-0.3)*3.4,vy:-1-Math.random()*3.4,life:140,c:["#5a5a5e","#3a3a40","#8a8478","#6a4a2e"][q%4],s:1+Math.random()*2});
+  for(let q=0;q<14;q++)C10.dust.push({x:x+(Math.random()-0.5)*30,y:C2_FLOOR-4-Math.random()*16,vx:(Math.random()-0.5)*1.2,vy:-0.1-Math.random()*0.3,s:8+Math.random()*10,a:0.7});}
+/* ---------------- the same real lighting in the tower's control and generator rooms ---------------- */
+function c10TowerLights(){const S=c7S(),g=C2_FLOOR,T=tick,L=[];
+  if(room==="tctl"){const P=c7LampSet(),on=P.pw||P.fl;[48,150,250].forEach((lx,q)=>L.push({x:lx,y:26,r:48,i:0.7+(T%140<3&&q===1?-0.3:0),c:"200,225,240",cone:1}));
+    if(P.pw)for(let q=0;q<3;q++)L.push({x:109+q*9,y:g-45,r:10,i:0.6,c:"90,255,140"});
+    if(on){for(let q=0;q<3;q++)for(let k=0;k<3;k++)L.push({x:224.5+k*11,y:g-68.5+q*19,r:9,i:0.45,c:"255,200,110"});L.push({x:184,y:g-12,r:22,i:0.55,c:"90,255,150"});}
+    C7.pow&&L.push({x:229,y:g-82,r:18,i:0.7,c:"255,60,40"});L.push({x:262,y:g-28,r:22,i:0.45,c:"170,210,230"});L.push({x:40,y:g+4,r:16,i:0.2,c:"200,225,240"});}
+  else if(room==="tgen"){const hot=S.gs<=1&&!S.gen,run=S.gen||S.gs>=7;[70,200,330].forEach((lx)=>{const fl=hot&&T%47<3?0.4:1;L.push({x:lx,y:18,r:56,i:0.75*fl,c:"255,200,120",cone:1});});
+    L.push({x:30,y:3,r:30,i:0.5,c:"200,225,240"});hot&&L.push({x:230,y:g-30,r:50,i:0.5+0.15*Math.sin(T/8),c:"255,80,40"});run&&L.push({x:230,y:g-30,r:30,i:0.3,c:"255,200,120"});}
+  return L;}
+{const _t=c7Tint;c7Tint=function(){_t();if(room!=="tctl"&&room!=="tgen")return;if(room==="tctl"&&C9.panel)return;const L=c10TowerLights();
+  ctx.save();ctx.setTransform(ctx.canvas.width/192,0,0,ctx.canvas.height/108,0,0);ctx.drawImage(c10LM(L,0.42,"4,8,16"),0,0,192,108);
+  for(const q of L){const x=q.x-camX;if(x<-q.r||x>192+q.r)continue;glow(x,q.y,q.r*(q.cone?0.3:0.5),q.c,0.1*q.i);}ctx.restore();};}
+/* ======================= CHAPTER 3, PART 5 (CINEMATIC): THE WAY BACK =======================
+   Played on the opening cutscene's engine with the memory's compositor (c9Compose: bloom, light trails, colour split,
+   flash, shake). It uses the game's painted assets: the ship's hull, the radio tower, the city's own night tiles and
+   buildings, Ma people and Ea creatures. Three shots: leaving the island, the burning skyline, a nest bursting open. */
+var C10N={hits:0,bang:0,burst:0,P:[],last:0};
+function c10Dt(){const now=performance.now(),dt=Math.min(50,now-(C10N.last||now))/16.7;C10N.last=now;return dt;}
+function c10Stars(t,n,h){for(let q=0;q<n;q++){const a=0.25+0.3*Math.sin(t/400+q*1.3);fill("rgba(230,226,255,"+a+")",(q*37+q*q)%192,(q*19)%h,q%7?0.6:1,q%7?0.6:1);}}
+function c10Water(t,y0,deep,lite,glit){const q=ctx.createLinearGradient(0,y0,0,108);q.addColorStop(0,lite);q.addColorStop(1,deep);ctx.fillStyle=q;ctx.fillRect(-20,y0,240,130);
+  for(let k=0,y=y0+1;y<112;k++,y+=1.4+k*0.35)for(let x=-20+((t*0.012*(1+k*0.15)+k*23)%17);x<220;x+=17-Math.min(9,k*0.5))fill("rgba(220,210,255,"+(0.06+0.012*k)+")",x,y,3+k*0.35,0.5);
+  if(glit)for(const [gx,col,w] of glit)for(let y=y0+1,k=0;y<108;k++,y+=1.6+k*0.2){const a=Math.sin(t/180+k*1.7+gx);if(a<0.2)continue;fill("rgba("+col+","+(0.55*a*(1-k/40))+")",gx-w/2+Math.sin(t/300+k)*w*0.4,y,w*(0.5+0.4*a),0.6);}}
+function c10ShipSide(x,y,t,sc){/* the RIDGE LINK 7, painted by the port's own ship painter, sailing left */
+  const C=(typeof C4!=="undefined"&&C4)||{},keep=C.ship,tk=tick;C.ship={x:-5};tick=(t/16)|0;const bob=Math.sin(t/520)*0.9;
+  ctx.save();ctx.translate(x,y+bob);ctx.rotate(Math.sin(t/760)*0.012);ctx.scale(sc,sc);ctx.translate(-30,-86);try{c4Ship();}finally{ctx.restore();tick=tk;C.ship=keep;}}
+function c10Island(t,ix,iy){ctx.fillStyle="#0c0a14";ctx.beginPath();ctx.moveTo(ix-34,iy);ctx.quadraticCurveTo(ix-14,iy-12,ix+2,iy-14);ctx.quadraticCurveTo(ix+20,iy-18,ix+44,iy);ctx.fill();
+  ctx.globalAlpha=0.85;ctx.drawImage(c7TowerSpr(),ix+6,iy-42,11,28);ctx.globalAlpha=1;}
+function c10ScSea(t){const dt=c10Dt(),sx=104-t*0.0016,ix=158+t*0.0011;
+  c9Compose({fade:0.22,bloom:0.32,
+    base:()=>{const q=ctx.createLinearGradient(0,0,0,60);q.addColorStop(0,"#04050e");q.addColorStop(0.6,"#141532");q.addColorStop(1,"#2e2240");ctx.fillStyle=q;ctx.fillRect(-20,-20,240,82);c10Stars(t,60,46);
+      ctx.fillStyle="#e8e4f4";ctx.beginPath();ctx.arc(46,20,6,0,7);ctx.fill();fill("#c8c4dc",43,17,2,2);fill("#d4d0e6",48,22,1.4,1.4);
+      for(let q2=0;q2<6;q2++){const cx=((q2*47+t*0.003)%260)-30,cy=10+q2*5;ctx.globalAlpha=0.55;ctx.drawImage(c10Puff(24,"30,26,52"),cx-20,cy-6,40,12);}ctx.globalAlpha=1;
+      c10Island(t,ix,60);
+      c10Water(t,60,"#04040c","#141430",[[46,"230,226,255",5]]);
+      fill("rgba(180,180,220,.12)",-20,58,240,3);
+      c10ShipSide(sx,74,t,0.42);c10Water(t,74.6,"#04040c","#0c0c22",null);for(let q2=0;q2<14;q2++)fill("rgba(230,230,250,"+(0.4-q2*0.026)+")",sx+26+q2*4.4,74.4+Math.sin(t/200+q2)*0.6,4,0.6);},
+    light:()=>{(t%1400)<700&&glow(ix+11.5,19,8,"255,60,40",0.7);glow(46,20,22,"210,210,255",0.22);glow(sx+0.42*(89-30),74+0.42*(62-68-86+86)-0.42*86+0.42*62-0.42*6,4,"255,60,40",0.5);glow(sx+0.42*(88-30),74-0.42*(86-62+20),10,"255,210,130",0.18);}});}
+function c10ScCity(t){const z=1+Math.min(1,t/22000)*0.22;
+  c9Compose({fade:0.2,bloom:0.18,ab:0,
+    base:()=>{ctx.translate(96,48);ctx.scale(z,z);ctx.translate(-96,-48);
+      const q=ctx.createLinearGradient(0,0,0,50);q.addColorStop(0,"#05040c");q.addColorStop(0.55,"#1c0c1c");q.addColorStop(1,"#8a3416");ctx.fillStyle=q;ctx.fillRect(-20,-20,240,72);c10Stars(t,30,22);
+      /* the city itself: the same painted night tiles you walk through */
+      for(let i=0;i<3;i++){const tl=c5Tile("crt",i,C2.crt.seeds[i]);ctx.drawImage(tl,0,0,384,190,-24+i*88,4,96,47.5);}
+      for(const [x,y,s] of [[20,20,0.6],[70,12,0.8],[118,16,0.65],[160,14,0.75]])c10Smoke(x,y,s,t/16,"24,16,24");
+      for(let q2=0;q2<14;q2++){const x=4+q2*14+((q2*7)%9),y=30+((q2*13)%14),a=0.6+0.4*Math.sin(t/140+q2);if(q2%3===0)fill("#ffb050",x,y,1,1.2*a);}
+      c10Water(t,48,"#060308","#2a1210",[[40,"255,130,50",6],[96,"255,110,40",8],[150,"255,140,60",5]]);
+      for(let q2=0;q2<7;q2++){const cx=(q2*37+t*0.01*(1+q2%3))%220-14,cy=6+((q2*13)%14)+Math.sin(t/300+q2)*3;c3Crow(cx,cy,t/80+q2,1,0.28);}
+      /* the bow, and you at the rail */
+      ctx.fillStyle="#10141a";ctx.beginPath();ctx.moveTo(-20,70);ctx.lineTo(80,70);ctx.lineTo(108,75);ctx.lineTo(80,84);ctx.lineTo(-20,86);ctx.fill();fill("#d8d4c4",-20,70,100,0.8);
+      fill("#3a3e48",-20,63,74,0.8);for(let x=-16;x<52;x+=8)fill("#3a3e48",x,63,0.8,7);
+      Ma(38,70,playerLook,0,1,{s:Po,closed:0,env:{c:"110,70,80",l:"255,150,90",a:0.24,dk:0.5}});},
+    light:()=>{for(const [x,y,i] of [[18,30,1],[52,26,0.8],[96,32,1],[132,28,0.7],[170,30,0.9]])glow(x,y,7,"255,130,50",(0.28+0.1*Math.sin(t/120+x))*i);glow(96,48,54,"255,90,30",0.05);glow(38,52,16,"255,140,80",0.06);}});}
+function c10ScNest(t){const dt=c10Dt(),now=performance.now(),b=C10N.burst?now-C10N.burst:-1,bang=C10N.bang?Math.max(0,1-(now-C10N.bang)/260):0;
+  if(b>=0&&b<320)for(let q=0;q<8;q++)C10N.P.push({x:96+(Math.random()-0.5)*26,y:44+(Math.random()-0.5)*20,vx:(Math.random()-0.5)*4,vy:-Math.random()*3.5,life:90,c:["#5a5a5e","#3a3a40","#2a7a4a","#8a8478"][q%4],s:1+Math.random()*1.8});
+  C10N.P=C10N.P.filter((p)=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.16*dt;if(p.y>70){p.y=70;p.vx*=0.6;p.vy*=-0.2;}p.life-=dt;return p.life>0;});
+  const B=C10_BLD[2];
+  c9Compose({fade:0.22,bloom:0.22,ab:b>=0?Math.max(0.08,1.1-b/900):0,shake:bang*2.5+(b>=0?Math.max(0,4-b/260):0),flash:b>=0?Math.max(0,0.85-b/380):0,
+    base:()=>{const q=ctx.createLinearGradient(0,0,0,88);q.addColorStop(0,"#06040c");q.addColorStop(0.7,"#24101c");q.addColorStop(1,"#5a2416");ctx.fillStyle=q;ctx.fillRect(-20,-20,240,110);
+      ctx.drawImage(c5Tile("crt",2,C2.crt.seeds[2]),0,0,384,184,-20,-14,232,111);{const q3=ctx.createLinearGradient(0,-14,0,70);q3.addColorStop(0,"rgba(8,4,20,.75)");q3.addColorStop(1,"rgba(40,10,20,.35)");ctx.fillStyle=q3;ctx.fillRect(-20,-14,232,90);}ctx.drawImage(c10Bld(C10_BLD[4]),0,0,384,216,128,-66,240,135);ctx.drawImage(c10Bld(C10_BLD[0]),0,0,384,216,-52,-62,230,129);
+      /* the nest building, close up */
+      ctx.save();ctx.translate(bang?(Math.random()-0.5)*bang*2:0,0);ctx.drawImage(c10Bld(B),0,0,384,216,45,-70.6,250,140.6);ctx.restore();
+      const hx=96,hy=56,GY=70;
+      if(b<0){const cr=Math.min(7,C10N.hits*2);ctx.strokeStyle="#0a0608";ctx.lineWidth=0.8;for(let q2=0;q2<cr;q2++){ctx.beginPath();ctx.moveTo(hx,hy);let x=hx,y=hy;for(let s=0;s<4;s++){x+=Math.cos(q2*0.9)*4+(s%2?1:-1);y+=Math.sin(q2*0.9)*3.4;ctx.lineTo(x,y);}ctx.stroke();}}
+      else{ctx.fillStyle="#040203";ctx.beginPath();ctx.moveTo(hx-14,GY);ctx.lineTo(hx-12,GY-24);ctx.lineTo(hx-4,GY-31);ctx.lineTo(hx+8,GY-29);ctx.lineTo(hx+14,GY-20);ctx.lineTo(hx+15,GY);ctx.fill();
+        for(let q2=0;q2<7;q2++){const on=Math.sin(t/(80+q2*25)+q2)>0;on&&(fill("#ff3a2a",hx-9+q2*3,GY-22+((q2*5)%14),0.9,0.8),fill("#ff3a2a",hx-7.4+q2*3,GY-22+((q2*5)%14),0.9,0.8));}
+        /* what pours out: changed people and beasts, scattering along the waterfront */
+        for(let q2=0;q2<11;q2++){const tt=b-260-q2*210;if(tt<0)continue;const dir=q2%2?-1:1,x=hx+dir*(2+tt*0.016);if(Math.abs(x-hx)>120)continue;
+          if(q2%3===1)c3Ea(x-dir*33*0.46,GY,dir,q2%2?0:1,now*1.6+q2*50,0.46);
+          else Ma(x,GY,yt(q2+2,4+q2%3,(q2*3)%14,(q2*5)%14,{hs:q2%11,gd:q2%2}),0,dir,Object.assign({s:Po*0.78,pose:c3Pose("walk",((now/110)|0)%8),env:{c:"60,30,50",l:"255,140,80",a:0.25,dk:0.55}},C10_MUTE));}
+        if(b>80)for(let q2=0;q2<12;q2++){const tt=(b-80)/1000,cx=hx+Math.cos(q2*0.8)*tt*38*(1+q2%3),cy=GY-30-tt*32*(1+(q2%4)*0.35)+Math.sin(q2)*6;c3Crow(cx,cy,now/80+q2,Math.cos(q2*0.8)>0?1:-1,0.5);}}
+      ctx.drawImage(c5Tile("crt",3,C2.crt.seeds[3]),0,184,384,32,-20,70,232,20);c10Water(t,88,"#040208","#1a0c14",[[96,"255,120,60",6]]);
+      for(const p of C10N.P)fill(p.c,p.x,p.y,p.s,p.s);},
+    light:()=>{glow(96,40,30,"110,255,140",0.07+0.04*Math.sin(t/300)+(bang*0.12));if(b>=0)glow(96,56,10,"255,40,30",0.16);for(const [x,y] of [[0,-6],[22,10],[175,-10],[190,8]])glow(x,y,9,"255,120,40",0.3+0.1*Math.sin(t/130+x));}});}
+function c10Reg(){C10V.reg||(C10V.reg=1,le.m10_sea=(t)=>c10ScSea(t),le.m10_city=(t)=>c10ScCity(t),le.m10_nest=(t)=>c10ScNest(t));}
+async function c10Sail(done){c10Reg();c9Bufs();Object.assign(C10N,{hits:0,bang:0,burst:0,P:[],last:0});modal=4;
+  for(let i=0;i<4;i++)c5Tile("crt",i,C2.crt.seeds[i]);c10Bld(C10_BLD[2]);
+  ot.style.zIndex=90;ot.hidden=!1;it.hidden=!0;nt.hidden=!0;ct.classList.remove("on");Jt=1;cutAbort=0;typing=0;speaker="";fade(1).catch(()=>{});
+  setScene("m10_sea");requestAnimationFrame(window.se);
+  const me=async(t)=>{speaker="p";await say(playerName,t);};
+  try{
+    await titleCard("THE WAY BACK",2400);await fade(0);
+    await me("Power core. Field coils. Chrono-clock.");
+    await me("The power plant, the shipyard and the observatory. They're all back in the city.");
+    await me("If Dr. Morrow was right, every one of them is guarded. I'll have to be smarter than they are.");
+    await fade(1);hideDialog();setScene("m10_city");await titleCard("NIGHTFALL",1600);await fade(0);
+    await me("What's that glow on the horizon?");
+    $sx("siren");await me("Fires. Half the city is burning. It wasn't like this when I left.");
+    await me("And those red lights in the windows… those aren't lights. They're eyes.");
+    await fade(1);hideDialog();setScene("m10_nest");await fade(0);$sx("rumble");
+    await me("That building by the water… it's covered in that green growth.");
+    for(let q=0;q<3;q++){await wait(q?620:420);C10N.bang=performance.now();C10N.hits=q+1;$sx("doorhit");}
+    await me("Something is moving inside it. Lots of somethings.");
+    C10N.bang=performance.now();C10N.hits=4;$sx("doorhit");await wait(450);
+    C10N.burst=performance.now();$sx("crash");$sx("roar");$sx("flutter");hideDialog();await wait(3600);
+    await me("They're pouring out. They've been nesting in the buildings… and now there are too many of them to fit.");
+    await titleCard("BACK TO THE CITY",2400);
+  }catch(e){if(e!==0)console.error(e);}
+  $sx("stop");hideDialog();ct.classList.remove("on");fade(1).catch(()=>{});await new Promise((r)=>setTimeout(r,640));ot.hidden=!0;ot.style.zIndex="";cutAbort=0;C10N.P=[];modal=0;done&&done();}
+
 /* ======================= END CHAPTER 2, PART 3 ======================= */
 GM.c2.cut=()=>c2cut&&{t:c2cut.t,cx:c2cut.cx,z:c2cut.z,bar:c2cut.bar,sp:!!c2cut.sp};GM.c2.skip=()=>c2CutEnd();GM.c2.seen=()=>c2seen;})();</script><script id="evoJournal">(() => {
 "use strict";
@@ -7688,6 +8046,7 @@ const CONCEPTS = [
   { id: "filtering", need: [], room: "tgen", name: "LAYERED WATER FILTERS", txt: "A filter works from coarse to fine: gravel catches big lumps, sand traps fine grit, charcoal grabs dissolved impurities, colours and smells onto its huge surface (adsorption), and cloth catches the last dust. Filtering removes particles but not germs, so water for drinking must still be boiled." },
   { id: "satnet", need: [], room: "tlab", name: "HOW SATELLITES CARRY RADIO", txt: "Radio waves travel in nearly straight lines, so on their own they only reach as far as the horizon. Communication satellites orbit high above the Earth and pass signals on, so a radio in one place can reach the other side of the planet, or a ship far out at sea. Without them, long-distance radio goes almost silent." },
   { id: "hypo", need: [], chk: () => { try { return !!(c3s().c5 && c3s().c5.isl && c3s().c5.isl.hyp); } catch (e) { return false; } }, name: "WHAT IS A HYPOTHESIS?", txt: "A hypothesis is a smart guess that you can test, made from clues you have observed. It is often written as IF... THEN... BECAUSE... The THEN part is a prediction. If a test's results match the prediction, the hypothesis is SUPPORTED (never proven forever, so scientists test again). If not, you change the hypothesis and test again. It is one step of the scientific method: observe, ask a question, make a hypothesis, test it, look at the results, draw a conclusion." },
+  { id: "firetri", need: [], room: "crt", name: "THE FIRE TRIANGLE", txt: "A fire needs three things at once: HEAT, FUEL (something that burns, like wood, paper or petrol) and OXYGEN from the air. Take away any one side of the triangle and the fire goes out: water cools it (removes heat), a fire blanket smothers it (removes oxygen), and a firebreak clears away what it could burn (removes fuel). With no firefighters left, the city's fires just keep finding new fuel." },
   { id: "sharp", need: ["axe2"], name: "PRESSURE AND SHARP EDGES", txt: "Pressure = force / area. A sharp edge squeezes your whole swing onto a tiny area, so the pressure is enormous and the blade slices between the fibres. A blunt edge spreads the same force over a wide area, so it just bounces off. That's also why snowshoes stop you sinking: they spread your weight out." },
   { id: "insulation", need: ["leaves", "moss", "bough"], name: "INSULATION AND SHELTER", txt: "Heat moves by conduction (touching), convection (moving air or water) and radiation. Trapped still air carries heat very badly, so dry leaves, moss and pine boughs keep you warm. Lying on bare ground loses heat by conduction, which is why a bed frame lifts you up." },
   { id: "proteins", need: ["vial1", "vial2", "vial3", "fullcan", "blaster"], name: "PROTEINS AND VENOM", txt: "Venom is mostly proteins: chains of amino acids folded into exact shapes. Heat or strong acid unfolds them (denaturing) and ruins their job. Antivenom is made from the antibodies of animals given tiny doses of venom.", tip: "Scientists study venom because tiny parts of it can become medicines." },
@@ -7743,6 +8102,7 @@ const ACH = [
   { id: "keyhunt", n: "CROWBAR AT WORK", d: "Pry open a cargo container and find the control room key.", t: (d) => d.got.includes("ckeyc") },
   { id: "islander", n: "LAND HO!", d: "Find the radio tower on Ridge Tower Island.", t: () => !!(c3s().c5 && c3s().c5.isl && c3s().c5.isl.door) },
   { id: "hypo", n: "THINK LIKE A SCIENTIST", d: "Read Dr. Morrow's notebook and learn what a hypothesis is.", t: () => !!(c3s().c5 && c3s().c5.isl && c3s().c5.isl.hyp) },
+  { id: "homeward", n: "THE WAY BACK", d: "Sail back to the city and see what the Evolved have done to it.", t: () => !!(c3s().c5 && c3s().c5.isl && c3s().c5.isl.cend) },
   { id: "coolhead", n: "COOL HEAD", d: "Fix the overheated generator safely.", t: () => !!(c3s().c5 && c3s().c5.isl && c3s().c5.isl.gen) },
   { id: "clean", n: "SAFE TO DRINK", d: "Boil, filter and boil river water, then drink it.", t: () => !!(c3s().c4 && c3s().c4.drank) },
   { id: "scholar", n: "SCHOLAR", d: "Unlock 5 research notes.", t: (d, b, J, notes) => notes >= 5 },

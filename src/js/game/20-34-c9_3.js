@@ -14,7 +14,7 @@ function c9LampOn(){const S=c7S();return!!(S.tm||C9.lampT>0);}
 function c9Lamp(){const S=c7S();if(!c9LampOn())return 0;const t=tick;if(C9.lampT>0&&C9.lampT<90)return(C9.lampT%9<4||C9.lampT>70)?1:0.15;const f=Math.sin(t/31)*Math.sin(t/7.3);return f>0.92?0.35:0.9+0.1*Math.sin(t/5);}
 function c9Corner(){const S=c7S(),g=C2_FLOOR,x=C9S_X;if(x<camX-40||x>camX+232)return;
   /* the dark alcove */
-  fill("rgba(0,0,0,.55)",x-26,0,48,g);
+  fill("rgba(0,0,0,.3)",x-26,0,48,g);
   const L=c9Lamp();
   /* the hanging lamp */
   fill("#06080a",x-0.5,0,1,16);fill("#2a2e32",x-4,16,8,3);fill(L>0.5?"#fff0c0":"#3a3428",x-2.5,19,5,1.6);
@@ -28,22 +28,21 @@ function c9Corner(){const S=c7S(),g=C2_FLOOR,x=C9S_X;if(x<camX-40||x>camX+232)re
     if(k==="clock"){ctx.strokeStyle="#3a4a6a";ctx.lineWidth=0.6;ctx.beginPath();ctx.arc(px+5,py+6,3.2,0,7);ctx.stroke();fill("#3a4a6a",px+4.7,py+3.6,0.6,2.6);}
     fill("#c83a2a",px+1,py+9.5,3,0.7);fill("#c83a2a",px+6,py+9.5,3,0.7);});
   ctx.strokeStyle="rgba(200,58,42,.7)";ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(x-10,40);ctx.lineTo(x-8,40);ctx.moveTo(x+2,42);ctx.lineTo(x+4,42);ctx.stroke();
-  /* the scientist, sitting against the racks with his head bowed, as if asleep (drawn 1.5x around his seat) */
+  /* the scientist: the game's own character sprite (lab coat, grey hair and beard, round glasses), sitting against the
+     racks with his eyes closed, as if he just fell asleep there; legs and notebook painted around him */
+  const SL=C9.sciLook||(C9.sciLook={gd:0,hs:2,hc:7,sk:1,fc:6,ey:3,gl:1,bs:2,bc:7,mo:0,cl:0,oc:0,tc:2});
   ctx.save();ctx.translate(x+4,g);ctx.scale(1.5,1.5);
-  fill("rgba(0,0,0,.45)",-15,-0.3,28,1.4);
-  fill("#262a36",-11,-2.6,12,2.6);fill("#323646",-11,-2.6,12,0.7);fill("#1a1410",-13.6,-3.2,2.8,3.2);fill("#3a2a1e",-13.6,-0.6,3.2,0.6);
+  fill("rgba(0,0,0,.45)",-16,-0.3,30,1.4);
+  fill("#262a36",-12,-2.6,13,2.6);fill("#323646",-12,-2.6,13,0.7);fill("#1a1410",-14.6,-3.2,2.8,3.2);fill("#3a2a1e",-14.6,-0.6,3.2,0.6);
   ctx.strokeStyle="#2c3040";ctx.lineWidth=2.6;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(0,-3);ctx.lineTo(-5,-8.4);ctx.lineTo(-8.4,-1.6);ctx.stroke();fill("#1a1410",-10.6,-2.4,3,2.4);
-  ctx.fillStyle="#d4d8dc";ctx.beginPath();ctx.moveTo(-2,0);ctx.lineTo(9,0);ctx.lineTo(9,-15);ctx.lineTo(4.5,-16.8);ctx.lineTo(1,-13.4);ctx.lineTo(-1,-4.4);ctx.closePath();ctx.fill();
-  fill("#a8aeb6",7,-15,2,15);fill("#bcc2c8",-2,-1.2,4,1.2);ctx.strokeStyle="#9aa0a8";ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(4.4,-16.4);ctx.lineTo(2.4,-9);ctx.moveTo(5.6,-8);ctx.lineTo(5.6,-2);ctx.stroke();
-  fill("#e8ecef",3,-16.4,3,1);fill("#3a5a7a",3.6,-15.6,1.2,5.2);fill("#e0e8f0",5.6,-12.6,2.2,2.8);fill("#c83a2a",5.6,-12.6,2.2,0.7);fill("#3a4a6a",6,-11.2,1.4,0.4);
-  ctx.strokeStyle="#c4c8ce";ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(3.4,-14);ctx.lineTo(0,-8.6);ctx.lineTo(-3.2,-6.6);ctx.stroke();fill("#d0a080",-4.8,-7.4,1.8,1.8);
-  fill("#5a3020",-9,-7.4,5.6,3.8);fill("#e8dcb8",-8.4,-7,4.6,0.9);fill("#8a4a30",-9,-7.4,0.8,3.8);
-  ctx.fillStyle="#d0a080";ctx.beginPath();ctx.ellipse(2.6,-18.4,2.4,2.6,0.5,0,7);ctx.fill();
-  ctx.fillStyle="#9a9aa0";ctx.beginPath();ctx.ellipse(3.8,-19.6,2.6,2,0.5,0,7);ctx.fill();fill("#b8b8be",3.2,-21.2,2.4,0.8);fill("#b88a68",4.6,-18.4,0.9,1.3);fill("#7a5a48",0.8,-17.4,1.6,0.5);
+  fill("#e4e8ec",-2,-2.4,8,2.4);fill("#c4c8ce",-2,-0.8,8,0.8);
+  ctx.restore();
+  {const E={c:"255,214,160",l:"255,236,190",a:0.04+0.07*L,dk:0.46-0.2*L};ctx.save();ctx.beginPath();ctx.rect(x-30,g-70,60,66.4);ctx.clip();ctx.translate(x+6,g-3.6);ctx.rotate(0.14);
+    Ma(0,15,SL,0,-1,{s:Po,closed:1,tired:1,noshd:1,env:E});ctx.restore();}
+  ctx.save();ctx.translate(x+4,g);ctx.scale(1.5,1.5);
+  fill("#5a3020",-9,-7.4,5.6,3.8);fill("#e8dcb8",-8.4,-7,4.6,0.9);fill("#8a4a30",-9,-7.4,0.8,3.8);fill("#d0a080",-4,-6.6,1.8,1.6);
   ctx.restore();
   const nb=S.hyp?0:0.5+0.5*Math.sin(tick/9);nb>0.55&&glow(x-5,g-8,9,"255,240,190",0.3*nb*a);
-  /* his glasses on the floor */
-  ctx.strokeStyle="#aab4bc";ctx.lineWidth=0.5;ctx.beginPath();ctx.arc(x-24,g-0.9,0.9,0,7);ctx.moveTo(x-20.7,g-0.9);ctx.arc(x-21.6,g-0.9,0.9,0,7);ctx.stroke();
   /* dust and a cobweb */
   ctx.strokeStyle="rgba(220,225,230,.35)";ctx.lineWidth=0.3;ctx.beginPath();ctx.moveTo(x+18,0);ctx.lineTo(x+8,8);ctx.moveTo(x+18,4);ctx.lineTo(x+11,4);ctx.moveTo(x+18,8);ctx.lineTo(x+14,1);ctx.stroke();
   ctx.restore();}
@@ -153,3 +152,13 @@ C3_DEVBTN.push(["CHAPTER 3: THE SCIENTIST AND THE HYPOTHESIS",[["c3_wlamp","HIDD
   if(a==="c3_whyp"){lab(C9S_X-20);Object.assign(I,{sci:1,think:1});setTimeout(()=>c9HypOpen(),300);return;}};}
 {const _d=c3Dev;c3Dev=function(a){if(a==="c3_vreset")Object.assign(c7S(),{tm:0,sci:0,think:0,hyp:0});return _d(a);};}
 GM.c3.c9h=()=>{const S=c7S();return{tm:S.tm,sci:S.sci,think:S.think,hyp:S.hyp,done:S.done,q:C9_HQ&&{pg:C9_HQ.pg,ord:C9_HQ.ord.length,right:C9_HQ.right}};};GM.c3.c9hAct=(a)=>c9HypAct(a);GM.c3.c9hSh=()=>C9_HQ&&C9_HQ.sh;
+
+/* ---------------- real lighting in the hidden lab ---------------- */
+function c9LabLights(){const g=C2_FLOOR,T=tick,L=[];
+  [70,190,290].forEach((lx,q)=>{const a=0.5+0.5*Math.sin(T/14+q*2);L.push({x:lx,y:13,r:30,i:0.35+0.4*a,c:"255,60,40"});});
+  !C9.doc&&L.push({x:170,y:41,r:46,i:0.7,c:"90,255,150"});
+  const lp=c9Lamp();lp>0&&L.push({x:C9S_X,y:20,r:56,i:0.95*lp,c:"255,230,170",cone:1});
+  L.push({x:262,y:g-17,r:14,i:0.35+0.1*Math.sin(T/9),c:"255,240,190"});L.push({x:30,y:2,r:30,i:0.45,c:"200,225,240"});
+  return L;}
+{const _t=c7Tint;c7Tint=function(){_t();if(room!=="tlab")return;const L=c9LabLights();ctx.save();ctx.setTransform(ctx.canvas.width/192,0,0,ctx.canvas.height/108,0,0);ctx.drawImage(c10LM(L,0.5,"4,8,16"),0,0,192,108);
+  for(const q of L){const x=q.x-camX;if(x<-q.r||x>192+q.r)continue;glow(x,q.y,q.r*(q.cone?0.3:0.5),q.c,0.12*q.i);}ctx.restore();};}

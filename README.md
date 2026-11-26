@@ -1,6 +1,6 @@
 # EvoQuest
 
-A browser game that ships as **one self-contained HTML file**: `EvoQuest_Cinematic_Edition_v51_0_0.html`
+A browser game that ships as **one self-contained HTML file**: `EvoQuest_Cinematic_Edition_v52_0_0.html`
 (works offline, in artifact viewers, from `file://`, anywhere an HTML file opens).
 
 The source lives in `src/` as many files. `build.js` stitches them back into that single file.
@@ -13,7 +13,7 @@ npm run format     # prettier over src/ (optional, needs `npm install`)
 
 Always commit the rebuilt HTML together with your `src/` change (`npm run check` fails if they differ).
 
-## What's in v51.0.0
+## What's in v52.0.0
 
 This replaces the old v48 copy. Since v48 the game gained:
 
@@ -26,6 +26,13 @@ This replaces the old v48 copy. Since v48 the game gained:
 * **The scientist's hypothesis:** after the memory, a lamp comes on in the lab's corner. Dr. Morrow's notebook holds a
   hypothesis (the Evolution sends its monsters to guard the time machine parts), followed by an interactive lesson on what a
   hypothesis is: IF/THEN/BECAUSE, putting the scientific method in order, and a three-question quiz.
+* **The way back:** after the lesson, climb out of the lab and sail home on the RIDGE LINK 7. A cinematic shows the
+  city burning from the water and a nest of the Evolved bursting out of an overgrown building. Then walk through the
+  City Harbor at night: the same city as chapter 2, painted with its own painters and graded to night, with a real
+  screen-space light map (fires, lamps and the growth cut light into the dark and light the player), mutated people
+  and beasts, and the evacuation barricade being smashed open.
+* Real lighting in the hidden lab and the tower's control and generator rooms; Dr. Morrow drawn with the game's own
+  character sprite.
 * The journal, quality-of-life, no-zoom and controller (gamepad) scripts, and a new menu track.
 
 ## Layout
@@ -62,6 +69,9 @@ tools/check.js                sanity checks
 | `c9_1` | The dead satellites, the trapdoor under the rug and the hidden lab's archive |
 | `c9_2` | The time-machine memory cinematic and its effects compositor |
 | `c9_3` | The scientist in the corner, his notebook's hypothesis and the hypothesis lesson |
+| `c10_1` | The way back: the quest back to the ship and the city harbor's scripted moments |
+| `c10_2` | The city at night: painted tiles and buildings, the barricade, the Evolved, the light map, tower-room lighting |
+| `c10_3` | The voyage-home cinematic |
 
 ## Rules that keep the single file working
 

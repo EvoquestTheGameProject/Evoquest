@@ -3,7 +3,7 @@
    usage: node build.js [--out <file>]            (no dependencies) */
 const fs=require("fs"),path=require("path");
 const ROOT=__dirname,SRC=path.join(ROOT,"src");
-const OUT=(()=>{const i=process.argv.indexOf("--out");return i>0?path.resolve(process.argv[i+1]):path.join(ROOT,"EvoQuest_Cinematic_Edition_v51_0_0.html")})();
+const OUT=(()=>{const i=process.argv.indexOf("--out");return i>0?path.resolve(process.argv[i+1]):path.join(ROOT,"EvoQuest_Cinematic_Edition_v52_0_0.html")})();
 const read=f=>fs.readFileSync(path.join(SRC,f),"utf8");
 const list=d=>fs.readdirSync(path.join(SRC,d)).filter(f=>f.endsWith(".js")).sort().map(f=>path.join(d,f));
 const cat=files=>files.map(read).join("");
