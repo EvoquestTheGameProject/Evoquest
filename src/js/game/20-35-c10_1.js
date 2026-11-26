@@ -11,7 +11,7 @@ c10Rooms();
 /* ---------------- routing: the way back up, out and to the ship ---------------- */
 {const _s=c7Step;c7Step=function(){const S=c7S();if(room==="crt"){C5.t++;C7.t++;c10Tick();if(dead)return;if(C3.cut)return;if(c3TaskStep())return;c5Pick(()=>null);c10Triggers();return;}
   _s();if(room==="isle"&&S.hyp&&!S.back&&!C3.cut&&!C3.task&&!C7G){c5Pick((it)=>{const k=it.id.slice(3);if(k==="boat")return{r:22,label:"BOARD THE SHIP"};if(k==="tdoor")return{r:22,label:"ENTER THE TOWER"};return null;});
-    if(!C10.warm&&C7.t%40===0){/* paint the city ahead of time, a tile at a time */const n=C10.warmN||0;if(n<4){c5Tile("crt",n,C2.crt.seeds[n]);C10.warmN=n+1;}else C10.warm=1;}}};}
+    if(!C10.warm&&C7.t%40===0){/* paint the city ahead of time, a tile at a time */const n=C10.warmN||0;if(n<4)c5Tile("crt",n,C2.crt.seeds[n]);else if(n<4+C10_BLD.length)c10Bld(C10_BLD[n-4]);else{c10Jersey();c10SignSpr();C10.warm=1;}C10.warmN=n+1;}}};}
 {const _u=c7Use;c7Use=function(e){const k=e.id.slice(3),S=c7S();if(room==="isle"&&k==="boat"){if(C3.cut||C3.task)return!0;if(!S.hyp)return!0;if(!S.back)c10Board();return!0;}if(room==="crt")return!0;return _u(e);};}
 {const _e=c7Enter;c7Enter=function(t){const S=c7S();if(t!=="crt")return _e(t);C3.lie=0;C7G=null;C5GN=null;C5PR=null;C5TR=null;C5CK=null;player.y=C2_FLOOR;player.x=S.ce2?(S.cend?C10_SIGNX+44:C10_BAR-40):S.ce1?470:C10_W-56;player.face=-1;camX=c3Clamp(player.x-96,0,C10_W-192);S.from="";
   if(!S.city){S.city=1;c2Save("crt");c3CutStart("c5arrive");}updateGuide();};}
@@ -61,7 +61,7 @@ function c10CutPack(c){const t=c.t,S=c7S();c10Tick();c.cx=c3Clamp(player.x-140,0
   if(t===560)tnCap("There are so many more of them than before.");
   if(t===790)tnCap("Fire needs heat, fuel and oxygen. With no one left to fight them, these fires just keep spreading.");
   if(t>=1040){tnCap("");S.ce1=1;c2Save("crt");c3CutEnd();updateGuide();}}
-function c10CutBurst(c){const t=c.t,S=c7S(),g=C2_FLOOR;c10Tick();c.cx=c3Clamp(C10_BAR-104,0,C10_W-192);
+function c10CutBurst(c){const t=c.t,S=c7S(),g=C2_FLOOR;c10Tick();C10.bar=C10.bar||{jit:0,go:0,k:0};c.cx=c3Clamp(C10_BAR-104,0,C10_W-192);
   if(t===1){c10Stop();C10.bar={jit:0,go:0,k:0};tnCap("The evacuation barricade. The army built it to keep the road to the harbor open while everyone escaped.");}
   if(t===250||t===330||t===395){$sx("doorhit");C10.bar.jit=t===395?6:4;shake=Math.max(shake,t===395?5:3);for(let q=0;q<4;q++)C10.dust.push({x:C10_BAR-10+Math.random()*20,y:g-34+Math.random()*10,vx:(Math.random()-0.5)*0.6,vy:0.2,s:6,a:0.5});}
   if(t===260)tnCap("…What was that?");

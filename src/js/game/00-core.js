@@ -1784,7 +1784,7 @@ function tnPlace(id){if(TS.made)return void($sx("locked"),tnRenderBP("You alread
   if(n<3)return void tnRenderBP(m+"<br>("+n+"/3 on the blueprint)","good");
   TS.made=1;inv.push("rustx");got.add("rustx");updateBag();updateGuide();c2Save("tunnel");setTimeout(()=>$sx("success"),250);
   tnRenderBP(m+"<br><b>MAKESHIFT RUST REMOVER READY!</b> Two mild acids attack the rust while the aluminium reacts and scrubs. Now pour it on the rusted manhole.","good");}
-function tnEsc(){if(window.__bzEsc&&window.__bzEsc())return;if(!qs("#tnTrunk").hidden){if(!qs("#tkCard").hidden)qs("#tkOk").click();else tnCloseTrunk();}else if(!qs("#tnBP").hidden)tnCloseBP();else if(!qs("#tnPaper").hidden){const pp=qs("#tnPaper");pp.__done&&pp.__done();}}
+function tnEsc(){if(window.__bzEsc&&window.__bzEsc())return;const vis=(s)=>{const e=qs(s);return!!(e&&!e.hidden);};if(vis("#tnTrunk")){if(vis("#tkCard"))qs("#tkOk").click();else tnCloseTrunk();}else if(vis("#tnBP"))tnCloseBP();else if(vis("#tnPaper")){const pp=qs("#tnPaper");pp.__done&&pp.__done();}}
 GM.tn=()=>({TS:JSON.parse(JSON.stringify(TS)),TC:TC&&{k:TC.k,t:TC.t,wait:!!TC.wait},room,pl:{w:player.walk,f:player.fr,on:player.on,x:player.x,vx:player.vx,kb:player.kb,ue:typeof ue==="number"?ue:"n/a",inv:invuln}});
 GM.tnEnter=()=>tnEnterTunnel();
 GM.tnSet=(o,g)=>{Object.assign(TS,JSON.parse(JSON.stringify(o)));if(g!==void 0){hasGun=!0;ammo=g;inv.includes("blaster")||inv.push("blaster");updateHud();}};GM.go=(r)=>{fadeNow=0;fadeTo=0;onFaded=null;enterRoom(r,"R");};GM.tnx=()=>({bar:TS.ex.bar,er:tnBarEr,sp:tnSp&&{x:Math.round(tnSp.x),head:Math.round(tnSp.x-C2_SP_HEAD)},wait:tnSpWait,heard:tnHeard,shots:shots.map((s)=>[Math.round(s.x),Math.round(s.y),s.vx])});

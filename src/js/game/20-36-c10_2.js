@@ -8,9 +8,11 @@ const C10_PAL=[["#2a3434","#4a5856","#7a8a84"],["#33302c","#58524a","#8a8274"],[
 const C10_BLD=[[-6,62,74,401,0,{fire:[[18,30],[40,46]],top:28}],[64,44,58,402,1,{fire:[[22,40]],coll:1}],[150,70,82,403,2,{nest:1}],[300,52,66,404,0,{fire:[[14,22],[36,38]],top:20,coll:1}],[372,60,78,405,1,{fire:[[30,30]]}],[452,46,52,406,2,{coll:1,top:26}]];
 const C10_BAR=262,C10_SIGNX=96;
 /* ---------------- night grading for a painted canvas ---------------- */
-function c10Grade(cv,o){o=o||{};const g=cv.getContext("2d"),H=cv.height,W=cv.width;g.save();
+function c10Grade(cv,o){o=o||{};const g=cv.getContext("2d"),H=cv.height,W=cv.width,keep=document.createElement("canvas");keep.width=W;keep.height=H;keep.getContext("2d").drawImage(cv,0,0);g.save();
   g.globalCompositeOperation="multiply";const q=g.createLinearGradient(0,0,0,H);q.addColorStop(0,o.top||"#2a2856");q.addColorStop(0.5,o.mid||"#4a3c6c");q.addColorStop(0.82,o.low||"#a0706a");q.addColorStop(1,o.bot||"#6a5466");g.fillStyle=q;g.fillRect(0,0,W,H);
   g.globalCompositeOperation="lighter";const h=g.createLinearGradient(0,H*0.55,0,H*0.86);h.addColorStop(0,"rgba(255,90,30,0)");h.addColorStop(1,"rgba(255,90,30,"+(o.fire==null?0.16:o.fire)+")");g.fillStyle=h;g.fillRect(0,0,W,H);
+  /* keep the original transparency: multiply paints the gradient onto empty pixels too */
+  g.globalCompositeOperation="destination-in";g.drawImage(keep,0,0);
   g.restore();return cv;}
 /* ---------------- the background tiles: the same city as chapter 2, months later and at night ---------------- */
 {const _t=c5Tile;c5Tile=function(id,i,seed){if(id!=="crt")return _t(id,i,seed);const k=id+i;return C5.tiles[k]||(C5.tiles[k]=c10Tile(i,seed));};}
