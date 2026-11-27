@@ -33,6 +33,9 @@ This replaces the old v48 copy. Since v48 the game gained:
   and beasts, and the evacuation barricade being smashed open.
 * Real lighting in the hidden lab and the tower's control and generator rooms; Dr. Morrow drawn with the game's own
   character sprite.
+* **A cinematic finish on every chapter 1 and 2 cutscene:** bloom, per-scene colour grading, drifting light leaks, film
+  grain, a soft vignette, a gentle handheld camera and a light flash on each cut; in-game cutscenes get bloom, grain and a
+  vignette, and gameplay a light bloom.
 * The journal, quality-of-life, no-zoom and controller (gamepad) scripts, and a new menu track.
 
 ## Layout
@@ -72,6 +75,7 @@ tools/check.js                sanity checks
 | `c10_1` | The way back: the quest back to the ship and the city harbor's scripted moments |
 | `c10_2` | The city at night: painted tiles and buildings, the barricade, the Evolved, the light map, tower-room lighting |
 | `c10_3` | The voyage-home cinematic |
+| `c11_1` | Cinematic finish for the chapter 1 and 2 cutscenes and in-game cutscenes (bloom, grading, light leaks, grain, vignette, handheld camera; `window.__evoNoFx=1` turns it off) |
 
 ## Rules that keep the single file working
 
