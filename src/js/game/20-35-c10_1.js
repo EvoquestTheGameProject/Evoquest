@@ -13,7 +13,7 @@ c10Rooms();
   _s();if(room==="isle"&&S.hyp&&!S.back&&!C3.cut&&!C3.task&&!C7G){c5Pick((it)=>{const k=it.id.slice(3);if(k==="boat")return{r:22,label:"BOARD THE SHIP"};if(k==="tdoor")return{r:22,label:"ENTER THE TOWER"};return null;});
     if(!C10.warm&&C7.t%40===0){/* paint the city ahead of time, a tile at a time */const n=C10.warmN||0;if(n<4)c5Tile("crt",n,C2.crt.seeds[n]);else if(n<4+C10_BLD.length)c10Bld(C10_BLD[n-4]);else{c10Jersey();c10SignSpr();C10.warm=1;}C10.warmN=n+1;}}};}
 {const _u=c7Use;c7Use=function(e){const k=e.id.slice(3),S=c7S();if(room==="isle"&&k==="boat"){if(C3.cut||C3.task)return!0;if(!S.hyp)return!0;if(!S.back)c10Board();return!0;}if(room==="crt")return!0;return _u(e);};}
-{const _e=c7Enter;c7Enter=function(t){const S=c7S();if(t!=="crt")return _e(t);C3.lie=0;C7G=null;C5GN=null;C5PR=null;C5TR=null;C5CK=null;player.y=C2_FLOOR;player.x=S.ce2?(S.cend?C10_SIGNX+44:C10_BAR-40):S.ce1?470:C10_W-56;player.face=-1;camX=c3Clamp(player.x-96,0,C10_W-192);S.from="";
+{const _e=c7Enter;c7Enter=function(t){const S=c7S();if(t!=="crt")return _e(t);C10.vanOpen=S.ce1?1:0;C10.vanJ=0;C3.lie=0;C7G=null;C5GN=null;C5PR=null;C5TR=null;C5CK=null;player.y=C2_FLOOR;player.x=S.ce2?(S.cend?C10_SIGNX+44:C10_BAR-40):S.ce1?470:C10_W-56;player.face=-1;camX=c3Clamp(player.x-96,0,C10_W-192);S.from="";
   if(!S.city){S.city=1;c2Save("crt");c3CutStart("c5arrive");}updateGuide();};}
 {const _b=c7Back;c7Back=function(){if(room==="crt")return c10Back();return _b();};}
 {const _f=c7Front;c7Front=function(){if(room==="crt")return c10Front();return _f();};}
@@ -53,11 +53,13 @@ function c10CutArrive(c){const t=c.t;c10Tick();const home=c3Clamp(player.x-96,0,
   if(t===220){$sx("growl");tnCap("…No. This isn't the city I left. It's so much worse.");}
   if(t===430)tnCap("Everything is burning, and there's nobody left to put it out.");
   if(t>=640){tnCap("");c3CutEnd();updateGuide();toast("<b>INTO THE CITY</b><br>Walk LEFT. Keep away from the Evolved.",4600);}}
-function c10CutPack(c){const t=c.t,S=c7S();c10Tick();c.cx=c3Clamp(player.x-140,0,C10_W-192);
+function c10CutPack(c){const t=c.t,S=c7S();c10Tick();c.cx=c3Clamp(Math.min(player.x-140,322),0,C10_W-192);
   if(t===1){c10Stop();$sx("growl");tnCap("Shh! Something's coming. Stay still…");}
-  if(t===50){C10.run=[c10Man(0,player.x-34,-0.36,7),c10Man(1,player.x-58,-0.42,5,{d:30}),c10Man(2,player.x-20,-0.3,9,{d:70})];$sx("breath");}
-  if(t===210){$sx("howl");C10.run.push({kind:0,x:camX+215,vx:-2.3,f:-1,lane:11,k:0.55,ph:5});}
-  if(t===320)tnCap("Those were people once. Sample 07 changed them too.");
+  if(t===40||t===90){$sx("doorhit");C10.vanJ=3;}
+  if(t===140){$sx("slam");$sx("growl");C10.vanJ=4;C10.vanOpen=1;shake=Math.max(shake,3);c10Boom(374,C2_FLOOR,10);C10.run=[c10Man(0,372,-0.36,4),c10Man(1,376,-0.42,6,{d:40}),c10Man(2,370,-0.3,8,{d:90})];}
+  if(t===230){$sx("howl");C10.run.push({kind:0,x:camX+215,vx:-2.3,f:-1,lane:11,k:0.55,ph:5});}
+  if(t===150)tnCap("They came out of that van! Out of nowhere…");
+  if(t===360)tnCap("Those were people once. Sample 07 changed them too.");
   if(t===560)tnCap("There are so many more of them than before.");
   if(t===790)tnCap("Fire needs heat, fuel and oxygen. With no one left to fight them, these fires just keep spreading.");
   if(t>=1040){tnCap("");S.ce1=1;c2Save("crt");c3CutEnd();updateGuide();}}
@@ -94,7 +96,7 @@ C3_DEVBTN.push(["CHAPTER 3: THE WAY BACK",[["c3_uback","HIDDEN LAB: LESSON DONE,
   if(a==="c3_uback"){Object.assign(I,base);c7DevGo("tlab",120);Object.assign(I,base);updateGuide();return;}
   if(a==="c3_uboat"){Object.assign(I,base,{land:1,look:1,door:1});c7DevGo("isle",C10_BOAT+30);Object.assign(I,base,{land:1,look:1,door:1});updateGuide();return;}
   if(a==="c3_usail"){Object.assign(I,base);c10Board();return;}
-  const city=(o,x)=>{c3DevPre("tlab");Object.assign(I,base,{back:1,city:1},o);C10.run=[];C10.deb=[];C10.dust=[];C10.bar=o.ce2?{go:1,k:1}:null;c7DevGo("crt",x);};
+  const city=(o,x)=>{C10.vanOpen=o.ce1?1:0;C10.vanJ=0;c3DevPre("tlab");Object.assign(I,base,{back:1,city:1},o);C10.run=[];C10.deb=[];C10.dust=[];C10.bar=o.ce2?{go:1,k:1}:null;c7DevGo("crt",x);};
   if(a==="c3_ucity"){c3DevPre("tlab");Object.assign(I,base,{back:1});C10.run=[];C10.deb=[];C10.dust=[];C10.bar=null;c7DevGo("crt");return;}
   if(a==="c3_upack"){city({},490);return;}
   if(a==="c3_uburst"){city({ce1:1},C10_BAR+86);return;}

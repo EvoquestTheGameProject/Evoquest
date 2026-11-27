@@ -27,7 +27,7 @@ This replaces the old v48 copy. Since v48 the game gained:
   hypothesis (the Evolution sends its monsters to guard the time machine parts), followed by an interactive lesson on what a
   hypothesis is: IF/THEN/BECAUSE, putting the scientific method in order, and a three-question quiz.
 * **The way back:** after the lesson, climb out of the lab and sail home on the RIDGE LINK 7. A cinematic shows the
-  city burning from the water and a nest of the Evolved bursting out of an overgrown building. Then walk through the
+  city burning from the water and the Evolved bursting out of nowhere: a wrecked car and a road tunnel. Then walk through the
   City Harbor at night: the same city as chapter 2, painted with its own painters and graded to night, with a real
   screen-space light map (fires, lamps and the growth cut light into the dark and light the player), mutated people
   and beasts, and the evacuation barricade being smashed open.

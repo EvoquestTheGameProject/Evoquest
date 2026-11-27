@@ -122,7 +122,7 @@ function c10Back(){const S=c7S(),g=C2_FLOOR,T=C10.t;
   for(let q=0;q<5;q++){const cx=120+q*110+Math.sin(T/60+q)*30,cy=16+((q*13)%14)+Math.sin(T/23+q*2)*4;if(cx<camX-10||cx>camX+202)continue;c3Crow(cx,cy,T/8+q,Math.cos(T/60+q)>0?1:-1,0.5);}
   /* the actors that walk in the far lane go behind the street props */
   for(const m of C10.run||[])(m.lane||0)>2&&c10Actor(m);
-  for(const [x,k,i] of C10_CARS){const c=c2NewCar(x,k,i);c.burn=i%2===1;c2Car(c);}
+  for(const [x,k,i] of C10_CARS){const c=c2NewCar(x,k,i);c.burn=i%2===1;const j=k==="van"&&C10.vanJ>0;j&&(ctx.save(),ctx.translate((Math.random()-0.5)*C10.vanJ,(Math.random()-0.5)*C10.vanJ*0.4));c2Car(c);if(k==="van"&&C10.vanOpen){fill("#040203",x+16,C2_FLOOR-20,11,15);for(let q=0;q<3;q++)Math.sin(C10.t/(20+q*9)+q)>0.3&&(fill("#ff3a2a",x+18+q*3,C2_FLOOR-15+q*2,0.8,0.7),fill("#ff3a2a",x+19.4+q*3,C2_FLOOR-15+q*2,0.8,0.7));ctx.save();ctx.translate(x+28,C2_FLOOR-4);ctx.rotate(1.35);fill("#3a6a5a",-6,-12,11,14);ctx.restore();}j&&ctx.restore();}
   for(const [x] of C10_DRUMS)c10Drum(x);
   c10Barricade();
   if(camX<C10_SIGNX+60){ctx.drawImage(c10SignSpr(),C10_SIGNX-24,g-30,48,22);}
@@ -140,7 +140,7 @@ function c10Tint(){c10Lights();const T=C10.t;
   const vg=C3.cache.c10vg2||(C3.cache.c10vg2=(()=>{const q=ctx.createRadialGradient(96,54,36,96,54,118);q.addColorStop(0,"rgba(0,0,0,0)");q.addColorStop(1,"rgba(6,2,10,.5)");return q;})());ctx.fillStyle=vg;ctx.fillRect(0,0,192,108);
   if(C10.flash>0){ctx.fillStyle="rgba(255,240,220,"+C10.flash+")";ctx.fillRect(0,0,192,108);}
   if(C3.dark>0){ctx.fillStyle="rgba(0,0,4,"+C3.dark+")";ctx.fillRect(0,0,192,108);}ctx.restore();}
-function c10Tick(){C10.t++;C10.flash>0&&(C10.flash=Math.max(0,C10.flash-0.05));const B=C10.bar;B&&(B.jit=Math.max(0,(B.jit||0)*0.88),B.go&&B.k<1&&(B.k=Math.min(1,B.k+0.05)));
+function c10Tick(){C10.t++;C10.vanJ>0&&(C10.vanJ=Math.max(0,C10.vanJ*0.86-0.02));C10.flash>0&&(C10.flash=Math.max(0,C10.flash-0.05));const B=C10.bar;B&&(B.jit=Math.max(0,(B.jit||0)*0.88),B.go&&B.k<1&&(B.k=Math.min(1,B.k+0.05)));
   if(C10.t%3===0&&C10.ash.length<70)C10.ash.push({x:camX+Math.random()*210,y:-2,vx:-0.12-Math.random()*0.2,vy:0.12+Math.random()*0.2,a:0.3+Math.random()*0.5,hot:Math.random()<0.3});
   for(const [x] of C10_DRUMS)if(C10.t%9===0&&Math.abs(x-camX-96)<140&&C10.ash.length<90)C10.ash.push({x,y:C2_FLOOR-12,vx:(Math.random()-0.5)*0.3,vy:-0.4-Math.random()*0.4,a:0.9,hot:1});
   C10.ash=C10.ash.filter((a)=>{a.x+=a.vx+Math.sin((C10.t+a.y)/20)*0.1;a.y+=a.vy;a.hot&&a.vy<0&&(a.a-=0.008);return a.y<110&&a.y>-5&&a.a>0;});

@@ -7632,7 +7632,7 @@ c10Rooms();
   _s();if(room==="isle"&&S.hyp&&!S.back&&!C3.cut&&!C3.task&&!C7G){c5Pick((it)=>{const k=it.id.slice(3);if(k==="boat")return{r:22,label:"BOARD THE SHIP"};if(k==="tdoor")return{r:22,label:"ENTER THE TOWER"};return null;});
     if(!C10.warm&&C7.t%40===0){/* paint the city ahead of time, a tile at a time */const n=C10.warmN||0;if(n<4)c5Tile("crt",n,C2.crt.seeds[n]);else if(n<4+C10_BLD.length)c10Bld(C10_BLD[n-4]);else{c10Jersey();c10SignSpr();C10.warm=1;}C10.warmN=n+1;}}};}
 {const _u=c7Use;c7Use=function(e){const k=e.id.slice(3),S=c7S();if(room==="isle"&&k==="boat"){if(C3.cut||C3.task)return!0;if(!S.hyp)return!0;if(!S.back)c10Board();return!0;}if(room==="crt")return!0;return _u(e);};}
-{const _e=c7Enter;c7Enter=function(t){const S=c7S();if(t!=="crt")return _e(t);C3.lie=0;C7G=null;C5GN=null;C5PR=null;C5TR=null;C5CK=null;player.y=C2_FLOOR;player.x=S.ce2?(S.cend?C10_SIGNX+44:C10_BAR-40):S.ce1?470:C10_W-56;player.face=-1;camX=c3Clamp(player.x-96,0,C10_W-192);S.from="";
+{const _e=c7Enter;c7Enter=function(t){const S=c7S();if(t!=="crt")return _e(t);C10.vanOpen=S.ce1?1:0;C10.vanJ=0;C3.lie=0;C7G=null;C5GN=null;C5PR=null;C5TR=null;C5CK=null;player.y=C2_FLOOR;player.x=S.ce2?(S.cend?C10_SIGNX+44:C10_BAR-40):S.ce1?470:C10_W-56;player.face=-1;camX=c3Clamp(player.x-96,0,C10_W-192);S.from="";
   if(!S.city){S.city=1;c2Save("crt");c3CutStart("c5arrive");}updateGuide();};}
 {const _b=c7Back;c7Back=function(){if(room==="crt")return c10Back();return _b();};}
 {const _f=c7Front;c7Front=function(){if(room==="crt")return c10Front();return _f();};}
@@ -7672,11 +7672,13 @@ function c10CutArrive(c){const t=c.t;c10Tick();const home=c3Clamp(player.x-96,0,
   if(t===220){$sx("growl");tnCap("…No. This isn't the city I left. It's so much worse.");}
   if(t===430)tnCap("Everything is burning, and there's nobody left to put it out.");
   if(t>=640){tnCap("");c3CutEnd();updateGuide();toast("<b>INTO THE CITY</b><br>Walk LEFT. Keep away from the Evolved.",4600);}}
-function c10CutPack(c){const t=c.t,S=c7S();c10Tick();c.cx=c3Clamp(player.x-140,0,C10_W-192);
+function c10CutPack(c){const t=c.t,S=c7S();c10Tick();c.cx=c3Clamp(Math.min(player.x-140,322),0,C10_W-192);
   if(t===1){c10Stop();$sx("growl");tnCap("Shh! Something's coming. Stay still…");}
-  if(t===50){C10.run=[c10Man(0,player.x-34,-0.36,7),c10Man(1,player.x-58,-0.42,5,{d:30}),c10Man(2,player.x-20,-0.3,9,{d:70})];$sx("breath");}
-  if(t===210){$sx("howl");C10.run.push({kind:0,x:camX+215,vx:-2.3,f:-1,lane:11,k:0.55,ph:5});}
-  if(t===320)tnCap("Those were people once. Sample 07 changed them too.");
+  if(t===40||t===90){$sx("doorhit");C10.vanJ=3;}
+  if(t===140){$sx("slam");$sx("growl");C10.vanJ=4;C10.vanOpen=1;shake=Math.max(shake,3);c10Boom(374,C2_FLOOR,10);C10.run=[c10Man(0,372,-0.36,4),c10Man(1,376,-0.42,6,{d:40}),c10Man(2,370,-0.3,8,{d:90})];}
+  if(t===230){$sx("howl");C10.run.push({kind:0,x:camX+215,vx:-2.3,f:-1,lane:11,k:0.55,ph:5});}
+  if(t===150)tnCap("They came out of that van! Out of nowhere…");
+  if(t===360)tnCap("Those were people once. Sample 07 changed them too.");
   if(t===560)tnCap("There are so many more of them than before.");
   if(t===790)tnCap("Fire needs heat, fuel and oxygen. With no one left to fight them, these fires just keep spreading.");
   if(t>=1040){tnCap("");S.ce1=1;c2Save("crt");c3CutEnd();updateGuide();}}
@@ -7713,7 +7715,7 @@ C3_DEVBTN.push(["CHAPTER 3: THE WAY BACK",[["c3_uback","HIDDEN LAB: LESSON DONE,
   if(a==="c3_uback"){Object.assign(I,base);c7DevGo("tlab",120);Object.assign(I,base);updateGuide();return;}
   if(a==="c3_uboat"){Object.assign(I,base,{land:1,look:1,door:1});c7DevGo("isle",C10_BOAT+30);Object.assign(I,base,{land:1,look:1,door:1});updateGuide();return;}
   if(a==="c3_usail"){Object.assign(I,base);c10Board();return;}
-  const city=(o,x)=>{c3DevPre("tlab");Object.assign(I,base,{back:1,city:1},o);C10.run=[];C10.deb=[];C10.dust=[];C10.bar=o.ce2?{go:1,k:1}:null;c7DevGo("crt",x);};
+  const city=(o,x)=>{C10.vanOpen=o.ce1?1:0;C10.vanJ=0;c3DevPre("tlab");Object.assign(I,base,{back:1,city:1},o);C10.run=[];C10.deb=[];C10.dust=[];C10.bar=o.ce2?{go:1,k:1}:null;c7DevGo("crt",x);};
   if(a==="c3_ucity"){c3DevPre("tlab");Object.assign(I,base,{back:1});C10.run=[];C10.deb=[];C10.dust=[];C10.bar=null;c7DevGo("crt");return;}
   if(a==="c3_upack"){city({},490);return;}
   if(a==="c3_uburst"){city({ce1:1},C10_BAR+86);return;}
@@ -7843,7 +7845,7 @@ function c10Back(){const S=c7S(),g=C2_FLOOR,T=C10.t;
   for(let q=0;q<5;q++){const cx=120+q*110+Math.sin(T/60+q)*30,cy=16+((q*13)%14)+Math.sin(T/23+q*2)*4;if(cx<camX-10||cx>camX+202)continue;c3Crow(cx,cy,T/8+q,Math.cos(T/60+q)>0?1:-1,0.5);}
   /* the actors that walk in the far lane go behind the street props */
   for(const m of C10.run||[])(m.lane||0)>2&&c10Actor(m);
-  for(const [x,k,i] of C10_CARS){const c=c2NewCar(x,k,i);c.burn=i%2===1;c2Car(c);}
+  for(const [x,k,i] of C10_CARS){const c=c2NewCar(x,k,i);c.burn=i%2===1;const j=k==="van"&&C10.vanJ>0;j&&(ctx.save(),ctx.translate((Math.random()-0.5)*C10.vanJ,(Math.random()-0.5)*C10.vanJ*0.4));c2Car(c);if(k==="van"&&C10.vanOpen){fill("#040203",x+16,C2_FLOOR-20,11,15);for(let q=0;q<3;q++)Math.sin(C10.t/(20+q*9)+q)>0.3&&(fill("#ff3a2a",x+18+q*3,C2_FLOOR-15+q*2,0.8,0.7),fill("#ff3a2a",x+19.4+q*3,C2_FLOOR-15+q*2,0.8,0.7));ctx.save();ctx.translate(x+28,C2_FLOOR-4);ctx.rotate(1.35);fill("#3a6a5a",-6,-12,11,14);ctx.restore();}j&&ctx.restore();}
   for(const [x] of C10_DRUMS)c10Drum(x);
   c10Barricade();
   if(camX<C10_SIGNX+60){ctx.drawImage(c10SignSpr(),C10_SIGNX-24,g-30,48,22);}
@@ -7861,7 +7863,7 @@ function c10Tint(){c10Lights();const T=C10.t;
   const vg=C3.cache.c10vg2||(C3.cache.c10vg2=(()=>{const q=ctx.createRadialGradient(96,54,36,96,54,118);q.addColorStop(0,"rgba(0,0,0,0)");q.addColorStop(1,"rgba(6,2,10,.5)");return q;})());ctx.fillStyle=vg;ctx.fillRect(0,0,192,108);
   if(C10.flash>0){ctx.fillStyle="rgba(255,240,220,"+C10.flash+")";ctx.fillRect(0,0,192,108);}
   if(C3.dark>0){ctx.fillStyle="rgba(0,0,4,"+C3.dark+")";ctx.fillRect(0,0,192,108);}ctx.restore();}
-function c10Tick(){C10.t++;C10.flash>0&&(C10.flash=Math.max(0,C10.flash-0.05));const B=C10.bar;B&&(B.jit=Math.max(0,(B.jit||0)*0.88),B.go&&B.k<1&&(B.k=Math.min(1,B.k+0.05)));
+function c10Tick(){C10.t++;C10.vanJ>0&&(C10.vanJ=Math.max(0,C10.vanJ*0.86-0.02));C10.flash>0&&(C10.flash=Math.max(0,C10.flash-0.05));const B=C10.bar;B&&(B.jit=Math.max(0,(B.jit||0)*0.88),B.go&&B.k<1&&(B.k=Math.min(1,B.k+0.05)));
   if(C10.t%3===0&&C10.ash.length<70)C10.ash.push({x:camX+Math.random()*210,y:-2,vx:-0.12-Math.random()*0.2,vy:0.12+Math.random()*0.2,a:0.3+Math.random()*0.5,hot:Math.random()<0.3});
   for(const [x] of C10_DRUMS)if(C10.t%9===0&&Math.abs(x-camX-96)<140&&C10.ash.length<90)C10.ash.push({x,y:C2_FLOOR-12,vx:(Math.random()-0.5)*0.3,vy:-0.4-Math.random()*0.4,a:0.9,hot:1});
   C10.ash=C10.ash.filter((a)=>{a.x+=a.vx+Math.sin((C10.t+a.y)/20)*0.1;a.y+=a.vy;a.hot&&a.vy<0&&(a.a-=0.008);return a.y<110&&a.y>-5&&a.a>0;});
@@ -7885,7 +7887,7 @@ function c10TowerLights(){const S=c7S(),g=C2_FLOOR,T=tick,L=[];
 /* ======================= CHAPTER 3, PART 5 (CINEMATIC): THE WAY BACK =======================
    Played on the opening cutscene's engine with the memory's compositor (c9Compose: bloom, light trails, colour split,
    flash, shake). It uses the game's painted assets: the ship's hull, the radio tower, the city's own night tiles and
-   buildings, Ma people and Ea creatures. Three shots: leaving the island, the burning skyline, a nest bursting open. */
+   buildings, Ma people and Ea creatures. Three shots: leaving the island, the burning skyline, and the Evolved bursting out of nowhere: a wrecked car, a road tunnel. */
 var C10N={hits:0,bang:0,burst:0,P:[],last:0};
 function c10Dt(){const now=performance.now(),dt=Math.min(50,now-(C10N.last||now))/16.7;C10N.last=now;return dt;}
 function c10Stars(t,n,h){for(let q=0;q<n;q++){const a=0.25+0.3*Math.sin(t/400+q*1.3);fill("rgba(230,226,255,"+a+")",(q*37+q*q)%192,(q*19)%h,q%7?0.6:1,q%7?0.6:1);}}
@@ -7922,29 +7924,36 @@ function c10ScCity(t){const z=1+Math.min(1,t/22000)*0.22;
       fill("#3a3e48",-20,63,74,0.8);for(let x=-16;x<52;x+=8)fill("#3a3e48",x,63,0.8,7);
       Ma(38,70,playerLook,0,1,{s:Po,closed:0,env:{c:"110,70,80",l:"255,150,90",a:0.24,dk:0.5}});},
     light:()=>{for(const [x,y,i] of [[18,30,1],[52,26,0.8],[96,32,1],[132,28,0.7],[170,30,0.9]])glow(x,y+1,4,"255,130,50",(0.4+0.12*Math.sin(t/120+x))*i);glow(96,48,54,"255,90,30",0.05);glow(38,52,16,"255,140,80",0.06);}});}
-function c10ScNest(t){const dt=c10Dt(),now=performance.now(),b=C10N.burst?now-C10N.burst:-1,bang=C10N.bang?Math.max(0,1-(now-C10N.bang)/260):0;
-  if(b>=0&&b<320)for(let q=0;q<8;q++)C10N.P.push({x:96+(Math.random()-0.5)*26,y:44+(Math.random()-0.5)*20,vx:(Math.random()-0.5)*4,vy:-Math.random()*3.5,life:90,c:["#5a5a5e","#3a3a40","#2a7a4a","#8a8478"][q%4],s:1+Math.random()*1.8});
-  C10N.P=C10N.P.filter((p)=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.16*dt;if(p.y>70){p.y=70;p.vx*=0.6;p.vy*=-0.2;}p.life-=dt;return p.life>0;});
-  const B=C10_BLD[2];
-  c9Compose({fade:0.22,bloom:0.22,ab:b>=0?Math.max(0.08,1.1-b/900):0,shake:bang*2.5+(b>=0?Math.max(0,4-b/260):0),flash:b>=0?Math.max(0,0.85-b/380):0,
+function c10ScRoad(t){const dt=c10Dt(),now=performance.now(),b=C10N.burst?now-C10N.burst:-1,bang=C10N.bang?Math.max(0,1-(now-C10N.bang)/260):0,GY=70,CX=118;
+  /* the door and glass that fly off the car when it bursts */
+  if(b>=0&&b<260)for(let q=0;q<6;q++)C10N.P.push({x:CX+10+(Math.random()-0.5)*14,y:GY-12+(Math.random()-0.5)*6,vx:(Math.random()-0.3)*3.6,vy:-1-Math.random()*3,life:90,c:["#c8e0e8","#8a3a26","#3a3a40","#e8f4f8"][q%4],s:0.6+Math.random()*1.4,r:0});
+  C10N.P=C10N.P.filter((p)=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.16*dt;p.r+=p.vx*0.1;if(p.y>GY){p.y=GY;p.vx*=0.6;p.vy*=-0.2;}p.life-=dt;return p.life>0;});
+  if(b>=0&&!C10N.door)C10N.door={x:CX+14,y:GY-12,vx:2.2,vy:-2.6,r:0};const D=C10N.door;if(D&&D.y<GY-1){D.x+=D.vx*dt;D.y+=D.vy*dt;D.vy+=0.18*dt;D.r+=0.25*dt;}
+  c9Compose({fade:0.22,bloom:0.22,ab:b>=0?Math.max(0.08,1.1-b/900):0,shake:bang*2+(b>=0?Math.max(0,3.5-b/280):0),flash:b>=0?Math.max(0,0.6-b/400):0,
     base:()=>{const q=ctx.createLinearGradient(0,0,0,88);q.addColorStop(0,"#06040c");q.addColorStop(0.7,"#24101c");q.addColorStop(1,"#5a2416");ctx.fillStyle=q;ctx.fillRect(-20,-20,240,110);
-      ctx.drawImage(c5Tile("crt",2,C2.crt.seeds[2]),0,0,384,184,-20,-14,232,111);{const q3=ctx.createLinearGradient(0,-14,0,70);q3.addColorStop(0,"rgba(8,4,20,.75)");q3.addColorStop(1,"rgba(40,10,20,.35)");ctx.fillStyle=q3;ctx.fillRect(-20,-14,232,90);}ctx.drawImage(c10Bld(C10_BLD[4]),0,0,384,216,128,-66,240,135);ctx.drawImage(c10Bld(C10_BLD[0]),0,0,384,216,-52,-62,230,129);
-      /* the nest building, close up */
-      ctx.save();ctx.translate(bang?(Math.random()-0.5)*bang*2:0,0);ctx.drawImage(c10Bld(B),0,0,384,216,45,-70.6,250,140.6);ctx.restore();
-      const hx=96,hy=56,GY=70;
-      if(b<0){const cr=Math.min(7,C10N.hits*2);ctx.strokeStyle="#0a0608";ctx.lineWidth=0.8;for(let q2=0;q2<cr;q2++){ctx.beginPath();ctx.moveTo(hx,hy);let x=hx,y=hy;for(let s=0;s<4;s++){x+=Math.cos(q2*0.9)*4+(s%2?1:-1);y+=Math.sin(q2*0.9)*3.4;ctx.lineTo(x,y);}ctx.stroke();}}
-      else{ctx.fillStyle="#040203";ctx.beginPath();ctx.moveTo(hx-14,GY);ctx.lineTo(hx-12,GY-24);ctx.lineTo(hx-4,GY-31);ctx.lineTo(hx+8,GY-29);ctx.lineTo(hx+14,GY-20);ctx.lineTo(hx+15,GY);ctx.fill();
-        for(let q2=0;q2<7;q2++){const on=Math.sin(t/(80+q2*25)+q2)>0;on&&(fill("#ff3a2a",hx-9+q2*3,GY-22+((q2*5)%14),0.9,0.8),fill("#ff3a2a",hx-7.4+q2*3,GY-22+((q2*5)%14),0.9,0.8));}
-        /* what pours out: changed people and beasts, scattering along the waterfront */
-        for(let q2=0;q2<11;q2++){const tt=b-260-q2*210;if(tt<0)continue;const dir=q2%2?-1:1,x=hx+dir*(2+tt*0.016);if(Math.abs(x-hx)>120)continue;
-          if(q2%3===1)c3Ea(x-dir*33*0.46,GY,dir,q2%2?0:1,now*1.6+q2*50,0.46);
-          else Ma(x,GY,yt(q2+2,4+q2%3,(q2*3)%14,(q2*5)%14,{hs:q2%11,gd:q2%2}),0,dir,Object.assign({s:Po*0.78,pose:c3Pose("walk",((now/110)|0)%8),env:{c:"60,30,50",l:"255,140,80",a:0.25,dk:0.55}},C10_MUTE));}
-        if(b>80)for(let q2=0;q2<12;q2++){const tt=(b-80)/1000,cx=hx+Math.cos(q2*0.8)*tt*38*(1+q2%3),cy=GY-30-tt*32*(1+(q2%4)*0.35)+Math.sin(q2)*6;c3Crow(cx,cy,now/80+q2,Math.cos(q2*0.8)>0?1:-1,0.5);}}
-      ctx.drawImage(c5Tile("crt",3,C2.crt.seeds[3]),0,184,384,32,-20,70,232,20);c10Water(t,88,"#040208","#1a0c14",[[96,"255,120,60",6]]);
-      for(const p of C10N.P)fill(p.c,p.x,p.y,p.s,p.s);},
-    light:()=>{glow(96,40,30,"110,255,140",0.07+0.04*Math.sin(t/300)+(bang*0.12));if(b>=0)glow(96,56,10,"255,40,30",0.16);for(const [x,y] of [[0,-6],[22,10],[175,-10],[190,8]])glow(x,y,9,"255,120,40",0.3+0.1*Math.sin(t/130+x));}});}
-function c10Reg(){C10V.reg||(C10V.reg=1,le.m10_sea=(t)=>c10ScSea(t),le.m10_city=(t)=>c10ScCity(t),le.m10_nest=(t)=>c10ScNest(t));}
-async function c10Sail(done){c10Reg();c9Bufs();Object.assign(C10N,{hits:0,bang:0,burst:0,P:[],last:0});modal=4;
+      ctx.drawImage(c5Tile("crt",2,C2.crt.seeds[2]),0,0,384,184,-20,-14,232,111);{const q3=ctx.createLinearGradient(0,-14,0,70);q3.addColorStop(0,"rgba(8,4,20,.75)");q3.addColorStop(1,"rgba(40,10,20,.35)");ctx.fillStyle=q3;ctx.fillRect(-20,-14,232,90);}
+      /* the road tunnel under the city: a concrete portal and a mouth of pure dark */
+      {const tx=40;fill("#2a2a30",tx-34,GY-40,68,40);for(let y=GY-40;y<GY;y+=2)for(let x=tx-34;x<tx+34;x+=2){const v=Pt(x/5,y/4,61);v>0.62&&fill("#3e3e46",x,y,2,2);v<0.3&&fill("#1c1c22",x,y,2,2);}
+        fill("#4a4a52",tx-36,GY-42,72,3);fill("#c8a030",tx-30,GY-38,60,1.2);for(let q2=0;q2<10;q2++)fill(q2%2?"#c8a030":"#1a1410",tx-30+q2*6,GY-38,3,1.2);
+        ctx.fillStyle="#020103";ctx.beginPath();ctx.moveTo(tx-24,GY);ctx.lineTo(tx-24,GY-20);ctx.quadraticCurveTo(tx,GY-38,tx+24,GY-20);ctx.lineTo(tx+24,GY);ctx.fill();
+        for(let q2=0;q2<9;q2++){const on=Math.sin(t/(70+q2*23)+q2*1.9)>(b>=0?-0.2:0.4);on&&(fill("#ff3a2a",tx-16+((q2*11)%30),GY-18+((q2*7)%14),0.9,0.7),fill("#ff3a2a",tx-14.4+((q2*11)%30),GY-18+((q2*7)%14),0.9,0.7));}
+        ctx.fillStyle="rgba(60,120,60,.6)";for(let q2=0;q2<16;q2++)ctx.fillRect(tx-34+((q2*29)%66),GY-41+((q2*7)%5),1,2+(q2%3));}
+      /* the road and the wrecks on it */
+      fill("#1a1618",-20,GY,240,20);for(let x=-20;x<220;x+=22)fill("#6a6050",x,GY+8,10,0.8);
+      const keepCam=camX,tk=tick;camX=0;tick=(now/16)|0;ctx.save();ctx.translate(0,GY-C2_FLOOR);
+      try{const v=c2NewCar(150,"van",2);c2Car(v);const car=c2NewCar(CX-16,"sedan",3);car.burn=false;ctx.save();if(b<0&&bang){ctx.translate(CX,C2_FLOOR);ctx.rotate((Math.random()-0.5)*0.08*bang);ctx.translate(-CX,-C2_FLOOR);}c2Car(car);ctx.restore();
+        if(b>=0){fill("#050304",CX+2,C2_FLOOR-14,14,7);}}finally{ctx.restore();camX=keepCam;tick=tk;}
+      if(D){ctx.save();ctx.translate(D.x,D.y);ctx.rotate(D.r);fill("#8a3a26",-5,-3,10,6);fill("#c8e0e8",-3,-2.4,5,2.4);ctx.restore();}
+      /* where they come from: out of the car, out of the tunnel, out from under the van */
+      if(b>=0){const W=(x,dir,kind,k,ph)=>c3Ea(x-dir*33*k,GY,dir,kind,now*1.6+ph,k),M=(x,dir,i)=>Ma(x,GY,yt(i+2,4+i%3,(i*3)%14,(i*5)%14,{hs:i%11,gd:i%2}),0,dir,Object.assign({s:Po*0.78,pose:c3Pose("walk",((now/110)|0)%8),env:{c:"60,30,50",l:"255,140,80",a:0.25,dk:0.55}},C10_MUTE));
+        [[0,CX+8,1,"man"],[350,CX+8,-1,0],[700,CX+8,1,"man"],[200,40,1,0],[520,40,1,"man"],[900,40,1,1],[1150,40,1,"man"],[620,160,-1,1],[1000,160,-1,0]].forEach(([d,x0,dir,kind],i)=>{const tt=b-d;if(tt<0)return;
+          const sp=kind==="man"?0.014:0.05,x=x0+dir*tt*sp;if(x<-30||x>222)return;kind==="man"?M(x,dir,i):W(x,dir,kind,kind===1?0.5:0.46,i*40);});
+        if(b>60)for(let q2=0;q2<10;q2++){const tt=(b-60)/1000,cx=40+Math.cos(q2*0.8)*tt*36*(1+q2%3),cy=GY-30-tt*30*(1+(q2%4)*0.35)+Math.sin(q2)*5;c3Crow(cx,cy,now/80+q2,Math.cos(q2*0.8)>0?1:-1,0.45);}}
+      c10Water(t,88,"#040208","#1a0c14",[[96,"255,120,60",6]]);
+      for(const p of C10N.P){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);fill(p.c,-p.s/2,-p.s/2,p.s,p.s);ctx.restore();}},
+    light:()=>{glow(40,GY-12,12,"255,40,30",b>=0?0.1:0.06);glow(150-4,GY-8,14,"255,140,60",0.25+0.08*Math.sin(t/130));for(const [x,y] of [[175,-10],[190,8],[0,-6]])glow(x,y,9,"255,120,40",0.3+0.1*Math.sin(t/130+x));}});}
+function c10Reg(){C10V.reg||(C10V.reg=1,le.m10_sea=(t)=>c10ScSea(t),le.m10_city=(t)=>c10ScCity(t),le.m10_road=(t)=>c10ScRoad(t));}
+async function c10Sail(done){c10Reg();c9Bufs();Object.assign(C10N,{hits:0,bang:0,burst:0,P:[],last:0,door:null});modal=4;
   for(let i=0;i<4;i++)c5Tile("crt",i,C2.crt.seeds[i]);C10_BLD.forEach((b)=>c10Bld(b));c10Jersey();c10SignSpr();
   ot.style.zIndex=90;ot.hidden=!1;it.hidden=!0;nt.hidden=!0;ct.classList.remove("on");Jt=1;cutAbort=0;typing=0;speaker="";fade(1).catch(()=>{});
   setScene("m10_sea");requestAnimationFrame(window.se);
@@ -7958,13 +7967,13 @@ async function c10Sail(done){c10Reg();c9Bufs();Object.assign(C10N,{hits:0,bang:0
     await me("What's that glow on the horizon?");
     $sx("siren");await me("Fires. Half the city is burning. It wasn't like this when I left.");
     await me("And those red lights in the windows… those aren't lights. They're eyes.");
-    await fade(1);hideDialog();setScene("m10_nest");await fade(0);$sx("rumble");
-    await me("That building by the water… it's covered in that green growth.");
+    await fade(1);hideDialog();setScene("m10_road");await fade(0);$sx("rumble");
+    await me("The road along the harbor… all those wrecked cars. Wait. Is that one rocking?");
     for(let q=0;q<3;q++){await wait(q?620:420);C10N.bang=performance.now();C10N.hits=q+1;$sx("doorhit");}
-    await me("Something is moving inside it. Lots of somethings.");
+    await me("Something is inside it. And in that tunnel… eyes. Lots of eyes.");
     C10N.bang=performance.now();C10N.hits=4;$sx("doorhit");await wait(450);
     C10N.burst=performance.now();$sx("crash");$sx("roar");$sx("flutter");hideDialog();await wait(3600);
-    await me("They're pouring out. They've been nesting in the buildings… and now there are too many of them to fit.");
+    await me("They're coming out of everywhere. The cars, the tunnels… like they appear out of nowhere.");
     await titleCard("BACK TO THE CITY",2400);
   }catch(e){if(e!==0)console.error(e);}
   $sx("stop");hideDialog();ct.classList.remove("on");fade(1).catch(()=>{});await new Promise((r)=>setTimeout(r,640));ot.hidden=!0;ot.style.zIndex="";cutAbort=0;C10N.P=[];modal=0;done&&done();}
