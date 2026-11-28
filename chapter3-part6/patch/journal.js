@@ -2,7 +2,7 @@
 module.exports={
 creatures:`  { id: "evolved", name: "THE EVOLVED", tag: "SWARM - MANY SPECIES", where: "THE BURNING STREETS", pal: { g: "#7fcf5a", G: "#b8ff8a", s: "#4a3a5a", r: "#ff3a2a", k: "#0a1020" },
     art: ["..............", "....gggggg....", "...gGGGGGGg...", "...gGrGGrGg...", "...gGGGGGGg...", "....gGkkGg....", "..ssssssssss..", ".sgssssssssgs.", ".g.ssssssss.g.", "...ss....ss..."],
-    lore: "People and animals that Sample 07 rewrote. They walk in lines toward the same places, and the one at the back keeps looking round. Some stand on high ledges and sweep the street with red eyes. In the second chamber under the Dome, you find them floating in tubes: extra arms, extra eyes, wings.",
+    lore: "People and animals that Sample 07 rewrote. They walk in lines toward the same places, and the one at the back keeps looking round. Some stand on high ledges and sweep the street with red eyes. In the Containment Chamber under the Dome, you find them floating in tubes: extra arms, extra eyes, wings.",
     sci: "Many animals hunt by sight and by sound. Staying behind cover breaks the line of sight, and stepping on glass or gravel makes noise that carries. Prey animals freeze or hide for exactly this reason: movement and sound give you away.",
     tip: "Stand beside a wreck and press USE to hide. Cross red beams between sweeps, and jump over broken glass." },
 `,

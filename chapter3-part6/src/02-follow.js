@@ -114,15 +114,6 @@ function p6Spotter(s){const g=C2_FLOOR,x=s.x,y0=g-s.h;if(x<camX-90||x>camX+280)r
     glow(bx,g-1,16,"255,70,50",0.3*flick);glow(ex,ey,5,"255,60,40",0.8);}}
 function p6Glass(x){if(x<camX-12||x>camX+204)return;const g=C2_FLOOR;fill("rgba(10,14,20,.5)",x-9,g-0.2,18,1.4);
   for(let q=0;q<11;q++){const sx=x-8+((q*17)%16),sy=g-0.6-(q%2)*0.5,a=0.5+0.5*Math.sin(tick/(8+q)+q*2);fill(a>0.4?"#cfe8f0":"#7a98a8",sx,sy,1.2+(q%3)*0.5,0.7);a>0.85&&glow(sx,sy,3,"200,230,255",0.3);}}
-function p6DomeFar(cx,base,R,al){/* the Dome seen from the streets: a swollen mound of flesh with car parts growing out of it */
-  const T=P6.t,pul=1+0.02*Math.sin(T/14)+0.012*Math.sin(T/5);ctx.save();ctx.globalAlpha=al;
-  const gr=ctx.createRadialGradient(cx,base-R*0.5,R*0.1,cx,base-R*0.4,R*1.1);gr.addColorStop(0,"#7a2a44");gr.addColorStop(0.55,"#42182a");gr.addColorStop(1,"#1a0a14");
-  ctx.fillStyle=gr;ctx.beginPath();ctx.ellipse(cx,base,R*pul,R*0.92*pul,0,Math.PI,0);ctx.fill();
-  ctx.strokeStyle="rgba(255,120,170,.4)";ctx.lineWidth=0.7;for(let q=0;q<9;q++){const a=Math.PI+0.3+q*0.32,r0=R*0.25,r1=R*(0.9+0.05*Math.sin(q*3));ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*r0*0.4,base-8);ctx.quadraticCurveTo(cx+Math.cos(a)*r0*1.6,base+Math.sin(a)*R*0.5,cx+Math.cos(a)*r1,base+Math.sin(a)*r1*0.9);ctx.stroke();}
-  for(let q=0;q<10;q++){const a=Math.PI+0.25+q*0.28,rr=R*(0.78+0.1*((q*7)%3)/3),px=cx+Math.cos(a)*rr,py=base+Math.sin(a)*rr*0.9;ctx.save();ctx.translate(px,py);ctx.rotate(a+1.57);fill(q%3?"#3a4448":"#5a3a2a",-4,-2,8+(q%3)*3,3);fill("#10161a",-3,0,3,2);ctx.restore();}
-  for(let q=0;q<14;q++){const a=Math.PI+0.2+q*0.2,rr=R*(0.55+0.3*((q*5)%4)/4),px=cx+Math.cos(a)*rr*1.05,py=base+Math.sin(a)*rr*0.85,b=0.5+0.5*Math.sin(T/(12+q)+q);fill(q%2?"#ff86d0":"#c8ff7a",px,py,1.2,1.2);b>0.6&&glow(px,py,5,q%2?"255,120,200":"170,255,120",0.3*b);}
-  ctx.fillStyle="#06020a";ctx.beginPath();ctx.ellipse(cx+R*0.1,base,R*0.2,R*0.3,0,Math.PI,0);ctx.fill();
-  ctx.restore();glow(cx,base-R*0.5,R*1.1,"255,110,170",0.22*al+0.06*Math.sin(T/18));}
 function p6FolBack(){const S=p6S(),g=C2_FLOOR,T=P6.t,F=P6.f;
   for(const [x,y,s] of [[60,30,1],[320,22,1.3],[620,34,0.9],[900,26,1.2],[1240,30,1],[1560,24,1.3]]){const fx=x;if(fx<camX-60||fx>camX+252)continue;c10Smoke(fx,y,s,T,"26,18,26");glow(fx,y+4,10,"255,110,40",0.22+0.1*Math.sin(T/7+x));}
   p6DomeFar(70,g,150,0.9);
@@ -157,8 +148,8 @@ function p6FolTint(){const T=P6.t;ctx.save();ctx.setTransform(ctx.canvas.width/1
   if(P6.al>40){ctx.fillStyle="rgba(255,20,10,"+((P6.al-40)/60*0.16)+")";ctx.fillRect(0,0,192,108);}
   if(C3.dark>0){ctx.fillStyle="rgba(0,0,4,"+C3.dark+")";ctx.fillRect(0,0,192,108);}ctx.restore();}
 /* ---------------- warm-up: paint the streets a piece at a time while the player is still in the harbor ---------------- */
-function p6WarmStep(){if(P6.warm)return;const n=P6.warmN;const nT=C2.fol.seeds.length;
-  if(n<nT)c5Tile("fol",n,C2.fol.seeds[n]);else if(n<nT+P6_BLD.length)c10Bld(P6_BLD[n-nT]);else{c10Jersey();P6.warm=1;}P6.warmN=n+1;}
+function p6WarmStep(){if(P6.warm)return;const n=P6.warmN,nT=C2.fol.seeds.length,nB=P6_BLD.length,nD=C2.dome.seeds.length;
+  if(n<nT)c5Tile("fol",n,C2.fol.seeds[n]);else if(n<nT+nB)c10Bld(P6_BLD[n-nT]);else if(n<nT+nB+nD)c5Tile("dome",n-nT-nB,C2.dome.seeds[n-nT-nB]);else if(n===nT+nB+nD){p6SprBulk();p6SprHatch();p6SprSign();p6SprVent();p6SprDomeFar();}else{c10Jersey();P6.warm=1;}P6.warmN=n+1;}
 /* ---------------- cutscenes ---------------- */
 function p6CutCrt(c){const t=c.t,S=c7S();c10Tick();const h=c3Clamp(player.x-96,0,C10_W-192);c.cx=t<120?h:Math.max(0,h-Math.min(90,(t-120)*0.4));
   if(t===1){c10Stop();C10.run=[c10Man(0,92,-0.2,10,{s:0.85}),c10Man(1,112,-0.2,10,{s:0.85}),c10Man(2,130,-0.2,10,{s:0.85}),{kind:2,x:70,vx:-0.2,f:-1,lane:12,k:0.8,ph:3},c10Man(3,150,-0.2,10,{s:0.85})];}

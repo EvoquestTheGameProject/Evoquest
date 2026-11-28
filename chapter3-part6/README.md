@@ -1,4 +1,4 @@
-# Chapter 3, Part 6: the Evolved trail, the Dome, the dark route and the second chamber
+# Chapter 3, Part 6: the Evolved trail, the Dome, the dark route and the Containment Chamber
 
 This adds the next part of the story to **EvoQuest Cinematic Edition v52.2.0**. The result is
 `../EvoQuest_Cinematic_Edition_v52_3_0.html`, still one self-contained HTML file.
@@ -26,8 +26,9 @@ After "Back to the City" (the old end card is gone) the quest continues:
    * **watchers on the roofs** sweep the street with red eye-beams: cross between sweeps, or hide;
    * **broken glass** crunches and makes a noise: jump over it; **a gunshot** is the loudest noise of all;
    * if they get far ahead they wait; if you get too close or are seen for about a second you are caught (Retry = last waypoint).
-2. **The Dome** (`03-dome.js`, room `dome`). A hall of flesh, car parts and rubble. The Evolved scatter into burrows and the big one
-   walks into a pulsing wall of flesh, which opens for it and closes. You can't follow. Read the green **EMERGENCY ROUTE** sign and
+2. **The Dome** (`03-dome.js`, `03a-dome-art.js`, room `dome`). A shattered glass dome held up by steel columns, rings and braces, with the
+   burnt city showing through the broken panes. The Evolved scatter into the vents and the big one walks into a wall of flesh that has
+   burst through the steel bulkhead, which opens for it and closes. You can't follow. Read the green **EMERGENCY ROUTE** sign and
    **pry the hatch** off with the crowbar: a heartbeat mini-game (pull in the green "relaxed" window after the second beat; 4 bolts).
    The hatch springs shut behind you.
 3. **The emergency route** (`04-dark.js`, room `dark`). Total darkness, stairs, gaps and pads, on a tall scrolling room.
@@ -36,7 +37,7 @@ After "Back to the City" (the old end card is gone) the quest continues:
      red = armed (stepping on one zaps you), so jump them;
    * a **locker** that only the echo shows holds a VHS tape; at the end, three pads play three notes: tap them from the
      **lowest to the highest** (the carved bars near the door hint at it) to open the door.
-4. **The second chamber** (`06-lab.js`, `07-bench.js`, room `slab`). Containment tubes with the Evolved (different body parts), a
+4. **The Containment Chamber** (`06-lab.js`, `06a-lab-art.js`, `06b-lab-props.js`, `07-bench.js`, room `slab`). Containment tubes with the Evolved (different body parts), a
    **clean workbench**, supply shelves, a media room with a **TV**, and a test range.
    * Take the Venom Blaster **apart** on the workbench (four steps, in a safe order).
    * Search for 8 parts and craft an **Upgrade Core** at the bench:
@@ -60,20 +61,29 @@ After "Back to the City" (the old end card is gone) the quest continues:
 
 | File | What |
 | --- | --- |
+| `00-art.js` | the art toolkit (shaded boxes, spheres, limbs, glass, rust, rivets, palettes) and the three weapon sprites |
 | `01-core.js` | state (`S.p6` inside the chapter 3 island state, so it is saved with the game), rooms, helpers, tiny Web Audio synth, hiding, retry |
 | `02-follow.js` | the stealth street, covers, watchers, glass, cutscenes, the hook into the end of the city part |
-| `03-dome.js` | the Dome art, the flesh wall, the heartbeat pry mini-game, the descent |
+| `03-dome.js` | the Dome's logic: the flesh wall, the heartbeat pry mini-game, the descent, cutscenes |
+| `03a-dome-art.js` | the Dome's painters: glass-and-steel tiles, bulkhead, hatch, sign, vents, the far view from the streets |
 | `04-dark.js` | the dark route: floor profile (`P6_KSEG`), echo renderer, pads, tone lock, falls |
 | `05-items.js` | all new items, icons (24x24 pixel art) and info cards |
-| `06-lab.js` | the lab art (tubes and subjects, props), searchable spots (`P6_LSPOT`), guide and arrow |
+| `06-lab.js` | the lab's logic: searchable spots (`P6_LSPOT`), guide, arrow, cutscene |
+| `06a-lab-art.js` | the wall tiles (chapter 1's `Me` painter + `we` overgrowth), the specimens, the tube parts |
+| `06b-lab-props.js` | the bench, blueprint, cart, shelves, desk, TV, lockers... as shaded sprites, and the room drawing |
 | `07-bench.js` | the workbench screen, recipes (`P6_REC`), the weapon picker and weapon art, the TV and tapes (`P6_TAPEDATA`) |
 | `08-weapons.js` | the three weapons, targets, the test range |
+| `08a-range-art.js` | the range's painted targets, ammo rack and banner |
 | `09-end.js` | the closing cutscene and the end card |
 | `99-debug.js` | developer-menu buttons ("CHAPTER 3: THE EVOLVED TRAIL") and the optional test hooks |
 | `patch/journal.js` | research notes, achievements and an "Evolved" creature entry for the journal |
+| `patch/audio.js` | rain-free ambient beds (`p6_street`, `p6_dome`, `p6_dark`); the lab uses the chapter 1 `lab` bed |
 
 ## Notes
 
+* Art: everything new is painted with the game's own pixel painter (`Ae`/`Lt`), dithered colour ramps (`c6Ramp`), noise and light from the
+  upper left, into cached sprites (`p6Sprite`), the way the earlier chapters do. Rain only plays where it rains: the streets, dome, dark route
+  and lab use their own beds, not `city_ruin` (whose hiss sounds like rain).
 * All cutscene keys start with `c5` because the engine routes cutscenes by prefix.
 * The new rooms carry the `c7` flag, so every older hook hands over to the new code only in these rooms.
 * Stairs in the dark route are real steps (3.6 units); the engine reads the floor height from `rooms.dark.fy`, which is a getter.

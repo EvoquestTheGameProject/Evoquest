@@ -64,5 +64,5 @@ manual clock: all intro frames and all boss-cutscene frames were pixel-identical
 ## v52.3: Chapter 3, Part 6
 
 `EvoQuest_Cinematic_Edition_v52_3_0.html` is the newer game (v52.2.0 plus the stealth chase to the Dome, the dark emergency route,
-the second chamber lab and the three weapon upgrades). It is built from `chapter3-part6/`: see
+the Containment Chamber lab and the three weapon upgrades). It is built from `chapter3-part6/`: see
 [`chapter3-part6/README.md`](chapter3-part6/README.md). The `src/` tree above still builds the older v48 file.

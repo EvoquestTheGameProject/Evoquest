@@ -62,23 +62,11 @@ function p6WeaponLab(){const S=p6S();if(!P6W.tg.length)p6RangeInit();
   if(S.up&&!C3.cut&&!modal){if(shootBuf>0||(keys.s&&S.up==="gusher")){const wantBuf=shootBuf>0;shootBuf=0;p6WFire();}}
   else if(!S.up&&!C3.cut){/* before the upgrade the old blaster is a pile of parts: no shooting */}}
 /* ---------------- drawing ---------------- */
-function p6TgDraw(t){const b=p6TgBox(t),x=t.x,y=t.y;if(x<camX-30||x>camX+222)return;const dead=t.hp<=0,fl=t.flash>0;
-  if(dead){ctx.globalAlpha=Math.max(0,t.rt>330?1:0.15);}
-  if(t.kind==="brute"){fill("#10161a",x-13,y-2,26,2);fill("#3a424a",x-11,y-42,22,34);fill(fl?"#ffffff":"#5a646e",x-11,y-42,22,2);fill("#2a3036",x-11,y-12,22,12);fill("#2a3036",x-9,y-2,6,2);fill("#2a3036",x+3,y-2,6,2);
-    for(const [rr,c] of [[9,"#c83a3a"],[6,"#e8e0d0"],[3,"#c83a3a"]]){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y-26,rr,0,7);ctx.fill();}fill("#ff3a2a",x-3,y-38,2,2);fill("#ff3a2a",x+1,y-38,2,2);fill("#3a424a",x-17,y-36,6,20);fill("#3a424a",x+11,y-36,6,20);fill("#8a949c",x-17,y-36,6,2);fill("#8a949c",x+11,y-36,6,2);
-    text("ARMOUR",x-8,y-48,"#ffd878",'2.4px "Press Start 2P",monospace');}
-  else if(t.kind==="pod"){const bob=Math.sin(P6L.t/16+t.ph)*1.4,py=y-4+bob;fill("#10161a",x-3.4,py-6,7,7);fill(fl?"#ffffff":"#4a5a64",x-3,py-6,6,6);fill("#8aa0ac",x-3,py-6,6,1);fill("#ff3a2a",x-1,py-4,2,2);fill("#2a343a",x-1,py+0.5,2,2);glow(x,py-3,6,"255,60,40",0.35);}
-  else{fill("#10161a",x-5,y-2,10,2);fill("#3a424a",x-0.8,y-8,1.6,8);fill(fl?"#ffffff":"#8a949c",x-3.5,y-19,7,12);fill("#4a5a64",x-3.5,y-19,7,1.6);fill("#e8e0d0",x-3.4,y-23,6.8,6.8);ctx.fillStyle=fl?"#fff":"#c83a3a";ctx.beginPath();ctx.arc(x,y-19.4,3,0,7);ctx.fill();fill("#e8e0d0",x-0.8,y-20.2,1.6,1.6);fill("#ff3a2a",x-1,y-20,2,2);}
-  if(!dead){const w=Math.max(10,t.w);fill("rgba(0,0,0,.6)",x-w/2,b.y0-6,w,2);fill(t.hp/t.max>0.5?"#6aff7a":t.hp/t.max>0.25?"#ffd23a":"#ff4a3a",x-w/2,b.y0-6,w*t.hp/t.max,2);}
-  if(t.ven&&!dead){for(let q=0;q<Math.min(5,t.ven.n);q++)fill("#8aff6a",x-6+q*3,b.y0-9+Math.sin(P6L.t/6+q)*0.6,1.6,1.6);}
-  ctx.globalAlpha=1;}
 function p6RangeDraw(){if(room!=="slab")return;const g=C2_FLOOR,T=P6L.t;if(camX+192<1240)return;
   /* the range: floor lines, a firing line, distance marks, a banner */
   fill("rgba(255,224,112,.7)",P6_RX,g-0.4,1.2,1.4);for(let x=1290;x<1500;x+=30){fill("rgba(255,255,255,.25)",x,g,1,1.4);text(""+(x-P6_RX),x-4,g+3,"#6a8a8a",'2.4px "Press Start 2P",monospace');}
-  fill("#1a2226",1252,20,250,8);fill("#c8a828",1252,20,250,1);text("TEST RANGE: CHOOSE YOUR TARGET",1262,22,"#ffe070",'3px "Press Start 2P",monospace');
-  text("BRUTE",1392,10,"#c8d8dc",'3px "Press Start 2P",monospace');text("SWARM",1326,10,"#c8d8dc",'3px "Press Start 2P",monospace');text("FAR",1480,10,"#c8d8dc",'3px "Press Start 2P",monospace');
-  /* the ammo rack */
-  {const x=1250;fill("#2a3036",x-6,g-26,12,26);fill("#4a525a",x-6,g-26,12,1.2);for(let q=0;q<3;q++){fill("#8aff6a",x-4,g-23+q*7,8,4);fill("#e8ffe0",x-4,g-23+q*7,8,1);}fill("#0a0c10",x-3,g-3,6,2);fill("#3aff7a",x-2,g-2.6,4,1);glow(x,g-14,12,"120,255,120",0.2);}
+  ctx.drawImage(p6SprBanner(),0,0,320,22,1250,16,160,11);text("BRUTE",1392,12,"#c8d8dc",'3px "Press Start 2P",monospace');text("SWARM",1326,12,"#c8d8dc",'3px "Press Start 2P",monospace');text("FAR",1480,12,"#c8d8dc",'3px "Press Start 2P",monospace');
+  {const x=1250;ctx.drawImage(p6SprRack(),0,0,34,64,x-8.5,g-32,17,32);glow(x,g-18,14,"120,255,120",0.22);}
   for(const t of P6W.tg)p6TgDraw(t);
   for(const c of P6W.clouds){const k=c.t/c.life;for(let q=0;q<6;q++){const px=c.x+Math.sin(T/20+q*2)*c.r*0.6,py=c.y-3-q*2-k*4;ctx.globalAlpha=Math.max(0,0.5*(1-k));ctx.drawImage(c10Puff(24,"110,230,110"),px-9,py-9,18,18);}ctx.globalAlpha=1;glow(c.x,c.y-4,c.r,"120,255,120",0.16*(1-k));}}
 function p6WeaponDraw(){if(!P6W.shots.length&&!P6W.beams.length&&!P6W.fl.length)return;

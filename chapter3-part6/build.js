@@ -4,6 +4,7 @@
      * src/*.js   are inserted, in filename order, at the end of the game's main script (inside the game closure, so they
                    share its scope, exactly like every earlier chapter part does)
      * patch/journal.js  adds research notes, achievements and a creature entry to the journal script
+     * patch/audio.js    adds rain-free ambient beds (street, dome, dark route) next to the other ROOMS in the audio script
    usage: node build.js [--out <file>]     (no dependencies) */
 const fs=require("fs"),path=require("path"),vm=require("vm");
 const ROOT=__dirname,BASE=path.join(ROOT,"base","EvoQuest_Cinematic_Edition_v52_2_0.html");
@@ -14,12 +15,13 @@ if(out.split(MARK).length!==2)throw new Error("insertion marker not found exactl
 const code=fs.readdirSync(path.join(ROOT,"src")).filter((f)=>f.endsWith(".js")).sort().map((f)=>fs.readFileSync(path.join(ROOT,"src",f),"utf8")).join("\n");
 if(/<\/script/i.test(code))throw new Error("a source file contains </script");
 out=out.replace(MARK,()=>code+"\n"+MARK);
-/* journal additions: each anchor must exist exactly once */
+/* journal additions and the new ambient sounds: each anchor must exist exactly once */
 const J=require("./patch/journal.js");
 const once=(re,fn)=>{const m=out.match(re);if(!m||out.split(m[0]).length!==2)throw new Error("journal anchor not found exactly once: "+re);out=out.replace(m[0],fn);};
 once(/\];\s*\n\s*const CONCEPTS = \[/,()=>J.creatures+"];\n\nconst CONCEPTS = [");
 once(/\];\s*\n\s*const RULES = \[/,()=>J.concepts+"];\n\nconst RULES = [");
 once(/  \{ id: "scholar", n: "SCHOLAR"/,()=>J.ach+'  { id: "scholar", n: "SCHOLAR"');
+once(/ROOMS\.city_ruin=\(a\)=>\{/,()=>require("./patch/audio.js")+"ROOMS.city_ruin=(a)=>{");
 once(/  if \(d\.room === "river"\) see\("beaver"\);\n/,()=>'  if (d.room === "river") see("beaver");\n'+J.see);
 /* syntax-check the script that now holds the new code and the journal script (a typo would otherwise show up only as a blank screen) */
 {const at=out.indexOf(MARK),st=out.lastIndexOf("<script",at),from=out.indexOf(">",st)+1,to=out.indexOf("</script>",at);

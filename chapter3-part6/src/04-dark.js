@@ -49,7 +49,9 @@ function p6KZap(pad){const K=P6K,S=p6S();pad.known=1;pad.lit=160;S.pads[pad.x]=1
   for(let q=0;q<14;q++)parts.push({x:pad.x,y:player.y-2,vx:(Math.random()-0.5)*2.4,vy:-Math.random()*2,g:0.1,life:22,c:q%2?"#9ae8ff":"#ffffff",s:1});
   toast("<b>ZAP!</b> An armed pad. It is marked now. Tap ahead with the crowbar (J) to find them, then jump over.",3400);}
 /* ---------------- per-frame ---------------- */
-function p6DarkStep(){const S=p6S(),K=P6K;if(dead)return;P6.t++;C7.t++;K.t++;K.cd>0&&K.cd--;K.flash>0&&(K.flash=Math.max(0,K.flash-0.06));gunCd=Math.max(gunCd,30);
+function p6LabWarmStep(){const n=P6.labWarm||0;if(n>=40)return;P6.labWarm=n+1;const sp=[p6SprBench,p6SprBlueprint,p6SprCart,p6SprSamples,p6SprSteelShelf,p6SprToolCab,p6SprDrawers,p6SprPipePanel,p6SprLocker,p6SprDesk,p6SprTv,p6SprTapeShelf,p6SprPower,p6SprDoor,p6SprMonitor,p6SprTubeBase,p6SprTubeTop,p6SprTubeGlass];
+  if(n<10)c5Tile("slab",n,C2.slab.seeds[n]);else if(n<10+sp.length)sp[n-10]();else if(n<10+sp.length+8)p6SubjSprite(n-10-sp.length);}
+function p6DarkStep(){const S=p6S(),K=P6K;if(dead)return;P6.t++;if(K.t%30===0)p6LabWarmStep();C7.t++;K.t++;K.cd>0&&K.cd--;K.flash>0&&(K.flash=Math.max(0,K.flash-0.06));gunCd=Math.max(gunCd,30);
   if(!K.geo)p6DarkInit(0);
   K.pulses=K.pulses.filter((p)=>K.t-p.t0<(p.R/p.sp)+140);
   if(K.tap){K.tap.t++;if(K.tap.t===5&&!K.tap.done){K.tap.done=1;p6KTapHit();}if(K.tap.t>20)K.tap=null;}

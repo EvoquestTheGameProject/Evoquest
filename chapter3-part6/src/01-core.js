@@ -1,7 +1,7 @@
 /* ======================= CHAPTER 3, PART 6: THE EVOLVED TRAIL, THE DOME, THE DARK ROUTE, THE LAB =======================
    Follow the Evolved through the burning streets without being seen (stealth: cover, look-backs, noise), reach the Dome (built of
    flesh and car parts), pry open the emergency route with the crowbar, find your way through total darkness by screaming (echo-
-   location) and tapping touch pads with the crowbar, then search the second chamber: a lab full of containment tubes, a clean
+   location) and tapping touch pads with the crowbar, then search the Containment Chamber: a lab full of containment tubes, a clean
    workbench, VHS tapes and a TV. Take the Venom Blaster apart, craft the upgrade core, and pick one of three new weapons.
    Rooms: fol (streets), dome, dark (emergency route), slab (the lab). All ride the chapter 3 hooks (c7*) like the earlier parts. */
 var P6={t:0,hide:0,hidX:0,al:0,noise:0,f:null,warmN:0,warm:0,tut:{}};
@@ -12,9 +12,9 @@ function p6Is(id){const d=C2[id===undefined?room:id];return!!(d&&d.p6);}
 function p6Rooms(){if(C2.fol)return;
   const mk=(id,name,W,H,seeds,env)=>{C2[id]={name,L:null,R:null,W,cars:[],seeds,c3:1,c4:1,c5:1,c7:1,p6:1};rooms[id]={name,L:null,R:null,W,crates:[],items:[],ints:[],plats:[]};if(H)rooms[id].H=H;C2_F[id]={trees:[],vines:[],branches:[],gantries:[],smoke:[]};De[id]=env;};
   mk("fol","THE BURNING STREETS",P6_FW,0,[201,202,203,204,205,206,207,208,209,210,211],{c:"70,50,80",l:"255,150,90",a:0.14,dk:0.55});
-  mk("dome","THE DOME",P6_DW,0,[221,222,223],{c:"90,50,70",l:"255,120,160",a:0.14,dk:0.5});
+  mk("dome","THE DOME",P6_DW,0,[221,222,223,224],{c:"90,50,70",l:"255,120,160",a:0.14,dk:0.5});
   mk("dark","THE EMERGENCY ROUTE",P6_KW,P6_KH,[231],{c:"20,24,40",l:"140,190,255",a:0.05,dk:0.7});
-  mk("slab","THE SECOND CHAMBER",P6_LW,0,[241,242,243,244,245,246,247],{c:"60,80,80",l:"190,255,230",a:0.1,dk:0.5});}
+  mk("slab","THE CONTAINMENT CHAMBER",P6_LW,0,[241,242,243,244,245,246,247,248,249,250],{c:"60,80,80",l:"190,255,230",a:0.1,dk:0.5});}
 p6Rooms();
 /* ---------------- small helpers ---------------- */
 function p6Dist(a,b){return Math.abs(a-b);}
@@ -30,7 +30,7 @@ function p6Scream(){p6Tone(520,0.5,"sawtooth",0.08,880,0);p6Tone(780,0.45,"squar
 function p6Echo(d){/* the reply comes back later the farther away the wall is */const dl=Math.min(1.2,0.18+d/180);p6Tone(430,0.32,"triangle",Math.max(0.02,0.07-d/2600),300,dl);p6Noise(0.25,Math.max(0.01,0.03-d/6000),1600,1,dl);}
 /* ---------------- routing: every c7 hook hands over for the new rooms ---------------- */
 {const _a=c7Pre;c7Pre=function(){if(p6Is()&&P6.hide){player.vx=0;player.walk=0;jumpBuf=0;}return _a();};}
-{const _a=window.__evoRoom;window.__evoRoom=()=>{if(p6Is()&&C3&&!C3.dreamOn)return room==="slab"?"gen_room":room==="dark"?"tower_hum":room==="dome"?"tower_hum":"city_ruin";return _a();};}
+{const _a=window.__evoRoom;window.__evoRoom=()=>{if((p6Is()||room==="crt")&&C3&&!C3.dreamOn)return room==="slab"?"lab":room==="dark"?"p6_dark":room==="dome"?"p6_dome":"p6_street";return _a();};}
 /* the player vanishes while hiding: wrap the sprite painter, nothing else changes */
 {const _M=Ma;Ma=function(t,a,e,o,r,n){if(e===playerLook&&Math.abs(t-player.x)<0.6&&p6Is()){if(P6.hide)return;if(room==='dark'){const ga=ctx.globalAlpha;ctx.globalAlpha=ga*0.3;try{return _M.apply(this,arguments);}finally{ctx.globalAlpha=ga;}}}return _M.apply(this,arguments);};}
 /* ---------------- retry: back to the last checkpoint of the new part ---------------- */
