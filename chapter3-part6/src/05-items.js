@@ -1,5 +1,5 @@
 /* ======================= PART 6D: ITEMS, ICONS AND INFO CARDS ======================= */
-const P6_RAW=["vpipe","vgauge","vseal","vsyr","vcoil","vamp","vgland","vcell"];
+const P6_RAW=["vpipe","vgauge","vsyr","vcoil","vgland","vcell"];
 const P6_CRAFT=["vchamber","vinj","vreactor","vcat","vupcore"];
 const P6_TAPES=["vhs1","vhs2","vhs3","vhs4","vhs5","vhs6"];
 const P6_WEAP=["gusher","sweeper","hypervex"];

@@ -1,6 +1,6 @@
 /* ======================= PART 6D: THE CLEAN WORKBENCH, THE CRAFTING TREE, THE WEAPON CHOICE ======================= */
-const P6_REC=[{out:"vchamber",need:["vpipe","vgauge","vseal"],why:"The gasket seals the joint, the pipe takes the pressure and the gauge reads it: a sealed chamber."},
-  {out:"vinj",need:["vsyr","vcoil","vamp"],why:"The coil is an electromagnet that opens the valve, the needles make the jet and the ampoule holds the dose."},
+const P6_REC=[{out:"vchamber",need:["vpipe","vgauge"],why:"The pipe takes the pressure and the gauge reads it: a sealed chamber."},
+  {out:"vinj",need:["vsyr","vcoil"],why:"The coil is an electromagnet that opens the valve and the needles make the fine jet."},
   {out:"vreactor",need:["vchamber","vinj"],why:"Push from the chamber, metering from the injector: together they are a regulator."},
   {out:"vcat",need:["vgland","vcell"],why:"The cell warms the gland, so its venom reacts faster. A catalyst helps a reaction without being used up."},
   {out:"vupcore",need:["vreactor","vcat"],why:"A regulated, boosted venom engine. Now it just needs a barrel, a grip and a tank."}];

@@ -83,7 +83,11 @@ function p6WeaponHud(){const S=c7S(),P=S.p6;if(!P||!P.up||!hasGun||!c7Is()||C3.c
   fill("rgba(0,0,0,.5)",126,99,64,7);text(d.n,128,100.4,"#ffe070",'2.8px "Press Start 2P",monospace');for(let q=0;q<d.cap;q++)fill(q<ammo?"#8aff9a":"#26362e",128+q*5,104,3.4,1.4);ctx.restore();}
 /* ---------------- plumbing (outermost wrappers: they cover every room of this part) ---------------- */
 {const _s=c7Step;c7Step=function(){const r=_s();const S=c7S();if(S.p6&&S.p6.up&&!C3.cut){if(room!=="slab"&&p6WOn()){if(shootBuf>0||(keys.s&&S.p6.up==="gusher")){shootBuf=0;p6WFire();}}p6WeaponStep();}return r;};}
-{const _f=c7Front;c7Front=function(){_f();p6WeaponDraw();p6LaserDraw();};}
+{const _f=c7Front;c7Front=function(){_f();p6WeaponDraw();p6LaserDraw();p6HeldDraw();};}
+/* the new weapon, in the player's hands (drawn over the old gun the engine paints) */
+function p6HeldDraw(){const P=c7S().p6;if(!P||!P.up||!hasGun||C3.cut||P6.hide||player.punch>0||modal)return;const sp=p6WeaponSprite(P.up),f=player.face,w=38,h=w*sp.height/sp.width,cx=player.x+f*12,cy=player.y-19;
+  ctx.save();ctx.translate(cx,cy);ctx.scale(f,1);ctx.drawImage(sp,0,0,sp.width,sp.height,-w*0.36,-h*0.5,w,h);ctx.restore();}
+try{const _uh=updateHud;updateHud=function(){_uh.apply(this,arguments);try{const P=c7S().p6;if(P&&P.up&&hasGun){const im=qs("#ga img");if(im)im.src=p6WeaponSprite(P.up).toDataURL();}}catch(e){}};}catch(e){}
 {const _t=c7Tint;c7Tint=function(){_t();p6WeaponHud();};}
 {const _b=c7Back;c7Back=function(){_b();if(room==="slab")p6RangeDraw();};}
 {const _e=c7Enter;c7Enter=function(t){_e(t);P6W.shots=[];P6W.beams=[];{const P=c7S().p6;if(P&&P.up&&hasGun)ammo=Math.max(ammo,P6_WDEF[P.up].cap);updateHud();}if(t==="slab"&&!P6W.tg.length)p6RangeInit();};}

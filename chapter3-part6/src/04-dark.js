@@ -39,8 +39,8 @@ function p6DarkInit(resp){const S=p6S(),K=P6K;K.t=0;K.cd=0;K.pulses=[];K.tap=nul
   if(resp)player.x=S.kcp||56;}
 function p6DarkRespawn(){const S=p6S();p6DarkInit(!0);player.face=1;camX=c3Clamp(player.x-96,0,P6_KW-192);}
 function p6KPulse(x,y,R,sp,col){P6K.pulses.push({x,y,t0:P6K.t,R,sp,col:col||0});if(P6K.pulses.length>5)P6K.pulses.shift();}
-function p6KScream(){const S=p6S(),K=P6K;if(K.cd>0)return;K.cd=64;S.screamed=1;p6Scream();$sx("whoosh");shake=Math.max(shake,2);player.punch=0;
-  const x=player.x,y=player.y-20;p6KPulse(x,y,150,1.9);
+function p6KScream(){const S=p6S(),K=P6K;if(K.cd>0)return;K.cd=40;S.screamed=1;p6Scream();$sx("whoosh");shake=Math.max(shake,2);player.punch=0;
+  const x=player.x,y=player.y-20;p6KPulse(x,y,260,2.2);
   /* the nearest solid thing decides how late the echo comes back */
   let best=1e9;for(const g of K.geo){if(Math.abs(g.x-x)>200)continue;const d=Math.hypot(g.x-x,g.y-y);if(d<best&&d>6)best=d;}p6Echo(best);}
 function p6KTap(){const S=p6S(),K=P6K;if(K.tap&&K.tap.t<14)return;const tx=player.x+player.face*13;K.tap={t:0,x:tx,done:0};player.punch=12;$sx("clank");p6Tone(900,0.08,"square",0.05,600);
@@ -77,7 +77,7 @@ function p6DarkStep(){const S=p6S(),K=P6K;if(dead)return;P6.t++;if(K.t%30===0)p6
   c5Pick((it)=>{const k=it.id.slice(3);if(k==="klad")return{r:18,label:"THE LADDER"};if(k==="klock")return S.locker?null:{r:16,label:"OPEN THE LOCKER"};if(k==="kdoor")return{r:22,label:K.open?"GO THROUGH":"THE DOOR"};return null;});
   if(!S.kt1&&player.x>205&&S.screamed){S.kt1=1;toast("<b>TOUCH PADS.</b> Some pads in the floor are armed and zap whatever steps on them. Tap ahead with the crowbar (<b>J</b>) to feel for them. A tapped pad glows: <span style=\"color:#ff7a6a\">red = armed</span>.",8000);}}
 function p6KTapHit(){const K=P6K,S=p6S();let any=0;
-  for(const pd of K.pad){if(Math.abs(pd.x-K.tap.x)>9)continue;any=1;
+  for(const pd of K.pad){if(Math.abs(pd.x-K.tap.x)>16)continue;any=1;
     if(pd.k==="trap"){pd.known=1;pd.lit=160;S.pads[pd.x]=1;p6Tone(150,0.35,"sawtooth",0.07,100);$sx("locked");p6Tip("trap","<b>BZZZT!</b> The pad flashes <b>red</b> and buzzes: it's <b>armed</b>. Jump over it!",3600);}
     else if(pd.k==="safe"){pd.lit=70;p6Tone(520,0.1,"triangle",0.05);}
     else{pd.lit=120;p6Tone(pd.f,0.7,"sine",0.14);p6Tone(pd.f*2,0.5,"sine",0.04);
@@ -97,12 +97,15 @@ function p6DarkGuide(){const S=p6S(),K=P6K;
   return p6Q("<b>Find the way through the dark.</b><br>&#9679; <b>F / K</b>: scream, the echo shows walls, stairs and gaps<br>&#9679; <b>J</b>: tap ahead with the crowbar to find armed pads<br>&#9679; Climb the stairs, jump the gaps");}
 function p6DarkArrow(){}
 /* ---------------- drawing: the echo ---------------- */
-function p6KAlpha(x,y){let a=0;for(const p of P6K.pulses){const age=P6K.t-p.t0,front=age*p.sp,d=Math.hypot(x-p.x,y-p.y);if(d>front||d>p.R)continue;const since=age-d/p.sp,v=Math.max(0,1-since/(p.col?55:115))*(1-d/p.R*0.8);a=Math.max(a,since<5?Math.min(1,v+0.5):v);}return a;}
+function p6KAlpha(x,y){let a=0;const pd=Math.hypot(x-player.x,y-(player.y-12));if(pd<38)a=0.7*(1-pd/38);for(const p of P6K.pulses){const age=P6K.t-p.t0,front=age*p.sp,d=Math.hypot(x-p.x,y-p.y);if(d>front||d>p.R)continue;const since=age-d/p.sp,v=Math.max(0,1-since/(p.col?70:300))*(1-d/p.R*0.8);a=Math.max(a,since<5?Math.min(1,v+0.5):v);}return a;}
 function p6DarkBack(){const g=C2_FLOOR,K=P6K,S=p6S(),T=K.t;if(!K.geo)return;
   ctx.fillStyle="#000";ctx.fillRect(camX-2,camY-2,196,112);
   /* geometry the echo has lit */
-  if(K.pulses.length){const x0=camX-8,x1=camX+200,y0=camY-8,y1=camY+116;for(const q of K.geo){if(q.x<x0||q.x>x1||q.y<y0||q.y>y1)continue;const a=p6KAlpha(q.x,q.y);if(a<0.04)continue;ctx.globalAlpha=Math.min(1,a);fill(q.k==="f"?"#bff4ff":q.k==="c"?"#6ab0d8":q.k==="p"?"#7ac0e8":q.k==="s"?"#ffe9a0":"#9ae8ff",q.x-0.5,q.y-0.5,1,1);}ctx.globalAlpha=1;
+  {const x0=camX-8,x1=camX+200,y0=camY-8,y1=camY+116;for(const q of K.geo){if(q.x<x0||q.x>x1||q.y<y0||q.y>y1)continue;const a=p6KAlpha(q.x,q.y);if(a<0.04)continue;ctx.globalAlpha=Math.min(1,a);fill(q.k==="f"?"#bff4ff":q.k==="c"?"#6ab0d8":q.k==="p"?"#7ac0e8":q.k==="s"?"#ffe9a0":"#9ae8ff",q.x-0.5,q.y-0.5,1,1);}ctx.globalAlpha=1;
     for(const s of K.signs){if(s.x<camX-20||s.x>camX+212)continue;const a=p6KAlpha(s.x,s.y);if(a<0.05)continue;ctx.globalAlpha=Math.min(1,a*1.2);p6KSign(s);}ctx.globalAlpha=1;}
+  /* a faint arrow always points the way on, and drops are marked in red */
+  if(!K.open||true){const a=0.35+0.2*Math.sin(T/10);ctx.globalAlpha=a;for(let q=0;q<3;q++){const ax=player.x+16+q*5+(T%20)*0.2;ctx.fillStyle="#9aff9a";ctx.fillRect(ax,player.y-30-q*0.5,0.8,3);ctx.fillRect(ax+0.8,player.y-29.2,0.8,1.6);}ctx.globalAlpha=1;}
+  for(const gp of P6_KGAP){const lv=p6KFloor(gp[0]-1);if(Math.abs(player.x-gp[0])<70){ctx.globalAlpha=0.55+0.2*Math.sin(T/6);fill("#ff5a4a",gp[0]-0.5,lv-1,1,4);fill("#ff5a4a",gp[1]-0.5,lv-1,1,4);glow(gp[0],lv,10,"255,60,40",0.4);glow(gp[1],lv,10,"255,60,40",0.4);ctx.globalAlpha=1;}}
   /* the sound itself, as expanding rings */
   for(const p of K.pulses){const age=K.t-p.t0,r=age*p.sp;if(r>p.R)continue;ctx.strokeStyle="rgba(170,230,255,"+(0.5*(1-r/p.R))+")";ctx.lineWidth=0.5;ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.stroke();if(!p.col){ctx.strokeStyle="rgba(170,230,255,"+(0.2*(1-r/p.R))+")";ctx.beginPath();ctx.arc(p.x,p.y,r*0.82,0,7);ctx.stroke();}}
   /* the pads */

@@ -6,16 +6,13 @@ const P6_LB=240,P6_LD=26;
 /* every searchable spot: [id, x, label, item, task frames, colour, [text when found], key needed] */
 const P6_LSPOT=[
   ["syr",405,"SEARCH THE MEDICAL CART","vsyr",26,"#c8e8f0","<b>THE MEDICAL CART.</b> Sealed gloves, bandages, a bag of saline… and a rack of hollow needles. Just what a fine jet needs."],
-  ["amp",445,"SEARCH THE BROKEN TUBE","vamp",28,"#9ae8ff","<b>THE BROKEN TUBE.</b> Whatever lived in here is long gone. Among the shards, one thick vial survived."],
   ["tape5",325,"LOOK BEHIND THE TUBE","vhs5",26,"#7a828a","<b>BEHIND THE TUBE.</b> A cable duct, and wedged in it, a tape with a cracked case."],
   ["tape2",565,"SEARCH THE SAMPLE DRAWERS","vhs2",24,"#5a626a","<b>SAMPLE DRAWERS.</b> Rows of labelled slides, all dust. At the back, a dusty tape."],
   ["gland",615,"BREAK THE TUBE","vgland",44,"#8aff6a","","crow"],
   ["pipe",690,"SEARCH THE STEEL SHELF","vpipe",24,"#9aa4ae","<b>THE STEEL SHELF.</b> Offcuts of steel bar and a few lengths of seamless pipe. One is perfect."],
   ["coil",760,"SEARCH THE TOOL CABINET","vcoil",24,"#c87a3a","<b>THE TOOL CABINET.</b> Screwdrivers, a hacksaw, a reel of enamelled copper wire wound on a spool. A coil, almost."],
-  ["seal",825,"OPEN THE DRAWERS","vseal",22,"#2a2a30","<b>THE DRAWERS.</b> Washers, screws, and a tin of rubber rings. One would do."],
   ["gauge",885,"CHECK THE PIPE PANEL","vgauge",26,"#d8d0b0","<b>THE PIPE PANEL.</b> A wall of pipes with a row of dials. One dial hangs loose on its pipe: you can unscrew it."],
   ["tape3",945,"OPEN THE LOCKER","vhs3",26,"#6a747c","<b>THE LOCKER.</b> A jacket, a thermos, a photo of two kids. And a tape."],
-  ["desk",1010,"SEARCH THE DESK","vkey",26,"#5aa8ff","<b>THE DESK.</b> A cold cup of coffee, a lamp, a pile of reports. Under the keyboard, a blue card: POWER STORE."],
   ["tape4",1150,"SEARCH THE TAPE SHELF","vhs4",24,"#6a747c","<b>THE TAPE SHELF.</b> Rows of cases, mostly empty. One still has its tape."],
   ["power",1205,"POWER LOCKER","vcell",24,"#ffd23a","<b>THE POWER LOCKER.</b> The card reader beeps green. Inside: a rack of charged cells.","vkey"],
   ["tape6",1278,"SEARCH THE RANGE LOCKER","vhs6",24,"#9ab0c8","<b>THE RANGE LOCKER.</b> Ear defenders, safety glasses, and a taped-shut cassette marked: WEAPONS TEST."]];
@@ -61,7 +58,7 @@ function p6LabUse(e){const k=e.id.slice(3),S=p6S();if(C3.cut||C3.task)return!0;
   if(S.found[k]){toast("Already searched. Nothing else useful.",1600);return!0;}
   if(k==="gland"){if(!inv.includes("pcrow")){$sx("locked");toast("The tube is thick, tough glass. You'd need something to smash it with.",2800);return!0;}
     c3Task("chop",615,sp[4],()=>{shake=Math.max(shake,10);$sx("crash");$sx("debris");P6L.scare=14;P6L.flash=0.25;const tb=P6_TUBES.find((t)=>t.st==="dead");tb&&(tb.st="broken");p6LabGot(["gland",615,"","vgland",0,"","<b>SPECIMEN 04.</b> The glass bursts. The thing inside was dead long before you came. But the gland on its back is still glowing, and still warm."]);},"#8aff6a");return!0;}
-  if(k==="power"&&!inv.includes("vkey")){$sx("locked");toast("<b>ACCESS DENIED.</b> The card reader blinks red: <i>POWER STORE: SWIPE A KEYCARD</i>.",3400);return!0;}
+  
   c3Task("gather",sp[1],sp[4],()=>p6LabGot(sp),sp[5]);return!0;}
 function p6LabCounts(){const S=p6S(),have=(i)=>inv.includes(i)||S.made[i]||p6Used(i);return{raw:P6_RAW.filter(have).length,tapes:P6_TAPES.filter((t)=>inv.includes(t)||(S.tapes||[]).indexOf(t)>=0).length};}
 /* an item counts as "had" once it has been built into something */
@@ -70,13 +67,13 @@ function p6LabGuide(){const S=p6S(),M=S.made,tk=(b)=>b?"&#10004; ":"&#9744; ",c=
   if(S.up)return p6Q("<b>"+items[S.up].n+" built.</b><br>"+(S.test?"Calibration done.":"Test it on the range at the far RIGHT of the lab."));
   if(M.vupcore)return p6Q("<b>The Upgrade Core is ready.</b><br>Take it to the <b>clean workbench</b> and choose your new weapon.");
   if(!S.dis)return p6Q("<b>The Containment Chamber.</b><br>"+tk(0)+"Take the <b>Venom Blaster</b> apart on the <b>clean workbench</b> (far LEFT)<br>&#9679; Look around: find <b>parts</b>, and <b>VHS tapes</b>");
-  return p6Q("<b>Build an Upgrade Core.</b><br>"+tk(M.vchamber)+"Pressure Chamber (3 parts)<br>"+tk(M.vinj)+"Injector Core (3 parts)<br>"+tk(M.vreactor)+"Venom Reactor (chamber + injector)<br>"+tk(M.vcat)+"Catalyst Cell (2 parts)<br>"+tk(0)+"Upgrade Core (reactor + catalyst)<br>&#9679; Parts found: "+c.raw+"/8 &middot; Tapes: "+c.tapes+"/6<br>Search the lab. Combine parts at the bench.");}
+  return p6Q("<b>Build an Upgrade Core.</b><br>"+tk(M.vchamber)+"Pressure Chamber (2 parts)<br>"+tk(M.vinj)+"Injector Core (2 parts)<br>"+tk(M.vreactor)+"Venom Reactor (chamber + injector)<br>"+tk(M.vcat)+"Catalyst Cell (2 parts)<br>"+tk(0)+"Upgrade Core (reactor + catalyst)<br>&#9679; Parts found: "+c.raw+"/6 &middot; Tapes: "+c.tapes+"/6<br>Search the lab. Combine parts at the bench.");}
 function p6LabArrow(){const S=p6S();if(C3.cut||C3.task||modal)return;if(!S.dis||S.up&&S.test||S.made.vupcore&&!S.up){return p6Arrow(150);}
   let best=null,bd=1e9;for(const sp of P6_LSPOT){if(S.found[sp[0]])continue;if(sp[3].slice(0,3)==="vhs")continue;const d=Math.abs(sp[1]-player.x);if(d<bd){bd=d;best=sp[1];}}
   if(!best){const tb=p6LabCounts();return p6Arrow(S.up?1330:150);}p6Arrow(best);}
 /* ---------------- the blueprint ---------------- */
 function p6Info(title,html,btn){p6Css();const el=c5Overlay("#p6Tool",'<div class="gcard c4card"><h3>'+title+'</h3><div class="p6msg" style="font-size:8px;line-height:1.9">'+html+'</div><div class="btns"><button class="gbtn" id="p6toolOk">'+(btn||"CLOSE")+"</button></div></div>");modal=4;el.hidden=!1;qs("#p6toolOk").onclick=()=>{el.hidden=!0;modal=0;updateGuide();};setTimeout(()=>{const b=qs("#p6toolOk");b&&b.focus();},30);$sx("card");}
-function p6BlueprintShow(){p6Info("THE UPGRADE BLUEPRINT","A blueprint pinned over the bench, drawn in blue ink:<br><br><b>UPGRADE CORE</b> = <b>VENOM REACTOR</b> + <b>CATALYST CELL</b><br><br>&bull; <b>VENOM REACTOR</b> = <b>PRESSURE CHAMBER</b> + <b>INJECTOR CORE</b><br>&bull; <b>PRESSURE CHAMBER</b> = pipe + gauge + gasket<br>&bull; <b>INJECTOR CORE</b> = needles + coil + glass vial<br>&bull; <b>CATALYST CELL</b> = a living gland + a power cell<br><br>Then fit the core to the <b>old barrel, grip and canister</b> and pick a weapon. Scribbled at the bottom: <i>\"parts are all over the Containment Chamber. Don't forget the powered locker needs a card.\"</i>");}
+function p6BlueprintShow(){p6Info("THE UPGRADE BLUEPRINT","A blueprint pinned over the bench, drawn in blue ink:<br><br><b>UPGRADE CORE</b> = <b>VENOM REACTOR</b> + <b>CATALYST CELL</b><br><br>&bull; <b>VENOM REACTOR</b> = <b>PRESSURE CHAMBER</b> + <b>INJECTOR CORE</b><br>&bull; <b>PRESSURE CHAMBER</b> = pipe + gauge<br>&bull; <b>INJECTOR CORE</b> = needles + coil<br>&bull; <b>CATALYST CELL</b> = a living gland + a power cell<br><br>Then fit the core to the <b>old barrel, grip and canister</b> and pick a weapon. Scribbled at the bottom: <i>\"parts are all over the Containment Chamber.\"</i>");}
 /* ---------------- first visit ---------------- */
 function p6CutLab(c){const t=c.t,S=p6S();p6LabTick();p6LabLights();c.cx=null;
   if(t===1){player.x=60;player.y=C2_FLOOR;player.face=1;P6L.flash=1;}

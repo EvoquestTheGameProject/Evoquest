@@ -6,7 +6,7 @@ const P6_WP=[{x:1130,d:190},{x:900,d:230},{x:700,d:200},{x:480,d:230},{x:260,d:1
 const P6_GM=[{o:0,b:1},{o:34,i:0},{o:50,i:1},{o:66,i:2},{o:90,i:3,w:1}];
 const P6_COV=[{x:1580,k:"bus"},{x:1330,k:"wall"},{x:1090,k:"truck"},{x:960,k:"box"},{x:830,k:"wall"},{x:640,k:"bus"},{x:540,k:"box"},{x:400,k:"truck"},{x:300,k:"wall"},{x:170,k:"box"}];
 const P6_GL=[1440,1210,1010,760,590,440,330];
-const P6_SENT=[{x:930,ph:0,h:46},{x:560,ph:2.1,h:46},{x:210,ph:4.0,h:46}];
+const P6_SENT=[{x:930,ph:0,h:46},{x:560,ph:2.1,h:46}];
 const P6_BLD=(()=>{const L=[];for(let i=0;i<15;i++){const x=-6+i*126+((i*37)%34),w=44+((i*13)%26),h=54+((i*29)%32),k=i%3;L.push([x,w,h,500+i,k,k===0?{fire:[[14+(i%9),22],[34,36]],top:i%2?24:0}:k===1?{coll:1,fire:[[20,40]]}:{nest:i%2?1:0,fire:[[26,30]]}]);}return L;})();
 const P6_FT=[0,1,2,0,2,0,2,2,0,2,0];
 {const _t=c5Tile;c5Tile=function(id,i,seed){if(id!=="fol")return _t(id,i,seed);const k="fol"+i;return C5.tiles[k]||(C5.tiles[k]=c10Tile(P6_FT[i%P6_FT.length],seed));};}
@@ -28,9 +28,9 @@ function p6FolStep(){const S=p6S();if(!P6.f)p6FolInit(0);const F=P6.f;F.t++;P6.t
   const rear=p6Rear(),hid=!!P6.hide;
   /* the group walks, pauses at waypoints and waits for you if you fall far behind */
   if(!F.end){
-    if(F.look>0){F.look--;if(F.look===0)F.wn=190+((F.t*13)%170);}
-    else if(F.tel>0){F.tel--;if(F.tel===0){F.look=95;}}
-    else{F.wn--;if(F.wn<=0&&F.ws!=="gone"){F.tel=48;p6Growl();}
+    if(F.look>0){F.look--;if(F.look===0)F.wn=300+((F.t*13)%200);}
+    else if(F.tel>0){F.tel--;if(F.tel===0){F.look=55;}}
+    else{F.wn--;if(F.wn<=0&&F.ws!=="gone"){F.tel=85;p6Growl();}
       if(F.ws==="walk"){const nx=F.wp<P6_WP.length?P6_WP[F.wp].x:-70,far=player.x-rear>380;F.lost=far?F.lost+1:0;
         if(far&&F.lost===30)toast("<b>THEY'RE GETTING AWAY.</b><br>Keep up, but don't get close.",3200);
         if(!far){F.gx-=0.5;if(F.gx<=nx){F.gx=nx;if(F.wp<P6_WP.length){F.ws="pause";F.pause=P6_WP[F.wp].d;S.wp=F.wp+1;S.gx=nx;S.cpx=nx+210;c2Save("fol");}else{F.ws="gone";}}}}
@@ -40,14 +40,14 @@ function p6FolStep(){const S=p6S();if(!P6.f)p6FolInit(0);const F=P6.f;F.t++;P6.t
   if(F.ws==="gone"&&!S.fol)S.fol=2;
   /* seeing and hearing */
   let seen=0;const dx=player.x-rear;
-  if(!hid){if(F.look>0&&dx>-8&&dx<150)seen=Math.max(seen,2.4);if(F.ws!=="gone"&&dx<34&&dx>-80)seen=Math.max(seen,4);
-    for(const s of P6_SENT){const bx=s.x+Math.sin(F.t/44+s.ph)*66;s.bx=bx;if(Math.abs(player.x-bx)<15&&player.y>C2_FLOOR-30)seen=Math.max(seen,3.2);}}
-  else for(const s of P6_SENT)s.bx=s.x+Math.sin(F.t/44+s.ph)*66;
+  if(!hid){if(F.look>0&&dx>-8&&dx<105)seen=Math.max(seen,1.3);if(F.ws!=="gone"&&dx<22&&dx>-80)seen=Math.max(seen,2.5);
+    for(const s of P6_SENT){const bx=s.x+Math.sin(F.t/62+s.ph)*52;s.bx=bx;if(Math.abs(player.x-bx)<10&&player.y>C2_FLOOR-30)seen=Math.max(seen,1.8);}}
+  else for(const s of P6_SENT)s.bx=s.x+Math.sin(F.t/62+s.ph)*52;
   /* broken glass: loud under your feet, silent if you jump over it */
   for(let i=0;i<P6_GL.length;i++){const gx=P6_GL[i];F.glass[i]>0&&F.glass[i]--;
-    if(!hid&&!F.glass[i]&&player.on&&Math.abs(player.vx)>0.2&&Math.abs(player.x-gx)<8){F.glass[i]=90;P6.noise=40;$sx("debris");toast("<b>CRUNCH!</b> Broken glass.",1100);if(F.ws!=="gone"&&F.look<=0&&Math.abs(rear-player.x)<420){F.tel=Math.min(F.tel||99,16);F.wn=300;}}}
+    if(!hid&&!F.glass[i]&&player.on&&Math.abs(player.vx)>0.2&&Math.abs(player.x-gx)<8){F.glass[i]=90;P6.noise=40;$sx("debris");toast("<b>CRUNCH!</b> Broken glass.",1100);if(F.ws!=="gone"&&F.look<=0&&Math.abs(rear-player.x)<420){F.tel=Math.min(F.tel||99,40);F.wn=400;}}}
   if(shootBuf>0&&hasGun&&!hid&&F.ws!=="gone"){seen=Math.max(seen,0);P6.al=Math.min(100,P6.al+55);P6.noise=40;F.tel=Math.min(F.tel||99,12);F.wn=300;toast("<b>BANG!</b> A shot is the loudest thing in the street. Don't.",2200);}
-  P6.al=c3Clamp(P6.al+(seen?seen:-0.9),0,100);
+  P6.al=c3Clamp(P6.al+(seen?seen:-2.2),0,100);
   if(P6.al>=100)return p6Caught();
   /* the plaza: once the last of them is gone, the Dome is open */
   if(F.ws==="gone"&&player.x<26&&!C3.cut&&!C3.task){S.fol=3;c2Save("fol");c7Go("dome","fol");return;}

@@ -8228,7 +8228,7 @@ const P6_WP=[{x:1130,d:190},{x:900,d:230},{x:700,d:200},{x:480,d:230},{x:260,d:1
 const P6_GM=[{o:0,b:1},{o:34,i:0},{o:50,i:1},{o:66,i:2},{o:90,i:3,w:1}];
 const P6_COV=[{x:1580,k:"bus"},{x:1330,k:"wall"},{x:1090,k:"truck"},{x:960,k:"box"},{x:830,k:"wall"},{x:640,k:"bus"},{x:540,k:"box"},{x:400,k:"truck"},{x:300,k:"wall"},{x:170,k:"box"}];
 const P6_GL=[1440,1210,1010,760,590,440,330];
-const P6_SENT=[{x:930,ph:0,h:46},{x:560,ph:2.1,h:46},{x:210,ph:4.0,h:46}];
+const P6_SENT=[{x:930,ph:0,h:46},{x:560,ph:2.1,h:46}];
 const P6_BLD=(()=>{const L=[];for(let i=0;i<15;i++){const x=-6+i*126+((i*37)%34),w=44+((i*13)%26),h=54+((i*29)%32),k=i%3;L.push([x,w,h,500+i,k,k===0?{fire:[[14+(i%9),22],[34,36]],top:i%2?24:0}:k===1?{coll:1,fire:[[20,40]]}:{nest:i%2?1:0,fire:[[26,30]]}]);}return L;})();
 const P6_FT=[0,1,2,0,2,0,2,2,0,2,0];
 {const _t=c5Tile;c5Tile=function(id,i,seed){if(id!=="fol")return _t(id,i,seed);const k="fol"+i;return C5.tiles[k]||(C5.tiles[k]=c10Tile(P6_FT[i%P6_FT.length],seed));};}
@@ -8250,9 +8250,9 @@ function p6FolStep(){const S=p6S();if(!P6.f)p6FolInit(0);const F=P6.f;F.t++;P6.t
   const rear=p6Rear(),hid=!!P6.hide;
   /* the group walks, pauses at waypoints and waits for you if you fall far behind */
   if(!F.end){
-    if(F.look>0){F.look--;if(F.look===0)F.wn=190+((F.t*13)%170);}
-    else if(F.tel>0){F.tel--;if(F.tel===0){F.look=95;}}
-    else{F.wn--;if(F.wn<=0&&F.ws!=="gone"){F.tel=48;p6Growl();}
+    if(F.look>0){F.look--;if(F.look===0)F.wn=300+((F.t*13)%200);}
+    else if(F.tel>0){F.tel--;if(F.tel===0){F.look=55;}}
+    else{F.wn--;if(F.wn<=0&&F.ws!=="gone"){F.tel=85;p6Growl();}
       if(F.ws==="walk"){const nx=F.wp<P6_WP.length?P6_WP[F.wp].x:-70,far=player.x-rear>380;F.lost=far?F.lost+1:0;
         if(far&&F.lost===30)toast("<b>THEY'RE GETTING AWAY.</b><br>Keep up, but don't get close.",3200);
         if(!far){F.gx-=0.5;if(F.gx<=nx){F.gx=nx;if(F.wp<P6_WP.length){F.ws="pause";F.pause=P6_WP[F.wp].d;S.wp=F.wp+1;S.gx=nx;S.cpx=nx+210;c2Save("fol");}else{F.ws="gone";}}}}
@@ -8262,14 +8262,14 @@ function p6FolStep(){const S=p6S();if(!P6.f)p6FolInit(0);const F=P6.f;F.t++;P6.t
   if(F.ws==="gone"&&!S.fol)S.fol=2;
   /* seeing and hearing */
   let seen=0;const dx=player.x-rear;
-  if(!hid){if(F.look>0&&dx>-8&&dx<150)seen=Math.max(seen,2.4);if(F.ws!=="gone"&&dx<34&&dx>-80)seen=Math.max(seen,4);
-    for(const s of P6_SENT){const bx=s.x+Math.sin(F.t/44+s.ph)*66;s.bx=bx;if(Math.abs(player.x-bx)<15&&player.y>C2_FLOOR-30)seen=Math.max(seen,3.2);}}
-  else for(const s of P6_SENT)s.bx=s.x+Math.sin(F.t/44+s.ph)*66;
+  if(!hid){if(F.look>0&&dx>-8&&dx<105)seen=Math.max(seen,1.3);if(F.ws!=="gone"&&dx<22&&dx>-80)seen=Math.max(seen,2.5);
+    for(const s of P6_SENT){const bx=s.x+Math.sin(F.t/62+s.ph)*52;s.bx=bx;if(Math.abs(player.x-bx)<10&&player.y>C2_FLOOR-30)seen=Math.max(seen,1.8);}}
+  else for(const s of P6_SENT)s.bx=s.x+Math.sin(F.t/62+s.ph)*52;
   /* broken glass: loud under your feet, silent if you jump over it */
   for(let i=0;i<P6_GL.length;i++){const gx=P6_GL[i];F.glass[i]>0&&F.glass[i]--;
-    if(!hid&&!F.glass[i]&&player.on&&Math.abs(player.vx)>0.2&&Math.abs(player.x-gx)<8){F.glass[i]=90;P6.noise=40;$sx("debris");toast("<b>CRUNCH!</b> Broken glass.",1100);if(F.ws!=="gone"&&F.look<=0&&Math.abs(rear-player.x)<420){F.tel=Math.min(F.tel||99,16);F.wn=300;}}}
+    if(!hid&&!F.glass[i]&&player.on&&Math.abs(player.vx)>0.2&&Math.abs(player.x-gx)<8){F.glass[i]=90;P6.noise=40;$sx("debris");toast("<b>CRUNCH!</b> Broken glass.",1100);if(F.ws!=="gone"&&F.look<=0&&Math.abs(rear-player.x)<420){F.tel=Math.min(F.tel||99,40);F.wn=400;}}}
   if(shootBuf>0&&hasGun&&!hid&&F.ws!=="gone"){seen=Math.max(seen,0);P6.al=Math.min(100,P6.al+55);P6.noise=40;F.tel=Math.min(F.tel||99,12);F.wn=300;toast("<b>BANG!</b> A shot is the loudest thing in the street. Don't.",2200);}
-  P6.al=c3Clamp(P6.al+(seen?seen:-0.9),0,100);
+  P6.al=c3Clamp(P6.al+(seen?seen:-2.2),0,100);
   if(P6.al>=100)return p6Caught();
   /* the plaza: once the last of them is gone, the Dome is open */
   if(F.ws==="gone"&&player.x<26&&!C3.cut&&!C3.task){S.fol=3;c2Save("fol");c7Go("dome","fol");return;}
@@ -8738,8 +8738,8 @@ function p6DarkInit(resp){const S=p6S(),K=P6K;K.t=0;K.cd=0;K.pulses=[];K.tap=nul
   if(resp)player.x=S.kcp||56;}
 function p6DarkRespawn(){const S=p6S();p6DarkInit(!0);player.face=1;camX=c3Clamp(player.x-96,0,P6_KW-192);}
 function p6KPulse(x,y,R,sp,col){P6K.pulses.push({x,y,t0:P6K.t,R,sp,col:col||0});if(P6K.pulses.length>5)P6K.pulses.shift();}
-function p6KScream(){const S=p6S(),K=P6K;if(K.cd>0)return;K.cd=64;S.screamed=1;p6Scream();$sx("whoosh");shake=Math.max(shake,2);player.punch=0;
-  const x=player.x,y=player.y-20;p6KPulse(x,y,150,1.9);
+function p6KScream(){const S=p6S(),K=P6K;if(K.cd>0)return;K.cd=40;S.screamed=1;p6Scream();$sx("whoosh");shake=Math.max(shake,2);player.punch=0;
+  const x=player.x,y=player.y-20;p6KPulse(x,y,260,2.2);
   /* the nearest solid thing decides how late the echo comes back */
   let best=1e9;for(const g of K.geo){if(Math.abs(g.x-x)>200)continue;const d=Math.hypot(g.x-x,g.y-y);if(d<best&&d>6)best=d;}p6Echo(best);}
 function p6KTap(){const S=p6S(),K=P6K;if(K.tap&&K.tap.t<14)return;const tx=player.x+player.face*13;K.tap={t:0,x:tx,done:0};player.punch=12;$sx("clank");p6Tone(900,0.08,"square",0.05,600);
@@ -8776,7 +8776,7 @@ function p6DarkStep(){const S=p6S(),K=P6K;if(dead)return;P6.t++;if(K.t%30===0)p6
   c5Pick((it)=>{const k=it.id.slice(3);if(k==="klad")return{r:18,label:"THE LADDER"};if(k==="klock")return S.locker?null:{r:16,label:"OPEN THE LOCKER"};if(k==="kdoor")return{r:22,label:K.open?"GO THROUGH":"THE DOOR"};return null;});
   if(!S.kt1&&player.x>205&&S.screamed){S.kt1=1;toast("<b>TOUCH PADS.</b> Some pads in the floor are armed and zap whatever steps on them. Tap ahead with the crowbar (<b>J</b>) to feel for them. A tapped pad glows: <span style=\"color:#ff7a6a\">red = armed</span>.",8000);}}
 function p6KTapHit(){const K=P6K,S=p6S();let any=0;
-  for(const pd of K.pad){if(Math.abs(pd.x-K.tap.x)>9)continue;any=1;
+  for(const pd of K.pad){if(Math.abs(pd.x-K.tap.x)>16)continue;any=1;
     if(pd.k==="trap"){pd.known=1;pd.lit=160;S.pads[pd.x]=1;p6Tone(150,0.35,"sawtooth",0.07,100);$sx("locked");p6Tip("trap","<b>BZZZT!</b> The pad flashes <b>red</b> and buzzes: it's <b>armed</b>. Jump over it!",3600);}
     else if(pd.k==="safe"){pd.lit=70;p6Tone(520,0.1,"triangle",0.05);}
     else{pd.lit=120;p6Tone(pd.f,0.7,"sine",0.14);p6Tone(pd.f*2,0.5,"sine",0.04);
@@ -8796,12 +8796,15 @@ function p6DarkGuide(){const S=p6S(),K=P6K;
   return p6Q("<b>Find the way through the dark.</b><br>&#9679; <b>F / K</b>: scream, the echo shows walls, stairs and gaps<br>&#9679; <b>J</b>: tap ahead with the crowbar to find armed pads<br>&#9679; Climb the stairs, jump the gaps");}
 function p6DarkArrow(){}
 /* ---------------- drawing: the echo ---------------- */
-function p6KAlpha(x,y){let a=0;for(const p of P6K.pulses){const age=P6K.t-p.t0,front=age*p.sp,d=Math.hypot(x-p.x,y-p.y);if(d>front||d>p.R)continue;const since=age-d/p.sp,v=Math.max(0,1-since/(p.col?55:115))*(1-d/p.R*0.8);a=Math.max(a,since<5?Math.min(1,v+0.5):v);}return a;}
+function p6KAlpha(x,y){let a=0;const pd=Math.hypot(x-player.x,y-(player.y-12));if(pd<38)a=0.7*(1-pd/38);for(const p of P6K.pulses){const age=P6K.t-p.t0,front=age*p.sp,d=Math.hypot(x-p.x,y-p.y);if(d>front||d>p.R)continue;const since=age-d/p.sp,v=Math.max(0,1-since/(p.col?70:300))*(1-d/p.R*0.8);a=Math.max(a,since<5?Math.min(1,v+0.5):v);}return a;}
 function p6DarkBack(){const g=C2_FLOOR,K=P6K,S=p6S(),T=K.t;if(!K.geo)return;
   ctx.fillStyle="#000";ctx.fillRect(camX-2,camY-2,196,112);
   /* geometry the echo has lit */
-  if(K.pulses.length){const x0=camX-8,x1=camX+200,y0=camY-8,y1=camY+116;for(const q of K.geo){if(q.x<x0||q.x>x1||q.y<y0||q.y>y1)continue;const a=p6KAlpha(q.x,q.y);if(a<0.04)continue;ctx.globalAlpha=Math.min(1,a);fill(q.k==="f"?"#bff4ff":q.k==="c"?"#6ab0d8":q.k==="p"?"#7ac0e8":q.k==="s"?"#ffe9a0":"#9ae8ff",q.x-0.5,q.y-0.5,1,1);}ctx.globalAlpha=1;
+  {const x0=camX-8,x1=camX+200,y0=camY-8,y1=camY+116;for(const q of K.geo){if(q.x<x0||q.x>x1||q.y<y0||q.y>y1)continue;const a=p6KAlpha(q.x,q.y);if(a<0.04)continue;ctx.globalAlpha=Math.min(1,a);fill(q.k==="f"?"#bff4ff":q.k==="c"?"#6ab0d8":q.k==="p"?"#7ac0e8":q.k==="s"?"#ffe9a0":"#9ae8ff",q.x-0.5,q.y-0.5,1,1);}ctx.globalAlpha=1;
     for(const s of K.signs){if(s.x<camX-20||s.x>camX+212)continue;const a=p6KAlpha(s.x,s.y);if(a<0.05)continue;ctx.globalAlpha=Math.min(1,a*1.2);p6KSign(s);}ctx.globalAlpha=1;}
+  /* a faint arrow always points the way on, and drops are marked in red */
+  if(!K.open||true){const a=0.35+0.2*Math.sin(T/10);ctx.globalAlpha=a;for(let q=0;q<3;q++){const ax=player.x+16+q*5+(T%20)*0.2;ctx.fillStyle="#9aff9a";ctx.fillRect(ax,player.y-30-q*0.5,0.8,3);ctx.fillRect(ax+0.8,player.y-29.2,0.8,1.6);}ctx.globalAlpha=1;}
+  for(const gp of P6_KGAP){const lv=p6KFloor(gp[0]-1);if(Math.abs(player.x-gp[0])<70){ctx.globalAlpha=0.55+0.2*Math.sin(T/6);fill("#ff5a4a",gp[0]-0.5,lv-1,1,4);fill("#ff5a4a",gp[1]-0.5,lv-1,1,4);glow(gp[0],lv,10,"255,60,40",0.4);glow(gp[1],lv,10,"255,60,40",0.4);ctx.globalAlpha=1;}}
   /* the sound itself, as expanding rings */
   for(const p of K.pulses){const age=K.t-p.t0,r=age*p.sp;if(r>p.R)continue;ctx.strokeStyle="rgba(170,230,255,"+(0.5*(1-r/p.R))+")";ctx.lineWidth=0.5;ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.stroke();if(!p.col){ctx.strokeStyle="rgba(170,230,255,"+(0.2*(1-r/p.R))+")";ctx.beginPath();ctx.arc(p.x,p.y,r*0.82,0,7);ctx.stroke();}}
   /* the pads */
@@ -8853,7 +8856,7 @@ function p6CutDark(c){const t=c.t,S=p6S();P6.t++;c.cx=null;P6K.t++;P6K.flash>0&&
 {const _p=c7Pre;c7Pre=function(){if(room==="dark"&&!C3.cut&&!modal&&player.on){const fy=p6KFloor(player.x+player.vx);if(fy<390&&Math.abs(fy-player.y)<P6_KSTEP+1.4)player.y=fy;}return _p();};}
 
 /* ======================= PART 6D: ITEMS, ICONS AND INFO CARDS ======================= */
-const P6_RAW=["vpipe","vgauge","vseal","vsyr","vcoil","vamp","vgland","vcell"];
+const P6_RAW=["vpipe","vgauge","vsyr","vcoil","vgland","vcell"];
 const P6_CRAFT=["vchamber","vinj","vreactor","vcat","vupcore"];
 const P6_TAPES=["vhs1","vhs2","vhs3","vhs4","vhs5","vhs6"];
 const P6_WEAP=["gusher","sweeper","hypervex"];
@@ -8929,16 +8932,13 @@ const P6_LB=240,P6_LD=26;
 /* every searchable spot: [id, x, label, item, task frames, colour, [text when found], key needed] */
 const P6_LSPOT=[
   ["syr",405,"SEARCH THE MEDICAL CART","vsyr",26,"#c8e8f0","<b>THE MEDICAL CART.</b> Sealed gloves, bandages, a bag of saline… and a rack of hollow needles. Just what a fine jet needs."],
-  ["amp",445,"SEARCH THE BROKEN TUBE","vamp",28,"#9ae8ff","<b>THE BROKEN TUBE.</b> Whatever lived in here is long gone. Among the shards, one thick vial survived."],
   ["tape5",325,"LOOK BEHIND THE TUBE","vhs5",26,"#7a828a","<b>BEHIND THE TUBE.</b> A cable duct, and wedged in it, a tape with a cracked case."],
   ["tape2",565,"SEARCH THE SAMPLE DRAWERS","vhs2",24,"#5a626a","<b>SAMPLE DRAWERS.</b> Rows of labelled slides, all dust. At the back, a dusty tape."],
   ["gland",615,"BREAK THE TUBE","vgland",44,"#8aff6a","","crow"],
   ["pipe",690,"SEARCH THE STEEL SHELF","vpipe",24,"#9aa4ae","<b>THE STEEL SHELF.</b> Offcuts of steel bar and a few lengths of seamless pipe. One is perfect."],
   ["coil",760,"SEARCH THE TOOL CABINET","vcoil",24,"#c87a3a","<b>THE TOOL CABINET.</b> Screwdrivers, a hacksaw, a reel of enamelled copper wire wound on a spool. A coil, almost."],
-  ["seal",825,"OPEN THE DRAWERS","vseal",22,"#2a2a30","<b>THE DRAWERS.</b> Washers, screws, and a tin of rubber rings. One would do."],
   ["gauge",885,"CHECK THE PIPE PANEL","vgauge",26,"#d8d0b0","<b>THE PIPE PANEL.</b> A wall of pipes with a row of dials. One dial hangs loose on its pipe: you can unscrew it."],
   ["tape3",945,"OPEN THE LOCKER","vhs3",26,"#6a747c","<b>THE LOCKER.</b> A jacket, a thermos, a photo of two kids. And a tape."],
-  ["desk",1010,"SEARCH THE DESK","vkey",26,"#5aa8ff","<b>THE DESK.</b> A cold cup of coffee, a lamp, a pile of reports. Under the keyboard, a blue card: POWER STORE."],
   ["tape4",1150,"SEARCH THE TAPE SHELF","vhs4",24,"#6a747c","<b>THE TAPE SHELF.</b> Rows of cases, mostly empty. One still has its tape."],
   ["power",1205,"POWER LOCKER","vcell",24,"#ffd23a","<b>THE POWER LOCKER.</b> The card reader beeps green. Inside: a rack of charged cells.","vkey"],
   ["tape6",1278,"SEARCH THE RANGE LOCKER","vhs6",24,"#9ab0c8","<b>THE RANGE LOCKER.</b> Ear defenders, safety glasses, and a taped-shut cassette marked: WEAPONS TEST."]];
@@ -8984,7 +8984,7 @@ function p6LabUse(e){const k=e.id.slice(3),S=p6S();if(C3.cut||C3.task)return!0;
   if(S.found[k]){toast("Already searched. Nothing else useful.",1600);return!0;}
   if(k==="gland"){if(!inv.includes("pcrow")){$sx("locked");toast("The tube is thick, tough glass. You'd need something to smash it with.",2800);return!0;}
     c3Task("chop",615,sp[4],()=>{shake=Math.max(shake,10);$sx("crash");$sx("debris");P6L.scare=14;P6L.flash=0.25;const tb=P6_TUBES.find((t)=>t.st==="dead");tb&&(tb.st="broken");p6LabGot(["gland",615,"","vgland",0,"","<b>SPECIMEN 04.</b> The glass bursts. The thing inside was dead long before you came. But the gland on its back is still glowing, and still warm."]);},"#8aff6a");return!0;}
-  if(k==="power"&&!inv.includes("vkey")){$sx("locked");toast("<b>ACCESS DENIED.</b> The card reader blinks red: <i>POWER STORE: SWIPE A KEYCARD</i>.",3400);return!0;}
+  
   c3Task("gather",sp[1],sp[4],()=>p6LabGot(sp),sp[5]);return!0;}
 function p6LabCounts(){const S=p6S(),have=(i)=>inv.includes(i)||S.made[i]||p6Used(i);return{raw:P6_RAW.filter(have).length,tapes:P6_TAPES.filter((t)=>inv.includes(t)||(S.tapes||[]).indexOf(t)>=0).length};}
 /* an item counts as "had" once it has been built into something */
@@ -8993,13 +8993,13 @@ function p6LabGuide(){const S=p6S(),M=S.made,tk=(b)=>b?"&#10004; ":"&#9744; ",c=
   if(S.up)return p6Q("<b>"+items[S.up].n+" built.</b><br>"+(S.test?"Calibration done.":"Test it on the range at the far RIGHT of the lab."));
   if(M.vupcore)return p6Q("<b>The Upgrade Core is ready.</b><br>Take it to the <b>clean workbench</b> and choose your new weapon.");
   if(!S.dis)return p6Q("<b>The Containment Chamber.</b><br>"+tk(0)+"Take the <b>Venom Blaster</b> apart on the <b>clean workbench</b> (far LEFT)<br>&#9679; Look around: find <b>parts</b>, and <b>VHS tapes</b>");
-  return p6Q("<b>Build an Upgrade Core.</b><br>"+tk(M.vchamber)+"Pressure Chamber (3 parts)<br>"+tk(M.vinj)+"Injector Core (3 parts)<br>"+tk(M.vreactor)+"Venom Reactor (chamber + injector)<br>"+tk(M.vcat)+"Catalyst Cell (2 parts)<br>"+tk(0)+"Upgrade Core (reactor + catalyst)<br>&#9679; Parts found: "+c.raw+"/8 &middot; Tapes: "+c.tapes+"/6<br>Search the lab. Combine parts at the bench.");}
+  return p6Q("<b>Build an Upgrade Core.</b><br>"+tk(M.vchamber)+"Pressure Chamber (2 parts)<br>"+tk(M.vinj)+"Injector Core (2 parts)<br>"+tk(M.vreactor)+"Venom Reactor (chamber + injector)<br>"+tk(M.vcat)+"Catalyst Cell (2 parts)<br>"+tk(0)+"Upgrade Core (reactor + catalyst)<br>&#9679; Parts found: "+c.raw+"/6 &middot; Tapes: "+c.tapes+"/6<br>Search the lab. Combine parts at the bench.");}
 function p6LabArrow(){const S=p6S();if(C3.cut||C3.task||modal)return;if(!S.dis||S.up&&S.test||S.made.vupcore&&!S.up){return p6Arrow(150);}
   let best=null,bd=1e9;for(const sp of P6_LSPOT){if(S.found[sp[0]])continue;if(sp[3].slice(0,3)==="vhs")continue;const d=Math.abs(sp[1]-player.x);if(d<bd){bd=d;best=sp[1];}}
   if(!best){const tb=p6LabCounts();return p6Arrow(S.up?1330:150);}p6Arrow(best);}
 /* ---------------- the blueprint ---------------- */
 function p6Info(title,html,btn){p6Css();const el=c5Overlay("#p6Tool",'<div class="gcard c4card"><h3>'+title+'</h3><div class="p6msg" style="font-size:8px;line-height:1.9">'+html+'</div><div class="btns"><button class="gbtn" id="p6toolOk">'+(btn||"CLOSE")+"</button></div></div>");modal=4;el.hidden=!1;qs("#p6toolOk").onclick=()=>{el.hidden=!0;modal=0;updateGuide();};setTimeout(()=>{const b=qs("#p6toolOk");b&&b.focus();},30);$sx("card");}
-function p6BlueprintShow(){p6Info("THE UPGRADE BLUEPRINT","A blueprint pinned over the bench, drawn in blue ink:<br><br><b>UPGRADE CORE</b> = <b>VENOM REACTOR</b> + <b>CATALYST CELL</b><br><br>&bull; <b>VENOM REACTOR</b> = <b>PRESSURE CHAMBER</b> + <b>INJECTOR CORE</b><br>&bull; <b>PRESSURE CHAMBER</b> = pipe + gauge + gasket<br>&bull; <b>INJECTOR CORE</b> = needles + coil + glass vial<br>&bull; <b>CATALYST CELL</b> = a living gland + a power cell<br><br>Then fit the core to the <b>old barrel, grip and canister</b> and pick a weapon. Scribbled at the bottom: <i>\"parts are all over the Containment Chamber. Don't forget the powered locker needs a card.\"</i>");}
+function p6BlueprintShow(){p6Info("THE UPGRADE BLUEPRINT","A blueprint pinned over the bench, drawn in blue ink:<br><br><b>UPGRADE CORE</b> = <b>VENOM REACTOR</b> + <b>CATALYST CELL</b><br><br>&bull; <b>VENOM REACTOR</b> = <b>PRESSURE CHAMBER</b> + <b>INJECTOR CORE</b><br>&bull; <b>PRESSURE CHAMBER</b> = pipe + gauge<br>&bull; <b>INJECTOR CORE</b> = needles + coil<br>&bull; <b>CATALYST CELL</b> = a living gland + a power cell<br><br>Then fit the core to the <b>old barrel, grip and canister</b> and pick a weapon. Scribbled at the bottom: <i>\"parts are all over the Containment Chamber.\"</i>");}
 /* ---------------- first visit ---------------- */
 function p6CutLab(c){const t=c.t,S=p6S();p6LabTick();p6LabLights();c.cx=null;
   if(t===1){player.x=60;player.y=C2_FLOOR;player.face=1;P6L.flash=1;}
@@ -9213,8 +9213,8 @@ function p6LabBack(){const S=p6S(),T=P6L.t,g=P6L_G,F=S.found,V=(x,w)=>x+w>camX&&
   const e=De.slab||{};De.slab=Object.assign(e,{c:"60,90,90",l:"200,255,235",a:0.1,dk:0.5});}
 
 /* ======================= PART 6D: THE CLEAN WORKBENCH, THE CRAFTING TREE, THE WEAPON CHOICE ======================= */
-const P6_REC=[{out:"vchamber",need:["vpipe","vgauge","vseal"],why:"The gasket seals the joint, the pipe takes the pressure and the gauge reads it: a sealed chamber."},
-  {out:"vinj",need:["vsyr","vcoil","vamp"],why:"The coil is an electromagnet that opens the valve, the needles make the jet and the ampoule holds the dose."},
+const P6_REC=[{out:"vchamber",need:["vpipe","vgauge"],why:"The pipe takes the pressure and the gauge reads it: a sealed chamber."},
+  {out:"vinj",need:["vsyr","vcoil"],why:"The coil is an electromagnet that opens the valve and the needles make the fine jet."},
   {out:"vreactor",need:["vchamber","vinj"],why:"Push from the chamber, metering from the injector: together they are a regulator."},
   {out:"vcat",need:["vgland","vcell"],why:"The cell warms the gland, so its venom reacts faster. A catalyst helps a reaction without being used up."},
   {out:"vupcore",need:["vreactor","vcat"],why:"A regulated, boosted venom engine. Now it just needs a barrel, a grip and a tank."}];
@@ -9462,7 +9462,11 @@ function p6WeaponHud(){const S=c7S(),P=S.p6;if(!P||!P.up||!hasGun||!c7Is()||C3.c
   fill("rgba(0,0,0,.5)",126,99,64,7);text(d.n,128,100.4,"#ffe070",'2.8px "Press Start 2P",monospace');for(let q=0;q<d.cap;q++)fill(q<ammo?"#8aff9a":"#26362e",128+q*5,104,3.4,1.4);ctx.restore();}
 /* ---------------- plumbing (outermost wrappers: they cover every room of this part) ---------------- */
 {const _s=c7Step;c7Step=function(){const r=_s();const S=c7S();if(S.p6&&S.p6.up&&!C3.cut){if(room!=="slab"&&p6WOn()){if(shootBuf>0||(keys.s&&S.p6.up==="gusher")){shootBuf=0;p6WFire();}}p6WeaponStep();}return r;};}
-{const _f=c7Front;c7Front=function(){_f();p6WeaponDraw();p6LaserDraw();};}
+{const _f=c7Front;c7Front=function(){_f();p6WeaponDraw();p6LaserDraw();p6HeldDraw();};}
+/* the new weapon, in the player's hands (drawn over the old gun the engine paints) */
+function p6HeldDraw(){const P=c7S().p6;if(!P||!P.up||!hasGun||C3.cut||P6.hide||player.punch>0||modal)return;const sp=p6WeaponSprite(P.up),f=player.face,w=38,h=w*sp.height/sp.width,cx=player.x+f*12,cy=player.y-19;
+  ctx.save();ctx.translate(cx,cy);ctx.scale(f,1);ctx.drawImage(sp,0,0,sp.width,sp.height,-w*0.36,-h*0.5,w,h);ctx.restore();}
+try{const _uh=updateHud;updateHud=function(){_uh.apply(this,arguments);try{const P=c7S().p6;if(P&&P.up&&hasGun){const im=qs("#ga img");if(im)im.src=p6WeaponSprite(P.up).toDataURL();}}catch(e){}};}catch(e){}
 {const _t=c7Tint;c7Tint=function(){_t();p6WeaponHud();};}
 {const _b=c7Back;c7Back=function(){_b();if(room==="slab")p6RangeDraw();};}
 {const _e=c7Enter;c7Enter=function(t){_e(t);P6W.shots=[];P6W.beams=[];{const P=c7S().p6;if(P&&P.up&&hasGun)ammo=Math.max(ammo,P6_WDEF[P.up].cap);updateHud();}if(t==="slab"&&!P6W.tg.length)p6RangeInit();};}

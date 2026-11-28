@@ -23,8 +23,8 @@ run(async(p,E)=>{
  // wrong combo
  await sel(["Steel Pipe","Copper Coil"]);await p.click('[data-p6b="combine"]');console.log("wrong:",await p.textContent("#p6bMsg"));await p.click('[data-p6b="clear"]');
  const craft=async(names)=>{await sel(names);await p.click('[data-p6b="combine"]');await p.waitForTimeout(1000);console.log("craft:",(await p.textContent("#p6bMsg")).slice(0,90));};
- await craft(["Steel Pipe","Pressure Gauge","Rubber Gasket"]);
- await craft(["Syringe Array","Copper Coil","Glass Ampoule"]);
+ await craft(["Steel Pipe","Pressure Gauge"]);
+ await craft(["Syringe Array","Copper Coil"]);
  await craft(["Pressure Chamber","Injector Core"]);
  await craft(["Evolved Gland","Power Cell"]);
  await craft(["Venom Reactor","Catalyst Cell"]);

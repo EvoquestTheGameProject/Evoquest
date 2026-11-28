@@ -41,7 +41,7 @@ After "Back to the City" (the old end card is gone) the quest continues:
    **clean workbench**, supply shelves, a media room with a **TV**, and a test range.
    * Take the Venom Blaster **apart** on the workbench (four steps, in a safe order).
    * Search for 8 parts and craft an **Upgrade Core** at the bench:
-     `Pressure Chamber (pipe+gauge+gasket)` + `Injector Core (syringes+coil+ampoule)` = `Venom Reactor`;
+     `Pressure Chamber (pipe+gauge)` + `Injector Core (syringes+coil)` = `Venom Reactor`;
      `Catalyst Cell (gland+power cell)`; `Reactor + Catalyst` = `Upgrade Core`. (The gland needs the crowbar; the power locker
      needs the keycard from the desk. A blueprint on the wall shows the tree.)
    * Find **6 VHS tapes** and play them on the TV. Most are blurred and hard to read; adjust the **tracking** to sharpen them.
